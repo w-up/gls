@@ -1,0 +1,661 @@
+<template>
+  <div id="myorder">
+    <mt-header fixed title="我的订单">
+      <a slot="left">
+        <mt-button icon="back" @click="back">返回</mt-button>
+      </a>
+    </mt-header>
+    <div class="con-wrapper">
+      <tab
+        class="tab"
+        :line-width="2"
+        bar-active-color="#ef6213"
+        active-color="#ef6213"
+        :scroll-threshold="6"
+        v-model="orderIndex"
+      >
+        <tab-item @click.native="navTap(0)">全部</tab-item>
+        <tab-item @click.native="navTap(1)">待付款</tab-item>
+        <tab-item @click.native="navTap(2)">待发货</tab-item>
+        <tab-item @click.native="navTap(3)">待收货</tab-item>
+        <tab-item @click.native="navTap(4)">已成功</tab-item>
+        <tab-item @click.native="navTap(5)">已取消</tab-item>
+      </tab>
+      <div class="scroll_div">
+        <van-pull-refresh
+          v-model="isLoading"
+          pulling-text="下拉刷新"
+          loosing-text="释放更新"
+          loading-text="正在加载..."
+          @refresh="onRefresh"
+        >
+          <div
+            class="div"
+            v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="loading"
+            infinite-scroll-distance="10"
+            infinite-scroll-immediate-check="false"
+          >
+            <div v-if="orderIndex==0" class="fruit">
+              <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
+                <div class="fruit_tit">
+                  <span>订单号：{{orderitem.order}}</span>
+                  <span>{{orderitem.time}}</span>
+                </div>
+                <div class="fruit_content">
+                  <div class="fruit_img" @click="gotoOrderDetail(orderitem.id)">
+                    <img :src="orderitem.img" />
+                  </div>
+                  <div class="fruit_con">
+                    <div class="fruit_title">
+                      <h4>{{orderitem.name}}</h4>
+                      <span v-if="orderitem.status==1" @click="cancelOrder(orderitem.id)">取消订单</span>
+                      <span v-if="orderitem.status==3" @click="gotoAfter(orderitem.id)">申请售后</span>
+                      <span v-if="orderitem.evaluate_status ==0" @click="gotoEval(orderitem.id)">去评价</span>
+                      <span v-if="orderitem.evaluate_status ==1">已评价</span>
+                      <span v-if="orderitem.status== 0">已取消</span>
+                    </div>
+                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <div class="qixian">
+                      <span>数量{{orderitem.number}}</span>
+                      <span v-if="orderitem.status== 1" @click="showDialog(orderitem.id)">立即付款</span>
+                      <span v-if="orderitem.status== 2" @click="RemindDelivery(orderitem.id)">提醒发货</span>
+                      <span v-if="orderitem.status== 3" @click="Receipt(orderitem.id)">确认收货</span>
+                      <span v-if="orderitem.status== 4">已完成</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="orderIndex==1" class="fruit">
+              <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
+                <div class="fruit_tit">
+                  <span>订单号：{{orderitem.order}}</span>
+                  <span>{{orderitem.time}}</span>
+                </div>
+                <div class="fruit_content">
+                  <div class="fruit_img" @click="gotoOrderDetail(orderitem.id)">
+                    <img :src="orderitem.img" />
+                  </div>
+                  <div class="fruit_con">
+                    <div class="fruit_title">
+                      <h4>{{orderitem.name}}</h4>
+                      <span @click="cancelOrder(orderitem.id)">取消订单</span>
+                    </div>
+                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <div class="qixian">
+                      <span>数量{{orderitem.number}}</span>
+                      <span @click="showDialog(orderitem.id)">立即付款</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="orderIndex==2" class="fruit">
+              <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
+                <div class="fruit_tit">
+                  <span>订单号：{{orderitem.order}}</span>
+                  <span>{{orderitem.time}}</span>
+                </div>
+                <div class="fruit_content">
+                  <div class="fruit_img" @click="gotoOrderDetail(orderitem.id)">
+                    <img :src="orderitem.img" />
+                  </div>
+                  <div class="fruit_con">
+                    <div class="fruit_title">
+                      <h4>{{orderitem.name}}</h4>
+                    </div>
+                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <div class="qixian">
+                      <span>数量{{orderitem.number}}</span>
+                      <span @click="RemindDelivery(orderitem.id)">提醒发货</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="orderIndex==3" class="fruit">
+              <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
+                <div class="fruit_tit">
+                  <span>订单号：{{orderitem.order}}</span>
+                  <span>{{orderitem.time}}</span>
+                </div>
+                <div class="fruit_content">
+                  <div class="fruit_img" @click="gotoOrderDetail(orderitem.id)">
+                    <img :src="orderitem.img" />
+                  </div>
+                  <div class="fruit_con">
+                    <div class="fruit_title">
+                      <h4>{{orderitem.name}}</h4>
+                      <span v-if="orderitem.refund_status== 0" @click="gotoAfter(orderitem.id)">申请售后</span>
+                    </div>
+                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <div class="qixian">
+                      <span>数量{{orderitem.number}}</span>
+                      <span @click="Receipt(orderitem.id)">确认收货</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="orderIndex==4" class="fruit">
+              <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
+                <div class="fruit_tit">
+                  <span>订单号：{{orderitem.order}}</span>
+                  <span>{{orderitem.time}}</span>
+                </div>
+                <div class="fruit_content">
+                  <div class="fruit_img" @click="gotoOrderDetail(orderitem.id)">
+                    <img :src="orderitem.img" />
+                  </div>
+                  <div class="fruit_con">
+                    <div class="fruit_title">
+                      <h4>{{orderitem.name}}</h4>
+                      <span v-if="orderitem.evaluate_status ==0" @click="gotoEval(orderitem.id)">去评价</span>
+                      <span v-if="orderitem.evaluate_status ==1">已评价</span>
+                    </div>
+                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <div class="qixian">
+                      <span>数量{{orderitem.number}}</span>
+                      <span>已完成</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="orderIndex==5" class="fruit">
+              <div
+                class="fruit_list"
+                v-show="orderitem.status==0"
+                v-for="(orderitem ,index) in orderList"
+                :key="index"
+              >
+                <div class="fruit_tit">
+                  <span>订单号：{{orderitem.order}}</span>
+                  <span>{{orderitem.time}}</span>
+                </div>
+                <div class="fruit_content">
+                  <div class="fruit_img" @click="gotoOrderDetail(orderitem.id)">
+                    <img :src="orderitem.img" />
+                  </div>
+                  <div class="fruit_con">
+                    <div class="fruit_title">
+                      <h4>{{orderitem.name}}</h4>
+                      <span v-if="orderitem.status==0">已取消</span>
+                    </div>
+                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <div class="qixian">
+                      <span>数量{{orderitem.number}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
+          <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
+        </van-pull-refresh>
+      </div>
+    </div>
+    <!-- 付款 -->
+    <x-dialog v-model="lang_dlg" class="de_dialog lang_dialog" hide-on-blur>
+      <div class="dialog">
+        <span class="iconfont icon-tabguanbi" @click="closeDialog"></span>
+        <h4>确认付款</h4>
+        <span class="haufei">请在下方输入交易密码</span>
+        <div class="number">
+          <p>交易密码</p>
+          <input type="password" v-model="payment_password" name placeholder="请输入交易密码" />
+        </div>
+        <button @click="SubmitPayment">确定</button>
+      </div>
+    </x-dialog>
+  </div>
+</template>
+
+<script>
+import { Indicator, Toast } from "mint-ui";
+import { Tab, TabItem, XDialog, LoadMore } from "vux";
+export default {
+  components: {
+    Tab,
+    TabItem,
+    Indicator,
+    Toast,
+    XDialog,
+    LoadMore
+  },
+  data() {
+    return {
+      pageindex: 1, // 第一页
+      orderIndex: 0,
+      orderList: [], //我的订单列表
+      lang_dlg: false, //弹窗隐藏
+      payment_password: "", //支付密码
+      current_id: "", //当前订单id
+      status: 0, //订单状态
+      load: true, //加载图标显示
+      none: false, //加载图标隐藏
+      lif: true, //正在加载中 显示
+      nif: false, //没有更多数据了 隐藏
+      loading: false, //下拉刷新
+      isLoading: false //上拉加载更多
+    };
+  },
+  mounted() {
+    let that = this;
+    that.getMyorder();
+  },
+  activated() {
+    this.$nextTick(() => {
+      this.orderIndex = 0;
+      this.pageindex = 1;
+      this.lif = true;
+      this.nif = false;
+      this.loading = false;
+      this.getMyorder(1);
+    });
+  },
+  methods: {
+    back() {
+      this.$router.go(-1); //返回上一层
+    },
+    //去申请退货
+    gotoAfter(id) {
+      this.$router.push({
+        path: "/applyAfterSale",
+        query: {
+          id: id //订单id
+        }
+      });
+    },
+    //订单详情
+    gotoOrderDetail(id) {
+      this.$router.push({
+        path: "/orderDetail",
+        query: {
+          id: id //订单id
+        }
+      });
+    },
+    //去评价
+    gotoEval(id) {
+      this.$router.push({
+        path: "/evaluate",
+        query: {
+          id: id //订单id
+        }
+      });
+    },
+    //选择相应的tab，初始化数据
+    navTap(i) {
+      let that = this;
+      that.orderIndex = i;
+      that.loading = false;
+      that.nif = false;
+      that.pageindex = 1;
+      that.orderList = [];
+      that.getMyorder(1);
+    },
+    // 下拉刷新
+    onRefresh() {
+      let that = this;
+      that.isLoading = true;
+      that.loading = false;
+      that.nif = false;
+      that.pageindex = 1;
+      that.orderList = [];
+      that.getMyorder(0);
+    },
+    //上拉加载更多
+    loadMore() {
+      let that = this;
+      that.lif = true;
+      that.pageindex++;
+      that.getMyorder();
+    },
+
+    //获取我的订单
+    getMyorder(i) {
+      let that = this;
+      if (i) {
+        that.lif = true;
+      }
+      let orderIndex = that.orderIndex;
+      that.status =
+        orderIndex == 0
+          ? ""
+          : orderIndex == 1
+          ? 1
+          : orderIndex == 2
+          ? 2
+          : orderIndex == 3
+          ? 3
+          : orderIndex == 4
+          ? 4
+          : 0;
+      Indicator.open({
+        text: "加载中..."
+      });
+      that
+        .$http({
+          url: "goods_order/index",
+          method: "post",
+          data: {
+            token: sessionStorage.getItem("token"),
+            status: that.status,
+            p: that.pageindex
+          }
+        })
+        .then(function(res) {
+          that.lif = false;
+          that.isLoading = false;
+          if (res.data.code == 0) {
+            //成功回调
+            if (res.data.data.list != "") {
+              that.orderList = res.data.data.list;
+            } else {
+              that.nif = true;
+              that.loading = true;
+            }
+          } else {
+            //失败
+            Toast(res.data.msg);
+          }
+          Indicator.close();
+        })
+        .catch(function(error) {
+          Indicator.close();
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+    },
+
+    //付款
+    SubmitPayment() {
+      let that = this;
+      Indicator.open({
+        text: "支付中..."
+      });
+      if (that.payment_password == "") {
+        Toast("请输入交易密码");
+      } else {
+        that
+          .$http({
+            url: "goods_order/paymentOrder",
+            method: "post",
+            data: {
+              token: sessionStorage.getItem("token"),
+              id: that.current_id,
+              payment_password: that.payment_password
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 0) {
+              Toast(res.data.msg);
+              that.closeDialog();
+              that.payment_password = "";
+              that.getMyorder();
+            } else {
+              Toast(res.data.msg);
+            }
+            Indicator.close();
+          })
+          .catch(function(error) {
+            Indicator.close();
+            Toast({
+              message: "网络连接失败",
+              position: "bottom",
+              duration: 5000
+            });
+          });
+      }
+    },
+    //提醒发货
+    RemindDelivery(id) {
+      let that = this;
+      that
+        .$http({
+          url: "goods_order/remindShipment",
+          method: "post",
+          data: {
+            token: sessionStorage.getItem("token"),
+            id: id
+          }
+        })
+        .then(function(res) {
+          if (res.data.code == 0) {
+            Toast("已提醒发货");
+            that.getMyorder();
+          } else {
+            Toast(res.data.msg);
+          }
+        })
+        .catch(function(error) {
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+    },
+    //确认收货
+    Receipt(id) {
+      let that = this;
+      that
+        .$http({
+          url: "goods_order/receivingGoods",
+          method: "post",
+          data: {
+            token: sessionStorage.getItem("token"),
+            id: id
+          }
+        })
+        .then(function(res) {
+          if (res.data.code == 0) {
+            Toast("已确认收货");
+          } else {
+            Toast(res.data.msg);
+            that.getMyorder();
+          }
+        })
+        .catch(function(error) {
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+    },
+    //取消订单
+    cancelOrder(id) {
+      let that = this;
+      that
+        .$http({
+          url: "goods_order/cancelOrder",
+          method: "post",
+          data: {
+            token: sessionStorage.getItem("token"),
+            id: id
+          }
+        })
+        .then(function(res) {
+          if (res.data.code == 0) {
+            Toast("已取消订单");
+            that.getMyorder();
+          } else {
+            Toast(res.data.msg);
+          }
+        })
+        .catch(function(error) {
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+    },
+    //弹出确认弹窗
+    showDialog: function(id) {
+      var that = this;
+      that.current_id = id;
+      that.lang_dlg = true;
+    },
+    //关闭确认弹窗
+    closeDialog: function() {
+      var that = this;
+      that.lang_dlg = false;
+      that.payment_password = "";
+    }
+  }
+};
+</script>
+
+<style scoped="scoped">
+#myorder {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scroll_div {
+  width: 100%;
+  height: 100%;
+}
+.mint-header {
+  background: #ef6213;
+}
+
+.mint-navbar .mint-tab-item.is-selected {
+  color: #ef6213;
+  border-bottom: 2px solid #ef6213;
+}
+
+.fruit {
+  margin-top: 0.2rem;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.fruit .fruit_tit {
+  padding-top: 0.3rem;
+  padding-bottom: 0.1rem;
+  font-size: 0.26rem;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #e9e9e9;
+}
+.fruit_content {
+  display: flex;
+  height: 1.4rem;
+  align-items: center;
+  margin-top: 0.2rem;
+}
+.fruit_list .fruit_img {
+  height: 100%;
+  width: 26%;
+}
+.fruit_list .fruit_img img {
+  width: 100%;
+  height: 100%;
+}
+.fruit_list .fruit_con {
+  margin-left: 0.2rem;
+  flex: 1;
+}
+.fruit_list .fruit_con .fruit_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fruit_list .fruit_con .fruit_title h4 {
+  font-size: 0.26rem;
+  color: #333;
+}
+.fruit_list .fruit_con .fruit_title span {
+  width: 1.4rem;
+  height: 0.5rem;
+  text-align: center;
+  line-height: 0.5rem;
+  border: 1px solid #e8e8e8;
+  font-size: 0.24rem;
+  border-radius: 0.1rem;
+}
+.fruit_list .fruit_con h5 {
+  font-weight: normal;
+  font-size: 0.22rem;
+  color: #ef6213;
+}
+.fruit_list .fruit_con .qixian {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.fruit_list .fruit_con .qixian span {
+  font-size: 0.26rem;
+  color: #666;
+}
+.fruit_list .fruit_con .qixian span:nth-child(2) {
+  width: 1.4rem;
+  height: 0.5rem;
+  text-align: center;
+  line-height: 0.5rem;
+  background: #ef6213;
+  font-size: 0.22rem;
+  border-radius: 0.1rem;
+  color: #fff;
+}
+.dialog {
+  width: 90%;
+  margin: 0 auto;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 0.2rem;
+}
+
+.dialog span.iconfont {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+}
+
+.dialog h4 {
+  font-size: 0.3rem;
+  font-weight: normal;
+}
+
+.dialog .haufei {
+  padding-top: 0.4rem;
+  font-size: 0.28rem;
+}
+.dialog .number {
+  /* 	width: 90%; */
+  margin: 0.3rem 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.26rem;
+  align-items: center;
+}
+
+.dialog .number input {
+  width: 70%;
+  border: 1px solid #e8e8e8;
+  height: 0.6rem;
+  padding-left: 0.1rem;
+}
+
+.dialog button {
+  width: 50%;
+  height: 0.6rem;
+  background: #ef6213;
+  color: #fff;
+  margin-top: 0.4rem;
+  border: none;
+  border-radius: 0.1rem;
+}
+</style>

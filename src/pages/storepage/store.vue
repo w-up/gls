@@ -1,0 +1,541 @@
+<template>
+  <div id="store">
+    <!-- 头部 -->
+    <mt-header fixed :title="title">
+      <a slot="left">
+        <mt-button icon="back" @click="back">返回</mt-button>
+      </a>
+      <a id="tore-right" slot="right">
+        <svg
+          t="1562572508084"
+          class="icon shop_cart"
+          @click="gotoCar"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="2723"
+          width="200"
+          height="200"
+        >
+          <path
+            d="M347.136 783.36q19.456 0 36.864 7.168t30.72 19.968 20.48 30.208 7.168 36.864-7.168 36.864-20.48 30.208-30.72 20.48-36.864 7.68q-20.48 0-37.376-7.68t-30.208-20.48-20.48-30.208-7.168-36.864 7.168-36.864 20.48-30.208 30.208-19.968 37.376-7.168zM773.12 785.408q19.456 0 37.376 7.168t30.72 19.968 20.48 30.208 7.68 36.864-7.68 36.864-20.48 30.208-30.72 20.48-37.376 7.68-36.864-7.68-30.208-20.48-20.48-30.208-7.68-36.864 7.68-36.864 20.48-30.208 30.208-19.968 36.864-7.168zM945.152 203.776q28.672 0 44.544 7.68t22.528 18.944 6.144 24.064-3.584 22.016-12.8 37.888-22.016 62.976-24.064 68.096-17.92 53.248q-13.312 40.96-33.792 56.832t-50.176 15.872l-34.816 0-66.56 0-87.04 0-95.232 0-253.952 0 15.36 92.16 516.096 0q49.152 0 49.152 41.984 0 20.48-9.728 35.328t-38.4 14.848l-49.152 0-95.232 0-117.76 0-119.808 0-98.304 0-56.32 0q-20.48 0-34.304-9.216t-23.04-24.064-14.848-32.256-8.704-32.768q-1.024-6.144-5.632-29.696t-11.264-58.88-14.848-78.848-16.384-87.552q-19.456-103.424-44.032-230.4l-76.8 0q-15.36 0-25.6-7.68t-16.896-18.432-9.216-23.04-2.56-22.528q0-20.48 13.824-33.792t37.376-13.312l22.528 0 20.48 0 25.6 0 34.816 0q20.48 0 32.768 6.144t19.456 15.36 10.24 19.456 5.12 17.408q2.048 8.192 4.096 23.04t4.096 30.208q3.072 18.432 6.144 38.912l700.416 0z"
+            fill="#ffffff"
+            p-id="2724"
+          />
+        </svg>
+        <svg
+          t="1562572794722"
+          class="icon shop_cart"
+          @click="gotoMine"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="4402"
+          width="200"
+          height="200"
+        >
+          <path
+            d="M512 64h248.9v248.9c0 137.5-111.4 248.9-248.9 248.9S263.1 450.4 263.1 312.9 374.5 64 512 64zM288 611.6h448c96.2 0 174.2 78 174.2 174.2v24.9c0 82.5-66.9 149.3-149.3 149.3H263.1c-82.5 0-149.3-66.9-149.3-149.3v-24.9c-0.1-96.2 77.9-174.2 174.2-174.2z"
+            fill="#ffffff"
+            p-id="4403"
+          />
+        </svg>
+        <!-- <mt-button class="button-style" icon="aa iconfont icon-tabgouwuche2" @click="gotoCar"></mt-button>
+        <mt-button class="button-2 button-style" icon="aa iconfont icon-tabwode" @click="gotoMine"></mt-button>-->
+      </a>
+    </mt-header>
+    <!-- 轮播 -->
+    <div class="con-wrapper swipe">
+      <mt-swipe :auto="4000">
+        <mt-swipe-item v-for="(item,index) in banner" :key="index">
+          <img :src="item" />
+        </mt-swipe-item>
+      </mt-swipe>
+      <div class="search">
+        <input type="search" placeholder="请输入商品名称" v-model="name" />
+        <button :disabled="name == ''" @click="setProductData">
+          <i class="iconfont icon-tabsearch"></i>
+        </button>
+      </div>
+      <!-- 内容 -->
+      <div class="scroll_div">
+        <van-pull-refresh
+          v-model="isLoading"
+          pulling-text="下拉刷新"
+          loosing-text="释放更新"
+          loading-text="正在加载..."
+          @refresh="onRefresh"
+        >
+          <div
+            class="div"
+            v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="loading"
+            infinite-scroll-distance="10"
+            infinite-scroll-immediate-check="false"
+          >
+            <div class="content">
+              <div class="content-con">
+                <div
+                  class="content_list"
+                  v-for="item in shopList"
+                  :key="item.id"
+                  @click="gotoComd(item)"
+                >
+                  <img :src="item.img" />
+                  <div class="text-box">
+                    <div class="con-title">
+                      <h3>{{item.name}}</h3>
+                      <span>
+                        <img v-if="item.upgrade==1" src="../../assets/img/jinpai.png" />
+                      </span>
+                      <img v-if="item.prize_type==1" src="../../assets/img/huangk.png" />
+                      <img v-if="item.prize_type==2" src="../../assets/img/heik.png" />
+                      <img v-if="item.prize_type==3" src="../../assets/img/jink.png" />
+                      <img v-if="item.prize_type==4" src="../../assets/img/bao.png" />
+                    </div>
+                    <div class="con-title2">
+                      <h3>{{item.price}}元红包+{{item.integral}}谷分</h3>
+                      <img src="../../assets/img/car2.png" @click.stop="addCar(item.id)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
+          <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
+        </van-pull-refresh>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { Swipe, SwipeItem, Indicator, Toast } from "mint-ui";
+import { LoadMore } from "vux";
+export default {
+  components: {
+    "mt-swipe": Swipe,
+    "mt-swipe-item": SwipeItem,
+    LoadMore,
+    Indicator,
+    Toast
+  },
+  data() {
+    return {
+      pageindex: 1,
+      name: "", //店铺名称
+      banner: [], //轮播图
+      shopList: [], //商品列表
+      industry_id: "",
+      title: sessionStorage.getItem("title") || "商品列表", //店铺名称
+      load: true, //加载图标显示
+      none: false, //加载图标隐藏
+      lif: true, //正在加载中 显示
+      nif: false, //没有更多数据了 隐藏
+      loading: false, //下拉刷新
+      isLoading: false //上拉加载更多
+    };
+  },
+  mounted() {
+    let that = this;
+    that.getBanner();
+    that.getShopList();
+  },
+  methods: {
+    //下拉刷新
+    onRefresh() {
+      let that = this;
+      that.isLoading = true;
+      that.loading = false;
+      that.nif = false;
+      that.pageindex = 1;
+      that.shopList = [];
+      that.getShopList(1);
+    },
+    //上拉加载更多
+    loadMore() {
+      let that = this;
+      that.lif = true;
+      that.pageindex++;
+      that.getShopList(0);
+    },
+    // 获取 商品列表
+    getShopList(i) {
+      let that = this;
+      if (i) {
+        that.lif = true;
+      }
+      Indicator.open({
+        // text: "加载中...",
+        //文字
+        spinnerType: "fading-circle"
+        //样式
+      });
+      that
+        .$http({
+          url: "Ckshop/goodList",
+          method: "post",
+          data: {
+            id: sessionStorage.getItem("storeId"),
+            name: that.name,
+            p: that.pageindex
+          }
+        })
+        .then(function(res) {
+          that.lif = false;
+          that.isLoading = false;
+          if (res.data.code == 0) {
+            //成功回调
+            if (res.data.data.list != "") {
+              that.shopList = that.shopList.concat(res.data.data.list);
+            } else {
+              that.nif = true;
+              that.loading = true;
+            }
+          } else {
+            Toast(res.data.msg);
+          }
+          Indicator.close();
+        })
+        .catch(function(error) {
+          Indicator.close();
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+    },
+    //搜索商品
+    setProductData() {
+      let that = this;
+      that.loading = false;
+      that.nif = false;
+      that.pageindex = 1;
+      that.shopList = [];
+      that.getShopList();
+    },
+    // 获取banner 图
+    getBanner() {
+      let that = this;
+      that
+        .$http({
+          url: "Ckshop/banner",
+          method: "post"
+        })
+        .then(function(res) {
+          if (res.data.code == 0) {
+            that.banner = res.data.data;
+          } else {
+            Toast(res.data.msg);
+          }
+        })
+        .catch(function(error) {
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+    },
+    // 加入购物车
+    addCar(id) {
+      let that = this;
+      Indicator.open({
+        // text: "加载中...",
+        //文字
+        spinnerType: "fading-circle"
+        //样式
+      });
+      that
+        .$http({
+          url: "Goods/addShopping",
+          method: "post",
+          data: {
+            token: sessionStorage.getItem("token"),
+            goods_id: id,
+            number: 1
+          }
+        })
+        .then(function(res) {
+          if (res.data.code == 0) {
+            //成功回调
+            Toast({
+              message: "购物车添加成功！",
+              position: "bottom",
+              duration: 2000
+            });
+          } else {
+            //失败
+          }
+          Indicator.close();
+        })
+        .catch(function(error) {
+          Indicator.close();
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+    },
+    back() {
+      this.$router.go(-1); //返回上一层
+    },
+    // 进入商品详情页
+    gotoComd(item) {
+      let that = this;
+      window.sessionStorage.setItem("shopName", item.name); //商品名称
+      window.sessionStorage.setItem("shopId", item.id); //商品Id
+      this.$router.push({
+        path: "/comDetails"
+      });
+    },
+    gotoCar() {
+      this.$router.push({
+        path: "/shoppingCar"
+      });
+    },
+    gotoMine() {
+      this.$router.push({
+        path: "/mine"
+      });
+    },
+    gotoClose() {
+      this.$router.push({
+        path: "/closeAccount"
+      });
+    }
+  }
+};
+</script>
+
+<style scoped="scoped">
+#store {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.con-wrapper {
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 40px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  top: 40px;
+}
+/* 轮播图 */
+.mint-swipe {
+  width: 100%;
+  height: 4.4rem;
+}
+.mint-swipe img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mint-header {
+  position: relative;
+  background: #ef6213;
+}
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 0.8rem;
+  background: #ef6213;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.shop_cart {
+  width: 0.8rem;
+  height: 0.8rem;
+  padding: 0.2rem;
+}
+.swipe .search {
+  position: absolute;
+  top: 0.1rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 6rem;
+}
+.swipe input::-webkit-input-placeholder {
+  color: red;
+  text-align: center;
+}
+.swipe input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: red;
+  text-align: center;
+}
+.swipe input::-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: red;
+  text-align: center;
+}
+.swipe input::-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: red;
+  text-align: center;
+}
+.swipe .search input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+.swipe .search button i {
+  display: inline-block;
+  font-size: 0.28rem;
+  line-height: 0.6rem;
+}
+.swipe .search button:disabled {
+  background: transparent;
+  color: #ef6213;
+}
+
+.header img {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.header img:nth-child(2) {
+  width: 0.4rem;
+  height: 0.4rem;
+}
+
+.header img:nth-child(3),
+.header img:nth-child(4) {
+  width: 0.48rem;
+  height: 0.42rem;
+}
+
+.header img:nth-child(4) {
+  height: 0.44rem;
+}
+
+.header .search {
+  width: 66%;
+  position: relative;
+}
+
+.header .search input {
+  padding: 0;
+  margin: 0;
+  height: 0.52rem;
+  width: 100%;
+  border: none;
+  padding-left: 0.2rem;
+}
+
+.header .search img {
+  position: absolute;
+  top: 0.08rem;
+  right: 0.08rem;
+}
+
+.scroll_div {
+  width: 96%;
+  height: 2rem;
+  margin: 0 auto;
+  /* margin-top: 0.1rem; */
+}
+.content-con {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.content_list {
+  padding-top: 0.15rem;
+  width: 49%;
+  font-size: 0;
+}
+.content_list img {
+  width: 100%;
+  height: 3rem;
+  border-radius: 0.1rem 0.1rem 0 0;
+}
+.content_list .con-title {
+  padding: 0 0.22rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.content_list .con-title h3 {
+  /* width: calc(100% - 3rem); */
+  font-size: 0.28rem;
+  line-height: 0.48rem;
+  height: 0.48rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 超出部分显示省略号 */
+  white-space: nowrap; /*规定段落中的文本不进行换行 */
+}
+.content_list .con-title img {
+  width: 0.48rem;
+  height: 100%;
+}
+.content_list .con-title2 {
+  padding: 0 0.22rem;
+  margin-top: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.content_list .con-title2 h3 {
+  width: calc(100% - 0.36rem);
+  font-size: 0.24rem;
+  line-height: 0.36rem;
+  height: 0.36rem;
+  overflow: hidden;
+  font-weight: normal;
+  color: #ef6213;
+  text-overflow: ellipsis; /* 超出部分显示省略号 */
+  white-space: nowrap; /*规定段落中的文本不进行换行 */
+}
+.content_list .con-title2 img {
+  width: 0.36rem;
+  height: 0.36rem;
+}
+.button-style {
+  height: 40px;
+}
+.button-style >>> .mint-button-icon {
+  width: 35px;
+  text-align: center;
+}
+
+#store >>> .is-right {
+  font-size: 0;
+}
+#store >>> .mint-header-button > a > button:nth-child(1) > span {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+#store >>> .mint-header-button > a > button:nth-child(2) > span {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.button-style >>> .mintui {
+  display: inline-block !important;
+  font-size: 20px !important;
+  line-height: 35px !important;
+}
+.text-box {
+  border: 1px solid #ddd;
+  border-top: none;
+  padding: 0.2rem 0;
+  border-radius: 0 0 0.1rem 0.1rem;
+}
+/* 暂无数据 */
+#no-data {
+  width: 100%;
+  text-align: center;
+  padding-top: 1rem;
+  transition: all 0.2s;
+}
+#no-data > img {
+  width: 40%;
+  height: auto;
+}
+</style>

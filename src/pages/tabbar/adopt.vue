@@ -1,0 +1,434 @@
+<template>
+  <div id="adopt">
+    <mt-header fixed title="领养">
+      <span slot="right" @click="gotoRecored">记录</span>
+    </mt-header>
+    <div class="con-wrapper">
+      <tab :line-width="2" bar-active-color="#ef6213" active-color="#ef6213" :scroll-threshold="5">
+        <tab-item
+          @on-item-click="tabindex=0"
+          @click.native="onItemFun(0)"
+          :selected="tabindex==0"
+        >田园</tab-item>
+        <tab-item
+          @on-item-click="tabindex=1"
+          @click.native="onItemFun(1)"
+          :selected="tabindex==1"
+          id="tabtow"
+        >果园</tab-item>
+        <tab-item
+          @on-item-click="tabindex=2"
+          @click.native="onItemFun(2)"
+          :selected="tabindex==2"
+        >牧场</tab-item>
+      </tab>
+      <div class="tab-swiper vux-center">
+        <div class="fruit" v-show="data.length != 0">
+          <div class="fruit_list" v-for="(item,itemIndex) in data" :key="item.id">
+            <div class="fruit_img">
+              <img :src="item.head_img" alt />
+              <span>{{item.phase}}</span>
+            </div>
+            <div class="fruit_con">
+              <div class="fruit_title">
+                <h4>{{item.title}}</h4>
+                <div class="leixing">
+                  <span>类型</span>
+                  <select @change="selectChange(itemIndex,$event)">
+                    <option
+                      v-for="option in mold"
+                      :key="option.id"
+                      :value="option.id"
+                    >{{option.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <h5 v-if="item.type.id == 0">预计代售券{{item.bonus}}</h5>
+              <!-- <h5>预计年化分红{{item.bonus}}</h5> -->
+              <div class="mian">
+                <span>米宝/亩 {{item.price}}</span>
+                <span>{{item.surplus}}</span>
+              </div>
+              <div class="qixian">
+                <span>期限</span>
+                <span>{{item.term}}</span>
+                <mt-button type="primary" @click="gotoAdoptD(item)">确定</mt-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="not_open" v-show="data.length == 0">暂未开放</p>
+      </div>
+      <!-- <div v-show="tabindex==0" class="tab-swiper vux-center">
+        <div class="fruit" v-show="data1.length != 0">
+          <div class="fruit_list" v-for="(item,itemIndex) in data1" :key="item.id">
+            <div class="fruit_img">
+              <img :src="item.head_img" alt />
+              <span>{{item.phase}}</span>
+            </div>
+            <div class="fruit_con">
+              <div class="fruit_title">
+                <h4>{{item.title}}</h4>
+                <div class="leixing">
+                  <span>类型</span>
+                  <select @change="selectChange(itemIndex,$event)">
+                    <option v-for="option in mold" :key="option.id" :value="option.id">{{option.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <h5>预计年化分红{{item.bonus}}</h5>
+              <div class="mian">
+                <span>米宝/亩 {{item.price}}</span>
+                <span>{{item.surplus}}</span>
+              </div>
+              <div class="qixian">
+                <span>期限</span>
+                <span>{{item.term}}</span>
+                <mt-button type="primary" @click="gotoAdoptD(item)">确定</mt-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="not_open" v-show="data1.length == 0">暂未开放</p>
+      </div>
+      <div v-show="tabindex==1" class="tab-swiper vux-center">
+        <div class="fruit" v-show="data2.length != 0">
+          <div class="fruit_list" v-for="(item1,itemIndex) in data2" :key="itemIndex">
+            <div class="fruit_img">
+              <img :src="item1.head_img" />
+              <span>{{item1.phase}}</span>
+            </div>
+            <div class="fruit_con">
+              <div class="fruit_title">
+                <h4>{{item1.title}}</h4>
+                <div class="leixing">
+                  <span>类型</span>
+                  <select @change="selectChanget(itemIndex,$event)">
+                    <option v-for="option in mold" :key="option.id" :value="option.id">{{option.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <h5>预计年化分红{{item1.bonus}}</h5>
+              <div class="mian">
+                <span>米宝/棵 {{item1.price}}</span>
+                <span>{{item1.surplus}}</span>
+              </div>
+              <div class="qixian">
+                <span>期限</span>
+                <span>{{item1.term}}</span>
+                <mt-button type="primary" @click="gotoAdoptD(item1)">确定</mt-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="not_open" v-show="data2.length == 0">暂未开放</p>
+      </div>
+      <div v-show="tabindex==2" class="tab-swiper vux-center">
+        <div class="muchang" v-show="data3.length != 0">
+          <div class="fruit_list" v-for="(item1,itemIndex) in data3" :key="itemIndex">
+            <div class="fruit_img">
+              <img :src="item1.head_img" />
+              <span>{{item1.phase}}</span>
+            </div>
+            <div class="fruit_con">
+              <div class="fruit_title">
+                <h4>{{item1.title}}</h4>
+                <div class="leixing">
+                  <span>类型</span>
+                  <select @change="selectChanget(itemIndex,$event)">
+                    <option v-for="option in mold" :key="option.id" :value="option.id">{{option.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <h5>预计年化分红{{item1.bonus}}</h5>
+              <div class="mian">
+                <span>米宝/棵 {{item1.price}}</span>
+                <span>{{item1.surplus}}</span>
+              </div>
+              <div class="qixian">
+                <span>期限</span>
+                <span>{{item1.term}}</span>
+                <mt-button type="primary" @click="gotoAdoptD(item1)">确定</mt-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="not_open" v-show="data3.length == 0">暂未开放</p>
+      </div>-->
+    </div>
+  </div>
+</template>
+
+<script>
+import { Toast, Indicator } from "mint-ui";
+// import { PullRefresh } from "vant";
+import { Tab, TabItem } from "vux";
+// Vue.use(Vant);
+export default {
+  components: {
+    Tab,
+    TabItem,
+    Indicator
+  },
+  data() {
+    return {
+      selected: this.$route.query.tabindex,
+      tabindex: this.$route.query.tabindex,
+      scrollTop: 0,
+      onFetching: false,
+      // bottomCount: 20,
+      data: [],
+      data1: [],
+      data2: [],
+      data3: [],
+      type: "",
+      mold_id: 0,
+      mold: [
+        {
+          id: 0,
+          name: "委托代售"
+        },
+        {
+          id: 1,
+          name: "领养到家"
+        }
+      ]
+    };
+  },
+
+  created: function() {
+    this.getAdoptList(1);
+    this.getAdoptList(2);
+    this.getAdoptList(3);
+  },
+
+  mounted: function() {},
+  methods: {
+    back() {
+      this.$router.go(-1); //返回上一层
+    },
+    //类型 选择方式
+    selectChange(itemIndex, e) {
+      let that = this;
+      var moldIndex = Number(e.target.value);
+      that.data[itemIndex].type = that.mold[moldIndex];
+    },
+    onItemFun(index) {
+      this.tabindex = index;
+      if (index == 0) {
+        this.data = this.data1;
+      } else if (index == 1) {
+        this.data = this.data2;
+      } else if (index == 2) {
+        this.data = this.data3;
+      }
+    },
+    //前往领养详情页
+    gotoAdoptD(item) {
+      let that = this;
+      that.$router.push({
+        path: "/adoptDetail",
+        query: {
+          id: item.id,
+          name: item.type.name,
+          tabindex: that.tabindex
+        }
+      });
+    },
+    //前往记录页
+    gotoRecored() {
+      let that = this;
+      that.$router.push({
+        path: "/adoptRecord",
+        query: {
+          tabindex: that.tabindex
+        }
+      });
+    },
+    //获取田园列表
+    getAdoptList(type) {
+      let that = this;
+      Indicator.open({
+        text: "数据加载中..."
+      });
+      that
+        .$http({
+          url: "Adopt/index",
+          method: "post",
+          data: {
+            type: type
+          }
+        })
+        .then(function(res) {
+          Indicator.close();
+          if (res.data.code == 0) {
+            var list = [];
+            $.each(res.data.data, function(index, item) {
+              item["type"] = that.mold[0];
+              list.push(item);
+            });
+            if (type == 1) {
+              that.data1 = res.data.data;
+            } else if (type == 2) {
+              that.data2 = res.data.data;
+            } else if (type == 3) {
+              that.data3 = res.data.data;
+            }
+            if (that.$route.query.tabindex == 0) {
+              that.data = that.data1;
+            } else if (that.$route.query.tabindex == 1) {
+              that.data = that.data2;
+            } else if (that.$route.query.tabindex == 2) {
+              that.data = that.data3;
+            }
+          } else {
+            Toast(res.data.msg);
+          }
+        })
+        .catch(function(error) {});
+    }
+  }
+};
+</script>
+
+<style scoped="scoped">
+#adopt {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.con-wrapper {
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 90px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  top: 40px;
+}
+
+.mint-header {
+  background: #ef6213;
+}
+
+.fruit {
+  /* padding-top: 0.1rem; */
+  width: 90%;
+  margin: 0 auto;
+}
+
+.fruit_list {
+  display: flex;
+  margin: 0.1rem 0;
+  height: 1.8rem;
+  align-items: center;
+}
+
+.fruit_list .fruit_img {
+  width: 26%;
+  height: 90%;
+  position: relative;
+}
+
+.fruit_img span {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.5);
+  color: #ef6213;
+  font-size: 0.26rem;
+  padding: 4px 0;
+  text-align: center;
+}
+
+.fruit_list .fruit_img img {
+  width: 100%;
+  height: 100%;
+}
+
+.fruit_list .fruit_con {
+  margin-left: 0.2rem;
+  flex: 1;
+}
+
+.fruit_list .fruit_con .fruit_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fruit_list .fruit_con .fruit_title h4 {
+  font-size: 0.28rem;
+  color: #333;
+}
+
+.fruit_list .fruit_con .fruit_title span {
+  font-size: 0.24rem;
+}
+
+.fruit_list .fruit_con h5 {
+  font-weight: normal;
+  /* line-height: 0.6rem; */
+  margin: 3px 0;
+  color: #555;
+  font-size: 0.24rem;
+}
+
+.fruit_list .fruit_con .fruit_title select {
+  border-radius: 4px;
+  font-size: 0.22rem;
+  color: #555;
+  height: 0.42rem;
+  background: #fff;
+}
+
+.fruit_list .fruit_con .mian {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fruit_list .fruit_con .mian span {
+  font-size: 0.22rem;
+  color: #666;
+}
+
+.fruit_list .fruit_con .mian span:nth-child(2) {
+  padding-right: 2rem;
+  color: #ef6213;
+}
+
+.fruit_list .fruit_con .qixian {
+  /* margin-top: 2px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.fruit_list .fruit_con .qixian span {
+  font-size: 0.24rem;
+  color: #666;
+}
+
+.fruit_list .fruit_con .qixian span:nth-child(2) {
+  margin-right: 1rem;
+}
+
+.fruit_list .mint-button--normal {
+  /* height: 0.8rem; */
+  padding: 0 0.3rem;
+}
+
+.mint-button {
+  height: 0.44rem;
+  border-radius: 0.3rem;
+  font-size: 0.26rem;
+  background: #ef6213;
+}
+
+.not_open {
+  text-align: center;
+  margin-top: 1rem;
+  color: #666;
+}
+</style>
