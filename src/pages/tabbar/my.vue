@@ -136,7 +136,7 @@
               <img src="../../assets/img/more.png" />
             </div>
           </div>
-          <div id="MyGroup" class="balance">
+          <div id="myGroup" class="balance">
             <div class="ba_tit" @click="gotoGru">
               <h4>我的团队</h4>
               <img src="../../assets/img/more.png" />
@@ -340,7 +340,7 @@ export default {
     },
     gotoGru() {
       this.$router.push({
-        path: "/myGroup"
+        path: "/myGroup#myGroup"
       });
     },
     gotoReco() {

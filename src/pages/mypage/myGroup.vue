@@ -63,7 +63,10 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-1); //返回上一层
+      // this.$router.go(-1); //返回上一层
+      this.$router.push({
+        path: "/tabs/my#myGroup"
+      });
     },
     //获取我的团队列表
     getMyTeam() {
