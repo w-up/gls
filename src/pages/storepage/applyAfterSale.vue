@@ -82,7 +82,7 @@
 						url: "goods_order/afterSale",
 						method: "post",
 						data: {
-							token: sessionStorage.getItem("token"),
+							token: localStorage.getItem("token"),
 							id: that.id
 						}
 					})
@@ -119,7 +119,7 @@
 							url: "goods_order/afterSaleActive",
 							method: "post",
 							data: {
-								token: sessionStorage.getItem("token"),
+								token: localStorage.getItem("token"),
 								id: that.id,
 								reason: reason
 							}
@@ -156,7 +156,7 @@
 						url: "goods_order/revokeAfterSale",
 						method: "post",
 						data: {
-							token: sessionStorage.getItem("token"),
+							token: localStorage.getItem("token"),
 							id: that.id,
 						}
 					})

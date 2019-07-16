@@ -45,7 +45,7 @@
 						url: "Farm/seedDetails",
 						method: "post",
 						data: {
-							token: window.sessionStorage.getItem('token'),
+							token: localStorage.getItem("token"),
 							id:that.id							
 						}
 					})

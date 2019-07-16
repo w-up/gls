@@ -313,7 +313,7 @@ export default {
           url: "Trade/homePage",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -349,7 +349,7 @@ export default {
           url: "Trade/tradeList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             area_id: that.area_id,
             assets_type: type
           }
@@ -379,7 +379,7 @@ export default {
           url: "Trade/tradeConfig",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             area_id: that.area_id
           }
         })
@@ -416,7 +416,7 @@ export default {
           url: "Trade/orderList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             area_id: that.area_id,
             assets_type: type, // 米粒/谷粒
             type: typeo //  订单/挂单
@@ -446,7 +446,7 @@ export default {
           url: "Trade/cancelTrade",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })
@@ -488,7 +488,7 @@ export default {
             url: "Trade/tradeActive",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               type: type,
               area_id: that.area_id,
               number: that.number,

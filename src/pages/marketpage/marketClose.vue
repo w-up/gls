@@ -200,7 +200,7 @@ export default {
             url: "Goodspj/clear_shopping",
             method: "post",
             data: {
-              token: sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               data: shopArr
             }
           })
@@ -244,7 +244,7 @@ export default {
         if (invoice_type == 1) {
           // 不开发票
           jsonData = {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             address_id: address_id,
             data: comArr,
             invoice_type: 1,
@@ -255,7 +255,7 @@ export default {
           if (invoice_user == 1) {
             //个人
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               address_id: address_id,
               data: comArr,
               invoice_type: 2,
@@ -267,7 +267,7 @@ export default {
           } else if (invoice_user == 2) {
             //公司
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               address_id: address_id,
               data: comArr,
               invoice_type: 2,
@@ -283,7 +283,7 @@ export default {
           if (invoice_user == 1) {
             // 个人
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               address_id: address_id,
               data: comArr,
               invoice_type: 3,
@@ -295,7 +295,7 @@ export default {
           } else if (invoice_user == 2) {
             // 公司
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               address_id: address_id,
               data: comArr,
               invoice_type: 3,
@@ -312,7 +312,7 @@ export default {
         if (invoice_type == 1) {
           // 不开发票
           jsonData = {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             address_id: address_id,
             data: comArr,
             invoice_type: 1,
@@ -323,7 +323,7 @@ export default {
           if (invoice_user == 1) {
             //个人
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               address_id: address_id,
               data: comArr,
               invoice_type: 2,
@@ -335,7 +335,7 @@ export default {
           } else if (invoice_user == 2) {
             //公司
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               address_id: address_id,
               data: comArr,
               invoice_type: 2,
@@ -351,7 +351,7 @@ export default {
           if (invoice_user == 1) {
             // 个人
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               address_id: address_id,
               data: comArr,
               invoice_type: 3,
@@ -363,7 +363,7 @@ export default {
           } else if (invoice_user == 2) {
             // 公司
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               address_id: address_id,
               data: comArr,
               invoice_type: 3,
@@ -376,7 +376,6 @@ export default {
           }
         }
       }
-
       that.httpSubmit(jsonData);
     },
     // 提交 请求

@@ -120,7 +120,7 @@ export default {
       if (that.isMe) {
         that.$http
           .post("Active/drawLottery", {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           })
           .then(function(res) {
             if (res.data.code == 0) {
@@ -138,7 +138,7 @@ export default {
       } else {
         that.$http
           .post("Active/invitationLottery", {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.friendsId
           })
           .then(function(res) {
@@ -166,7 +166,7 @@ export default {
         //是自己
         that.$http
           .post("Active/moneyTree", {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           })
           .then(function(res) {
             if (res.data.code == 0) {
@@ -183,7 +183,7 @@ export default {
           });
         that.$http
           .post("Active/invitationUser", {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           })
           .then(function(res) {
             if (res.data.code == 0) {
@@ -193,7 +193,7 @@ export default {
       } else {
         that.$http
           .post("Active/invitationWeb", {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.friendsId
           })
           .then(function(res) {
@@ -251,16 +251,6 @@ export default {
         position: "center",
         duration: 3000
       });
-      // that.$http
-      //   .post("Active/invitationUser", {
-      //     token: sessionStorage.getItem("token")
-      //   })
-      //   .then(function(res) {
-      //     if (res.data.code == 0) {
-      //       that.inviteLink = res.data.data;
-
-      //     }
-      //   });
     },
     //关闭弹窗
     close_toast() {

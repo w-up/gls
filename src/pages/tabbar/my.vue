@@ -216,7 +216,7 @@ export default {
           url: "Personal/index",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -250,7 +250,7 @@ export default {
           url: "Personal/userMili",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.area_id
           }
         })

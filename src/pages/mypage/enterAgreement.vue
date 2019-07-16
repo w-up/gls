@@ -43,7 +43,7 @@ export default {
           url: "Ckshop/registerAgreement",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

@@ -100,7 +100,7 @@
 						url: "goods_orderpj/evaluateGoods",
 						method: "post",
 						data: {
-							token: sessionStorage.getItem("token"),
+							token: localStorage.getItem("token"),
 							id: that.id
 						}
 					})
@@ -133,7 +133,7 @@
 				reader.onload = function(arg) {
 					var formData = new FormData();
 					formData.append('file', file.file);
-					formData.append("token", sessionStorage.getItem("token"));
+					formData.append("token", localStorage.getItem("token"));
 					$.ajax({
 						url: 'http://glsapi.jinjifuweng.com//api/goods_order/upload/',
 						type: 'POST',
@@ -179,7 +179,7 @@
 						url: "goods_orderpj/evaluateGoodsActive",
 						method: "post",
 						data: {
-							token: sessionStorage.getItem("token"),
+							token: localStorage.getItem("token"),
 							id: that.id,
 							score: that.score,
 							text: that.text,

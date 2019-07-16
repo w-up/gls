@@ -145,7 +145,7 @@ export default {
           url: "Goods/goods_shopping",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -189,7 +189,7 @@ export default {
           url: "Goods/del_shopping",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })

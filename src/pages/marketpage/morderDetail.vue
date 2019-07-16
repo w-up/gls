@@ -81,7 +81,7 @@
 						url: "goods_orderpj/orderDetail",
 						method: "post",
 						data: {
-							token: sessionStorage.getItem("token"),
+							token: localStorage.getItem("token"),
 							id: that.id					
 						}
 					})

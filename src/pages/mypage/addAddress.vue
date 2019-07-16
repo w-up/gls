@@ -132,7 +132,7 @@ export default {
         });
         that.$http
           .post("Goods/save_address", {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             name: name,
             phone: phone,
             sex: that.sex,
@@ -173,7 +173,7 @@ export default {
           url: "Goods/setting_address",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })

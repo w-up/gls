@@ -93,7 +93,7 @@ export default {
             url: "Personal/editPwd",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               old_password: that.old_password,
               password: that.password,
               repassword: that.repassword,

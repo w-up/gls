@@ -146,8 +146,8 @@ export default {
       if (this.prizeIndex > 7) {
         this.prizeIndex = 7;
       }
-      console.log("恭喜" + this.prizeIndex);
-      console.log(this.hasPrize);
+      // console.log("恭喜" + this.prizeIndex);
+      // console.log(this.hasPrize);
       return this.hasPrize
         ? "恭喜您，获得" + " " + this.prize_list[this.prizeIndex].name
         : "未中奖";
@@ -209,7 +209,7 @@ export default {
         } else if (this.times === this.cycle) {
           // 获得中奖位置
           this.prize = this.prizeIndex;
-          console.log(this.prizeIndex);
+          // console.log(this.prizeIndex);
           if (this.prize > 7) {
             this.prize = 7;
           }
@@ -244,7 +244,7 @@ export default {
       let that = this;
       that.$http
         .post("Active/luckdraw", {
-          token: sessionStorage.getItem("token")
+          token: localStorage.getItem("token")
         })
         .then(function(res) {
           if (res.data.code == 0) {
@@ -269,7 +269,7 @@ export default {
       let that = this;
       that.$http
         .post("Active/luckdrawAction", {
-          token: sessionStorage.getItem("token")
+          token: localStorage.getItem("token")
         })
         .then(function(res) {
           if (res.data.code == 0) {

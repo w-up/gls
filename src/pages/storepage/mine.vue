@@ -18,7 +18,7 @@
               <img v-if="mineInfo.upgrade==1" src="../../assets/img/jinpai.png" />
               <span v-if="mineInfo.upgrade==0">普通代言人</span>
               <span v-if="mineInfo.upgrade==1">金牌代言人</span>
-            </div> -->
+            </div>-->
             <span>商家推广码：{{mineInfo.invitation_code}}</span>
           </div>
           <div class="my-btn">
@@ -132,7 +132,7 @@ export default {
           url: "Ckshop/myMsg",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

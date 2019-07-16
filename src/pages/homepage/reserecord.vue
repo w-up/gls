@@ -23,7 +23,7 @@
 			    >
 			<div class="record_content">
 				<div class="yipin">
-					<div class="record_list" v-for="(recorditem,index) in recordList" :key="recorditem.id">
+					<div class="record_list" v-for="(recorditem,index) in recordList" :key="index">
 						<div class="record_img">
 							<img :src="recorditem.img" />
 						</div>
@@ -123,7 +123,7 @@
 						url: "Subscribe/subscribeLog",
 						method: "post",
 						data: {
-							token: sessionStorage.getItem("token"),
+							token: localStorage.getItem("token"),
 							 p: that.pageindex
 						}
 					})

@@ -126,7 +126,7 @@ export default {
           url: "card_bag/gulianDetails",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -165,7 +165,7 @@ export default {
             url: "card_bag/gulianGive",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               phone: that.phone,
               money: that.money
             }

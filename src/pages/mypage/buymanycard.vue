@@ -101,7 +101,7 @@ export default {
           url: "hong_bao/multipleList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -139,7 +139,7 @@ export default {
             url: "hong_bao/multipleBuy",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               id: that.id,
               number: that.number,
               payment_password: that.payment_password

@@ -65,7 +65,7 @@ export default {
           url: "farm_friend/applyList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -91,7 +91,7 @@ export default {
           url: "farm_friend/applyActive",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id,
             type: 1
           }
@@ -122,7 +122,7 @@ export default {
           url: "farm_friend/applyActive",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id,
             type: 2
           }

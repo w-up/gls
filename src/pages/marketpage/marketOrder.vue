@@ -343,7 +343,7 @@ export default {
           url: "goods_orderpj/index",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             status: that.status,
             p: that.pageindex
           }
@@ -385,7 +385,7 @@ export default {
           url: "goods_orderpj/paymentOrder",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.current_id,
             payment_password: that.payment_password
           }
@@ -418,7 +418,7 @@ export default {
           url: "goods_orderpj/remindShipment",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })
@@ -446,7 +446,7 @@ export default {
           url: "goods_orderpj/receivingGoods",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })
@@ -474,7 +474,7 @@ export default {
           url: "goods_orderpj/cancelOrder",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })

@@ -67,14 +67,14 @@ export default {
       if (that.checked == false) {
         //不使用多倍卡
         jsonData = {
-          token: window.sessionStorage.getItem("token"),
+          token: localStorage.getItem("token"),
           id: that.id,
           type: 0
         };
       } else if (that.checked == true) {
         //使用多倍卡
         jsonData = {
-          token: window.sessionStorage.getItem("token"),
+          token: localStorage.getItem("token"),
           id: that.id,
           type: 1
         };
@@ -121,7 +121,7 @@ export default {
           url: "hong_bao/multiplePage",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

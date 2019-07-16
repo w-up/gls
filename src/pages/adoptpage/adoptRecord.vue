@@ -93,7 +93,7 @@ export default {
           url: "Adopt/recordList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             type: 1
           }
         })
@@ -114,7 +114,7 @@ export default {
           url: "Adopt/recordList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             type: 2
           }
         })

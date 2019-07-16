@@ -60,7 +60,7 @@ export default {
           url: "Personal/invitationLog",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             p: that.pageIndex
           }
         })

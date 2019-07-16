@@ -251,7 +251,7 @@ export default {
           url: "Goodspj/addShopping",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             goods_id: id,
             number: 1
           }

@@ -64,7 +64,7 @@
 						url: "Personal/userMsg",
 						method: "post",
 						data: {
-							token: window.sessionStorage.getItem('token'),
+							token: localStorage.getItem('token'),
 						}
 					})
 					.then(function(res) {
@@ -105,7 +105,7 @@
 							url: "Personal/identityActive",
 							method: "post",
 							data: {
-								token: window.sessionStorage.getItem('token'),
+								token: localStorage.getItem('token'),
 								real_name: that.real_name,
 								identity: that.identity
 							}

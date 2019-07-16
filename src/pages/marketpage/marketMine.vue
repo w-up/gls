@@ -82,7 +82,7 @@
 						url: "Pjshop/myMsg",
 						method: "post",
 						data: {
-							token: sessionStorage.getItem('token')
+							token: localStorage.getItem('token')
 						}
 					})
 					.then(function(res) {

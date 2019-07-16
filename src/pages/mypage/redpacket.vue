@@ -98,7 +98,7 @@ export default {
           url: "hong_bao/haveHongbao",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             type: that.type
           }
         })

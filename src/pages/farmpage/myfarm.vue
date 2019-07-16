@@ -219,7 +219,7 @@ export default {
           url: "my_farm/machineList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -246,7 +246,7 @@ export default {
           url: "my_farm/reclAgreement",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -273,7 +273,7 @@ export default {
           url: "my_farm/reclamation",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.activeId
           }
         })
@@ -306,7 +306,7 @@ export default {
             url: "my_farm/oiling",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               id: that.activeId,
               total: total
             }
@@ -341,7 +341,7 @@ export default {
           url: "my_farm/landList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -372,7 +372,7 @@ export default {
           url: "my_farm/seedList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -404,7 +404,7 @@ export default {
           url: "my_farm/fertilizerList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

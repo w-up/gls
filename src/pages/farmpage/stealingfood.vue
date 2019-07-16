@@ -8,7 +8,7 @@
 		<div class="con-wrapper">
 			<div class="stealing_content">
 				<div class="stealing_info">
-					<div v-for="item in data" class="stealing_list">
+					<div v-for="item in data" class="stealing_list" :key="item.id">
 						<div class="stealing_left">
 							<img src="../../assets/img/farm.png" />
 						</div>

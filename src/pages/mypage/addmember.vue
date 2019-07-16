@@ -77,7 +77,7 @@ export default {
           url: "card_bag/applyCard",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -114,7 +114,7 @@ export default {
             url: "card_bag/applyCardActive",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               type: that.type,
               payment_password: that.payment_password
             }

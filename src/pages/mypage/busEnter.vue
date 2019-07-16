@@ -169,7 +169,7 @@ export default {
         });
         that.$http
           .post("Ckshop/userReg", {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             legal_person: legal_person,
             legal_identity: legal_identity,
             bank_card: bank_card,

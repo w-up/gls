@@ -110,7 +110,7 @@ export default {
             url: "Personal/editAccount",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               account: that.account,
               code: that.code
             }

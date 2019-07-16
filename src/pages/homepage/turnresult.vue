@@ -41,7 +41,7 @@ export default {
       if (that.result == 0) { // 大转盘结果
         that.$http
         .post("Active/turntableRecord", {
-          token: sessionStorage.getItem("token")
+          token: localStorage.getItem("token")
         })
         .then(function(res) {
           if (res.data.code == 0) {
@@ -57,7 +57,7 @@ export default {
       } else if (that.result == 1) { // 摇钱树
         that.$http
         .post("Active/treeLog", {
-          token: sessionStorage.getItem("token")
+          token: localStorage.getItem("token")
         })
         .then(function(res) {
           if (res.data.code == 0) {
@@ -73,7 +73,7 @@ export default {
       } else if (that.result == 2) { // 抽奖
         that.$http
         .post("Active/luckdrawRecord", {
-          token: sessionStorage.getItem("token")
+          token: localStorage.getItem("token")
         })
         .then(function(res) {
           if (res.data.code == 0) {

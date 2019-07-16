@@ -97,7 +97,7 @@ export default {
           url: "farm_friend/index",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

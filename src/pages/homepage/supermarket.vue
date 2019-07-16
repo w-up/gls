@@ -84,7 +84,7 @@ export default {
           url: "Pjshop/index",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

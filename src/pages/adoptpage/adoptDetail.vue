@@ -200,7 +200,7 @@ export default {
           if (invoice_type == 1) {
             // 不开发票
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               id: that.id,
               number: number,
               invoice_type: 1,
@@ -212,7 +212,7 @@ export default {
             if (invoice_user == 1) {
               //个人
               jsonData = {
-                token: window.sessionStorage.getItem("token"),
+                token: localStorage.getItem("token"),
                 id: that.id,
                 number: number,
                 invoice_type: 2,
@@ -225,7 +225,7 @@ export default {
             } else {
               //公司
               jsonData = {
-                token: window.sessionStorage.getItem("token"),
+                token: localStorage.getItem("token"),
                 id: that.id,
                 number: number,
                 invoice_type: 2,
@@ -242,7 +242,7 @@ export default {
             if (invoice_user == 1) {
               // 个人
               jsonData = {
-                token: window.sessionStorage.getItem("token"),
+                token: localStorage.getItem("token"),
                 id: that.id,
                 number: number,
                 invoice_type: 3,
@@ -255,7 +255,7 @@ export default {
             } else {
               // 公司
               jsonData = {
-                token: window.sessionStorage.getItem("token"),
+                token: localStorage.getItem("token"),
                 id: that.id,
                 number: number,
                 invoice_type: 3,
@@ -272,7 +272,7 @@ export default {
           //领养到家
           if (invoice_type == 1) {
             jsonData = {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               id: that.id,
               number: number,
               invoice_type: 1,
@@ -283,7 +283,7 @@ export default {
           } else if (invoice_type == 2) {
             if (invoice_user == 1) {
               jsonData = {
-                token: window.sessionStorage.getItem("token"),
+                token: localStorage.getItem("token"),
                 id: that.id,
                 number: number,
                 invoice_type: 2,
@@ -296,7 +296,7 @@ export default {
               };
             } else {
               jsonData = {
-                token: window.sessionStorage.getItem("token"),
+                token: localStorage.getItem("token"),
                 id: that.id,
                 number: number,
                 invoice_type: 2,
@@ -314,7 +314,7 @@ export default {
             if (invoice_user == 1) {
               // 个人
               jsonData = {
-                token: window.sessionStorage.getItem("token"),
+                token: localStorage.getItem("token"),
                 id: that.id,
                 number: number,
                 invoice_type: 3,
@@ -328,7 +328,7 @@ export default {
             } else {
               // 公司
               jsonData = {
-                token: window.sessionStorage.getItem("token"),
+                token: localStorage.getItem("token"),
                 id: that.id,
                 number: number,
                 invoice_type: 3,
@@ -469,7 +469,7 @@ export default {
           url: "Adopt/adoptDetails",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.id
           }
         })

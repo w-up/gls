@@ -98,7 +98,7 @@ export default {
           url: "Personal/userMsg",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -121,7 +121,7 @@ export default {
     //退出登录
     logout() {
       let that = this;
-      sessionStorage.setItem("token", ""); //清除token
+      localStorage.setItem("token", ""); //清除token
       sessionStorage.setItem("clickExit", true);
       that.$router.push({
         path: "/login"

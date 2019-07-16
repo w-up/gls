@@ -204,7 +204,7 @@ export default {
       that.confirmGame = false;
       that.$http
         .post("Active/turntableAction", {
-          token: sessionStorage.getItem("token")
+          token: localStorage.getItem("token")
         })
         .then(function(res) {
           if (res.data.code == 0) {
@@ -225,7 +225,7 @@ export default {
       let that = this;
       that.$http
         .post("Active/turntable", {
-          token: sessionStorage.getItem("token")
+          token: localStorage.getItem("token")
         })
         .then(function(res) {
           if (res.data.code == 0) {

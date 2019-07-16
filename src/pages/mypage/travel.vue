@@ -128,7 +128,7 @@ export default {
           url: "Tourism/tourismApplyList",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             status: that.status
           }
         })

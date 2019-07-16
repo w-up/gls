@@ -183,7 +183,7 @@ export default {
           url: "farm_manage/machineLog",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -213,7 +213,7 @@ export default {
           url: "farm_manage/landLog",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -244,7 +244,7 @@ export default {
           url: "farm_manage/seedLog",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -275,7 +275,7 @@ export default {
           url: "farm_manage/fertilizerLog",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -306,7 +306,7 @@ export default {
           url: "farm_manage/wateringLog",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -337,7 +337,7 @@ export default {
           url: "farm_manage/pickLog",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

@@ -54,7 +54,7 @@ export default {
           url: "Ckshop/rebateRecord",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

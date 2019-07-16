@@ -68,7 +68,7 @@
 						url: "Adopt/adoptMy",
 						method: "post",
 						data: {
-							token: window.sessionStorage.getItem('token'),
+							token: localStorage.getItem('token'),
 							type: 2
 						}
 					})

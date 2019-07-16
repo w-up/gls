@@ -265,7 +265,7 @@ export default {
             url: "Subscribe/underShopActive",
             method: "post",
             data: {
-              token: sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               code: that.code,
               money: that.money,
               payment_password: that.payment_password

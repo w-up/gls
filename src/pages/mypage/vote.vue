@@ -84,7 +84,7 @@ export default {
           url: "adopt_randing/randingPage",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -120,7 +120,7 @@ export default {
           url: "adopt_randing/voteActive",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })

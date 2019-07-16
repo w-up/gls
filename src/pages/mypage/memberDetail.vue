@@ -95,7 +95,7 @@ export default {
           url: "card_bag/memberDetails",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

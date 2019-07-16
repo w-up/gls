@@ -77,7 +77,7 @@ export default {
           url: "goods_order/orderDetail",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.id
           }
         })

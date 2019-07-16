@@ -10,7 +10,7 @@
 			
 			<div class="yipin_se">
 				<select class="selectpicker" v-model="area_id" @change="selectChange($event)">
-					<option v-for="(areaitem, index) in areaList" :value="areaitem.id">{{areaitem.name}}</option>
+					<option v-for="(areaitem, index) in areaList" :key="index" :value="areaitem.id">{{areaitem.name}}</option>
 				</select>
 				<div class="search">
 					<input type="search" v-model="name" name="" placeholder="请输入名称进行搜索" />
@@ -34,7 +34,7 @@
 			    >
 			<div class="yi_content">
 				<div class="yipin">
-					<div class="yipin_list" v-for="(subitem,index) in subscribe" :key="subitem.id">
+					<div class="yipin_list" v-for="(subitem,index) in subscribe" :key="index">
 						<div class="yipin_img">
 							<img :src="subitem.img" />
 						</div>

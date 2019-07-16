@@ -95,7 +95,7 @@
 						url: "Personal/exchangeLog",
 						method: "post",
 						data: {
-							token: window.sessionStorage.getItem('token'),
+							token: localStorage.getItem('token'),
 							p: that.pageindex
 						}
 					})

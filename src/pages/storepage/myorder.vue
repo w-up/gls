@@ -342,7 +342,7 @@ export default {
           url: "goods_order/index",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             status: that.status,
             p: that.pageindex
           }
@@ -388,7 +388,7 @@ export default {
             url: "goods_order/paymentOrder",
             method: "post",
             data: {
-              token: sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               id: that.current_id,
               payment_password: that.payment_password
             }
@@ -422,7 +422,7 @@ export default {
           url: "goods_order/remindShipment",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })
@@ -450,7 +450,7 @@ export default {
           url: "goods_order/receivingGoods",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })
@@ -478,7 +478,7 @@ export default {
           url: "goods_order/cancelOrder",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })

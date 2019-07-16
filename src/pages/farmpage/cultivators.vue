@@ -99,7 +99,7 @@ export default {
           url: "Farm/machineList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -130,7 +130,7 @@ export default {
             url: "Farm/machineBuy",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               id: that.activeId,
               payment_password: payment_password
             }

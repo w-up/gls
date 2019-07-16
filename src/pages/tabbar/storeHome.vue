@@ -112,7 +112,7 @@ export default {
           url: "Ckshop/index",
           method: "post",
 					 data: {
-					  token: sessionStorage.getItem("token")
+					  token: localStorage.getItem("token")
 					}
         })
         .then(function(res) {

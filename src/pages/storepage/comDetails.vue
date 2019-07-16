@@ -331,7 +331,7 @@ export default {
           url: "Goods/addShopping",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             goods_id: that.shopId,
             number: that.num
           }

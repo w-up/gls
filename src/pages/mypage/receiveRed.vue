@@ -61,7 +61,7 @@ export default {
           url: "hong_bao/hongbaoPage",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -125,16 +125,6 @@ export default {
         position: "center",
         duration: 3000
       });
-      // that.$http
-      //   .post("Active/invitationUser", {
-      //     token: sessionStorage.getItem("token")
-      //   })
-      //   .then(function(res) {
-      //     if (res.data.code == 0) {
-      //       that.inviteLink = res.data.data;
-
-      //     }
-      //   });
     }
   }
 };

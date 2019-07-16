@@ -63,7 +63,7 @@ export default {
             url: "Personal/addPwd",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               payment_password: that.payment_password,
               repayment_password: that.repayment_password
             }

@@ -239,7 +239,7 @@ export default {
           url: "Personal/userMili",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.area_id
           }
         })
@@ -268,7 +268,7 @@ export default {
           url: "Personal/convertible",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.area_id,
             type: that.type
           }
@@ -298,7 +298,7 @@ export default {
           url: "Personal/rechargePage",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -334,7 +334,7 @@ export default {
             url: "Personal/exchangeActive",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               type: that.type,
               id: that.area_id,
               money: that.money,

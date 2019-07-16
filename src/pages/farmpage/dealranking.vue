@@ -76,7 +76,7 @@ export default {
           url: "Trade/tradeRanking",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.area_id
           }
         })

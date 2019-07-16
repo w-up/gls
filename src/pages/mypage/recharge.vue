@@ -118,7 +118,7 @@ export default {
           url: "Personal/rechargePage",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -154,7 +154,7 @@ export default {
             url: "Personal/rechargeActive",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               type: that.type,
               money: that.money,
               payment_password: that.payment_password

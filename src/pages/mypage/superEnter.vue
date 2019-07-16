@@ -98,7 +98,7 @@ export default {
             url: "Pjshop/userReg",
             method: "post",
             data: {
-              token: sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               manufacturing_license: that.manufacturing_license,
               business_license: that.business_license,
               circulation_license: that.circulation_license
@@ -133,7 +133,7 @@ export default {
       reader.onload = function(arg) {
         var formData = new FormData();
         formData.append("file", file.file);
-        formData.append("token", sessionStorage.getItem("token"));
+        formData.append("token", localStorage.getItem("token"));
         $.ajax({
           url: "http://glsapi.jinjifuweng.com//api/goods_order/upload/",
           type: "POST",
@@ -163,7 +163,7 @@ export default {
       reader.onload = function(arg) {
         var formData = new FormData();
         formData.append("file", file.file);
-        formData.append("token", sessionStorage.getItem("token"));
+        formData.append("token", localStorage.getItem("token"));
         $.ajax({
           url: "http://glsserver.qilinpz.com/api/goods_order/upload/",
           type: "POST",
@@ -193,7 +193,7 @@ export default {
       reader.onload = function(arg) {
         var formData = new FormData();
         formData.append("file", file.file);
-        formData.append("token", sessionStorage.getItem("token"));
+        formData.append("token", localStorage.getItem("token"));
         $.ajax({
           url: "http://glsserver.qilinpz.com/api/goods_order/upload/",
           type: "POST",

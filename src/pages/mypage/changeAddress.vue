@@ -109,7 +109,7 @@ export default {
           url: "Goods/addressDetails",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.id
           }
         })
@@ -156,7 +156,7 @@ export default {
         });
         that.$http
           .post("Goods/save_address", {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.id,
             name: name,
             phone: phone,

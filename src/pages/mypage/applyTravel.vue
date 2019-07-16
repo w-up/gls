@@ -103,7 +103,7 @@ export default {
           url: "Tourism/tourismList",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -148,7 +148,7 @@ export default {
           Toast("请输入交易密码");
         } else {
           jsonData = {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.id,
             payment_password: that.payment_password
           };
@@ -157,7 +157,7 @@ export default {
       } else if (status == 1) {
         //满足免费条件
         jsonData = {
-          token: sessionStorage.getItem("token"),
+          token: localStorage.getItem("token"),
           id: id
         };
         that.httpSubmit(jsonData);

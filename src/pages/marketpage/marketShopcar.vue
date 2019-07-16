@@ -155,7 +155,7 @@ export default {
           url: "Goodspj/goods_shopping",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -199,7 +199,7 @@ export default {
           url: "Goodspj/del_shopping",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })

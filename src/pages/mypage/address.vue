@@ -84,7 +84,7 @@ export default {
           url: "Goods/my_address",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -118,7 +118,7 @@ export default {
           url: "Goods/del_address",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })
@@ -156,7 +156,7 @@ export default {
           url: "Goods/setting_address",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })

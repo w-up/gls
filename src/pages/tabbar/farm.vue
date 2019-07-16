@@ -176,7 +176,7 @@ export default {
           url: "Farm/index",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -204,7 +204,7 @@ export default {
           url: "Farm/friendApply",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -232,7 +232,7 @@ export default {
           url: "Farm/landList",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             type: type
           }
         })
@@ -262,7 +262,7 @@ export default {
           url: "farm_user/seedDetails",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })
@@ -292,7 +292,7 @@ export default {
           url: "farm_user/fertilizer",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.activeId
           }
         })
@@ -321,7 +321,7 @@ export default {
           url: "farm_user/watering",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: that.activeId
           }
         })
@@ -350,7 +350,7 @@ export default {
           url: "farm_user/harvest",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })
@@ -383,7 +383,7 @@ export default {
             url: "my_farm/seedActive",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               id: that.seedId
             }
           })

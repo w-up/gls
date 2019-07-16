@@ -148,14 +148,13 @@ export default {
           url: "card_bag/adoptCard",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
           if (res.data.code == 0) {
             //成功回调
             that.allAdopt = res.data.data.adopt; // 存全部卡
-            console.log(that.allAdopt);
             for (let i = 0; i < res.data.data.adopt.length; i++) {
               if (i < 3) {
                 that.adopt.push(res.data.data.adopt[i]); // 存进来时展示的

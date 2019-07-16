@@ -67,7 +67,7 @@ export default {
             url: "farm_friend/select_user",
             method: "post",
             data: {
-              token: window.sessionStorage.getItem("token"),
+              token: localStorage.getItem("token"),
               phone: phone
             }
           })
@@ -102,7 +102,7 @@ export default {
           url: "farm_friend/addFriend",
           method: "post",
           data: {
-            token: window.sessionStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             id: id
           }
         })

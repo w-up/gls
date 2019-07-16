@@ -79,7 +79,7 @@ export default {
           url: "Personal/myTeam",
           method: "post",
           data: {
-            token: sessionStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {

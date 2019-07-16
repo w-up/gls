@@ -84,8 +84,8 @@ export default {
             let msg = res.data.msg;
             let data = res.data.data;
             if (code == 0) {
-              window.sessionStorage.setItem("token", data);
-              window.sessionStorage.setItem("account", account);
+              localStorage.setItem("token", data);
+              localStorage.setItem("account", account);
               if (sessionStorage.getItem("clickExit") == "true") {
                 that.$router.push({
                   path: "/"
