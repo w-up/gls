@@ -142,7 +142,7 @@ export default {
       mili: "", //用户区域米粒资产
       convert: "", //用户可兑换
       money: "", //兑换金额
-      payment_password: "", //交易密码
+      payment_password: sessionStorage.getItem("tran_pass"), //交易密码
       options: [
         {
           //兑换类型
@@ -345,6 +345,7 @@ export default {
             if (res.data.code == 0) {
               //成功回调
               Toast(res.data.msg);
+              sessionStorage.setItem("tran_pass", that.payment_password);
               that.$router.go(-1);
             } else {
               //失败

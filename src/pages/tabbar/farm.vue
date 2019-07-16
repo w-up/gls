@@ -471,7 +471,7 @@ export default {
 }
 
 .fa_title {
-  width: 3.2rem;
+  /* width: 3.2rem; */
   height: 1.2rem;
   border-radius: 1rem;
   background: rgba(0, 0, 0, 0.4);
@@ -488,14 +488,10 @@ export default {
   align-items: center;
 }
 
-.fa_title .address span:nth-child(2) {
+.fa_title .address span:nth-child(2), .fa_title .guli span:nth-child(2) {
   background: #ef6213;
   padding: 1px 6px;
   border-radius: 0.1rem;
-}
-
-.fa_title .guli span:nth-child(2) {
-  color: #ef6213;
 }
 
 .fa_left {

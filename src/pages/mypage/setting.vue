@@ -121,7 +121,8 @@ export default {
     //退出登录
     logout() {
       let that = this;
-      window.sessionStorage.setItem("token", ""); //清除token
+      sessionStorage.setItem("token", ""); //清除token
+      sessionStorage.setItem("clickExit", true);
       that.$router.push({
         path: "/login"
       });

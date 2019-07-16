@@ -54,7 +54,7 @@ export default {
       cadindex: this.$route.query.cadindex, //默认会员卡
       selected: 0,
       card: [], //办卡页面信息
-      payment_password: "", //交易密码
+      payment_password: sessionStorage.getItem("tran_pass"), //交易密码
       type: "" //办卡类型
     };
   },
@@ -123,7 +123,7 @@ export default {
             if (res.data.code == 0) {
               //成功回调
               Toast(res.data.msg);
-              that.payment_password = "";
+              sessionStorage.setItem("tran_pass", that.payment_password);
             } else {
               //失败
               Toast(res.data.msg);

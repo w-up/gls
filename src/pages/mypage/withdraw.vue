@@ -50,7 +50,7 @@ export default {
       rechargeList: [], //我的资产
       money: "", //提现金额
       type: 1, //提现类型
-      payment_password: "", //交易密码
+      payment_password: sessionStorage.getItem("tran_pass"), //交易密码
       options: [
         {
           //提现类型
@@ -137,11 +137,12 @@ export default {
           .then(function(res) {
             if (res.data.code == 0) {
               //成功回调
-							if(that.type == 1){
-								Toast("提交成功，请等待审核");
-							}else{
-								 Toast(res.data.msg);
-								}            
+              if (that.type == 1) {
+                Toast("提交成功，请等待审核");
+              } else {
+                Toast(res.data.msg);
+              }
+              sessionStorage.setItem("tran_pass", that.payment_password);
               that.$router.go(-1);
             } else {
               //失败
@@ -185,10 +186,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: 0.8rem;
 }
 
 .with_con {

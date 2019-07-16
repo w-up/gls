@@ -55,9 +55,9 @@
                       <span v-if="orderitem.evaluate_status ==1">已评价</span>
                       <span v-if="orderitem.status== 0">已取消</span>
                     </div>
-                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <h5>售价: {{orderitem.price}} 元+会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量{{orderitem.number}}</span>
+                      <span>数量: {{orderitem.number}}</span>
                       <span v-if="orderitem.status== 1" @click="showDialog(orderitem.id)">立即付款</span>
                       <span v-if="orderitem.status== 2" @click="RemindDelivery(orderitem.id)">提醒发货</span>
                       <span v-if="orderitem.status== 3" @click="Receipt(orderitem.id)">确认收货</span>
@@ -82,9 +82,9 @@
                       <h4>{{orderitem.name}}</h4>
                       <span @click="cancelOrder(orderitem.id)">取消订单</span>
                     </div>
-                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <h5>售价: {{orderitem.price}} 元+会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量{{orderitem.number}}</span>
+                      <span>数量: {{orderitem.number}}</span>
                       <span @click="showDialog(orderitem.id)">立即付款</span>
                     </div>
                   </div>
@@ -105,9 +105,9 @@
                     <div class="fruit_title">
                       <h4>{{orderitem.name}}</h4>
                     </div>
-                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <h5>售价: {{orderitem.price}} 元+会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量{{orderitem.number}}</span>
+                      <span>数量: {{orderitem.number}}</span>
                       <span @click="RemindDelivery(orderitem.id)">提醒发货</span>
                     </div>
                   </div>
@@ -129,9 +129,9 @@
                       <h4>{{orderitem.name}}</h4>
                       <span v-if="orderitem.refund_status== 0" @click="gotoAfter(orderitem.id)">申请售后</span>
                     </div>
-                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <h5>售价: {{orderitem.price}} 元+会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量{{orderitem.number}}</span>
+                      <span>数量: {{orderitem.number}}</span>
                       <span @click="Receipt(orderitem.id)">确认收货</span>
                     </div>
                   </div>
@@ -154,9 +154,9 @@
                       <span v-if="orderitem.evaluate_status ==0" @click="gotoEval(orderitem.id)">去评价</span>
                       <span v-if="orderitem.evaluate_status ==1">已评价</span>
                     </div>
-                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <h5>售价: {{orderitem.price}} 元+会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量{{orderitem.number}}</span>
+                      <span>数量: {{orderitem.number}}</span>
                       <span>已完成</span>
                     </div>
                   </div>
@@ -183,9 +183,9 @@
                       <h4>{{orderitem.name}}</h4>
                       <span v-if="orderitem.status==0">已取消</span>
                     </div>
-                    <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
+                    <h5>售价: {{orderitem.price}} 元+会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量{{orderitem.number}}</span>
+                      <span>数量: {{orderitem.number}}</span>
                     </div>
                   </div>
                 </div>

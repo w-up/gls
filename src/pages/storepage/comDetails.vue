@@ -104,17 +104,22 @@
               >
                 <div class="comment comd_con">
                   <div class="box2">
-                    <div class="comment_list" v-for="(comItem,index) in commnetList" :key="index">
+                    <div class="comment_list" v-for="(comItem,listId) in commnetList" :key="listId">
                       <div class="com_title">
                         <span>{{comItem.name}} {{comItem.phone}}</span>
                         <span>{{comItem.time}}</span>
                       </div>
                       <div class="star">
-                        <van-rate v-model="comItem.score -''" readonly />
+                        <van-rate v-model="comItem.score" readonly />
                       </div>
                       <p>{{comItem.text}}</p>
                       <div class="com_img">
-                        <img v-for="imgItem in comItem.img" :src="imgItem" :key="imgItem.id" />
+                        <img
+                          v-for="imgItem in comItem.img"
+                          @click="srcShowFun(imgItem.id, listId)"
+                          :src="imgItem.src"
+                          :key="imgItem.id"
+                        />
                       </div>
                     </div>
                   </div>
@@ -127,6 +132,9 @@
         </div>
       </div>
     </div>
+    <van-image-preview v-model="srcShow" :images="images" :startPosition="srcIndex" @change="onChange" :loop="true">
+      <template v-slot:srcIndex>第{{ srcIndex }}页</template>
+    </van-image-preview>
     <div class="com_bottom">
       <button @click="addShopCar">加入购物车</button>
       <button @click="gotoClose">立即购买</button>
@@ -152,6 +160,7 @@ export default {
       pageindex: 1,
       onFetching: false,
       bottomCount: 20,
+      shopId: this.$route.query.storeId, // 商品id
       name: sessionStorage.getItem("shopName") || "商品详情",
       shopinfo: {}, //商品信息
       popupVisible: true,
@@ -163,7 +172,12 @@ export default {
       lif: true, //正在加载中 显示
       nif: false, //没有更多数据了 隐藏
       loading: false, //下拉刷新
-      isLoading: false //上拉加载更多
+      isLoading: false, //上拉加载更多
+
+      srcShow: false, //图片预览
+      srcIndex: 0, //图片页面索引
+      startPosition: 0, //图片预览起始位置索引
+      images: [] //图片地址
     };
   },
   mounted() {
@@ -196,7 +210,7 @@ export default {
           url: "Ckshop/goods_detail",
           method: "post",
           data: {
-            id: sessionStorage.getItem("shopId")
+            id: that.shopId
           }
         })
         .then(function(res) {
@@ -217,6 +231,21 @@ export default {
             duration: 5000
           });
         });
+    },
+    srcShowFun(index, listId) {
+      this.srcShow = true;
+      console.log(index);
+      console.log(listId);
+      this.srcIndex = index-1;
+      this.startPosition = index-1;
+      this.images= [];
+      console.log(this.commnetList);
+      for (let i = 0; i < this.commnetList[listId].img.length; i++) {
+        this.images.push(this.commnetList[listId].img[i].src);
+      }
+    },
+    onChange(index) {
+      this.srcIndex = index;
     },
     //下拉刷新
     onRefresh() {
@@ -249,7 +278,7 @@ export default {
           url: "Ckshop/evaluateList",
           method: "post",
           data: {
-            id: sessionStorage.getItem("shopId"),
+            id: that.shopId,
             p: that.pageindex
           }
         })
@@ -259,7 +288,11 @@ export default {
           if (res.data.code == 0) {
             //成功回调
             if (res.data.data.list != "") {
-              that.commnetList = that.commnetList.concat(res.data.data.list);
+              that.commnetList = res.data.data.list;
+              for (let i = 0; i < that.commnetList.length; i++) {
+                that.commnetList[i].score = Number(that.commnetList[i].score);
+              }
+              console.log(that.images);
             } else {
               that.nif = true;
               that.loading = true;
@@ -299,7 +332,7 @@ export default {
           method: "post",
           data: {
             token: sessionStorage.getItem("token"),
-            goods_id: sessionStorage.getItem("shopId"),
+            goods_id: that.shopId,
             number: that.num
           }
         })
@@ -363,11 +396,12 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - .8rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
   padding-bottom: 0.8rem;
+  z-index: 99;
 }
 
 .mint-header {
@@ -501,7 +535,7 @@ export default {
 }
 
 .com_bottom {
-  z-index: 9999;
+  z-index: 99;
   width: 100%;
   position: fixed;
   bottom: 0;

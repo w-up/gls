@@ -34,7 +34,7 @@
 				news:'',
 				title:'',
 				// img:'',
-				id:sessionStorage.getItem("news_id"),//新闻id
+				newId: this.$route.query.storeId, // 新闻id
 				message_type:sessionStorage.getItem("message_type") || "资讯详情",//新闻类型
 			}
 			
@@ -58,7 +58,7 @@
 		 			url: "Subscribe/noticeDetails",
 		 			method: "post",
 		 			data: {
-		 				id:that.id
+		 				id:that.newId
 		 			}
 		 		})
 		 		.then(function(res) {

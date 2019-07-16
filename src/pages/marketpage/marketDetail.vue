@@ -285,9 +285,11 @@ export default {
     gotoComd(item) {
       let that = this;
       window.sessionStorage.setItem("shopName", item.name); //商品名称
-      window.sessionStorage.setItem("shopId", item.id); //商品Id
       this.$router.push({
-        path: "/proDetail"
+        path: "/proDetail",
+        query: {
+          storeId: item.id
+        }
       });
     },
     gotoCar() {
@@ -318,10 +320,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - .8rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
 }
 .mint-header {
   position: relative;
@@ -479,7 +481,7 @@ export default {
 .text-box {
   border: 1px solid #ddd;
   border-top: none;
-  padding: .2rem 0;
+  padding: 0.2rem 0;
   border-radius: 0 0 0.1rem 0.1rem;
 }
 /* 暂无数据 */

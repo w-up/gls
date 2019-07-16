@@ -65,7 +65,7 @@ export default {
       activeId: "", //点击当开垦机id
       price: "", //开垦机价格
       name: "", //开垦机类型
-      payment_password: "" //交易密码
+      payment_password: sessionStorage.getItem("tran_pass"), //交易密码
     };
   },
   created: function() {
@@ -87,7 +87,6 @@ export default {
     closeDialog: function() {
       var that = this;
       that.lang_dlg = false;
-      that.payment_password = "";
     },
     //获取开垦机
     getkaiken() {
@@ -137,15 +136,14 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             var msg = res.data.msg;
             if (res.data.code == 0) {
               Toast("支付成功");
               that.lang_dlg = false;
-              payment_password = "";
               that.$router.push({
                 path: "myfarm"
               });
+              sessionStorage.setItem("tran_pass", that.payment_password);
             } else {
               Toast(msg);
             }
@@ -173,10 +171,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {

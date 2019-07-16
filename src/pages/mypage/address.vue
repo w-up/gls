@@ -22,9 +22,9 @@
             <span @click="gotoChangeAddress(addressitem)">修改</span>
             <span @click="deleteAddress(addressitem.id)">删除</span>
             <h5
-              :class="addressitem.is_default == 1 ? 'addclass' : '' "
+              :class="addressitem.is_default == 1 || addressList.length == 1 ? 'addclass' : '' "
               @click="setDefault(addressitem.id)"
-            >{{addressitem.is_default == 1 ? '默认地址' : defAddress}}</h5>
+            >{{addressitem.is_default == 1 || addressList.length == 1 ? '默认地址' : defAddress}}</h5>
           </div>
         </div>
         <mt-button type="default" @click="gotoAddaddress">新增地址</mt-button>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     back() {
-      this.$router.push('/setting'); //返回上一层
+      this.$router.go(-1); //返回上一层
     },
     //前往新增地址
     gotoAddaddress() {
@@ -194,10 +194,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
@@ -227,6 +227,7 @@ export default {
 
 .detail_address .detail_list1 {
   padding-bottom: 0.1rem;
+  max-width: 5rem;
 }
 .detail_address .pe_name {
   padding: 0.1rem 0;
@@ -245,7 +246,7 @@ export default {
   padding: 0 0.1rem;
 }
 .detail_address .nuum h5 {
-  padding: 0.2rem 0.1rem;
+  padding: 0.1rem;
   font-weight: normal;
 }
 .detail_con .detail_time {

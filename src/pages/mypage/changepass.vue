@@ -104,9 +104,6 @@ export default {
             if (res.data.code == 0) {
               //成功回调
               Toast(res.data.msg);
-              that.old_password = "";
-              that.password = "";
-              that.repassword = "";
               that.$router.go(-1);
             } else {
               //失败

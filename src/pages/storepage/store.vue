@@ -125,10 +125,11 @@ export default {
     return {
       pageindex: 1,
       name: "", //店铺名称
+      storeId: this.$route.query.storeId, // 店铺id
       banner: [], //轮播图
       shopList: [], //商品列表
       industry_id: "",
-      title: sessionStorage.getItem("title") || "商品列表", //店铺名称
+      title: "商品列表", //店铺名称
       load: true, //加载图标显示
       none: false, //加载图标隐藏
       lif: true, //正在加载中 显示
@@ -140,7 +141,7 @@ export default {
   mounted() {
     let that = this;
     that.getBanner();
-    that.getShopList();
+    that.getShopList(that.storeId, "");
   },
   methods: {
     //下拉刷新
@@ -151,17 +152,17 @@ export default {
       that.nif = false;
       that.pageindex = 1;
       that.shopList = [];
-      that.getShopList(1);
+      that.getShopList(that.storeId, that.name, 1);
     },
     //上拉加载更多
     loadMore() {
       let that = this;
       that.lif = true;
       that.pageindex++;
-      that.getShopList(0);
+      that.getShopList(that.storeId, that.name, 0);
     },
     // 获取 商品列表
-    getShopList(i) {
+    getShopList(id, name, i) {
       let that = this;
       if (i) {
         that.lif = true;
@@ -177,8 +178,8 @@ export default {
           url: "Ckshop/goodList",
           method: "post",
           data: {
-            id: sessionStorage.getItem("storeId"),
-            name: that.name,
+            id: id,
+            name: name,
             p: that.pageindex
           }
         })
@@ -214,7 +215,7 @@ export default {
       that.nif = false;
       that.pageindex = 1;
       that.shopList = [];
-      that.getShopList();
+      that.getShopList(that.storeId, that.name);
     },
     // 获取banner 图
     getBanner() {
@@ -287,9 +288,12 @@ export default {
     gotoComd(item) {
       let that = this;
       window.sessionStorage.setItem("shopName", item.name); //商品名称
-      window.sessionStorage.setItem("shopId", item.id); //商品Id
       this.$router.push({
-        path: "/comDetails"
+        path: "/comDetails",
+        query: {
+          name: item.name,
+          storeId: item.id
+        }
       });
     },
     gotoCar() {

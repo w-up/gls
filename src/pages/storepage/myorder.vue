@@ -231,7 +231,7 @@ export default {
       orderIndex: 0,
       orderList: [], //我的订单列表
       lang_dlg: false, //弹窗隐藏
-      payment_password: "", //支付密码
+      payment_password: sessionStorage.getItem("tran_pass"), //支付密码
       current_id: "", //当前订单id
       status: 0, //订单状态
       load: true, //加载图标显示
@@ -397,7 +397,7 @@ export default {
             if (res.data.code == 0) {
               Toast(res.data.msg);
               that.closeDialog();
-              that.payment_password = "";
+              sessionStorage.setItem("tran_pass", that.payment_password);
               that.getMyorder();
             } else {
               Toast(res.data.msg);
@@ -508,7 +508,6 @@ export default {
     closeDialog: function() {
       var that = this;
       that.lang_dlg = false;
-      that.payment_password = "";
     }
   }
 };
@@ -520,7 +519,14 @@ export default {
   height: 100%;
   overflow: hidden;
 }
-
+.con-wrapper {
+  position: fixed;
+  width: 100%;
+  height: calc(100% - .8rem);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  top: .8rem;
+}
 .scroll_div {
   width: 100%;
   height: 100%;

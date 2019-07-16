@@ -40,10 +40,6 @@
             <x-number title align v-model="number" button-style="round" :min="1"></x-number>
           </div>
           <div class="commiss">
-            <div v-if="moldname=='委托代售'" class="yu_com">
-              <span>预计代售券</span>
-              <span>4%</span>
-            </div>
             <button>{{moldname}}</button>
           </div>
           <div class="remark" v-if="moldname=='领养到家'">
@@ -139,15 +135,15 @@ export default {
       showper: true, //个人发票信息显示
       gongsi: false, //公司发票信息隐藏
       data: {}, //领养详情
-      id: this.$route.query.id, //领养id
-      moldname: this.$route.query.name, //获取购买类型
-      tabindex: this.$route.query.tabindex, //果园、田园、牧场
+      id: this.$route.query.storeId, //领养id
+      moldname: this.$route.query.name || "委托代售", //获取购买类型
+      tabindex: this.$route.query.tabindex || 0, //果园、田园、牧场
       type: "", // 购买类型
       lang_dlg: false, //弹窗隐藏
       invoice_header: "", //发票抬头
       invoice_phone: "", //发票手机号
       invoice_code: "", //发票识别码
-      payment_password: "", //密码
+      payment_password: sessionStorage.getItem("tran_pass"), //密码
       invoice_user: 1, //发票信息（个人）
       invoice_type: 1, //发票类型不开发票
       remake: "",
@@ -205,20 +201,19 @@ export default {
             // 不开发票
             jsonData = {
               token: window.sessionStorage.getItem("token"),
-              id: that.$route.query.id,
+              id: that.id,
               number: number,
               invoice_type: 1,
               type: 1,
               payment_password: payment_password
             };
-            console.log(jsonData);
           } else if (invoice_type == 2) {
             //电子发票
             if (invoice_user == 1) {
               //个人
               jsonData = {
                 token: window.sessionStorage.getItem("token"),
-                id: that.$route.query.id,
+                id: that.id,
                 number: number,
                 invoice_type: 2,
                 type: 1,
@@ -231,7 +226,7 @@ export default {
               //公司
               jsonData = {
                 token: window.sessionStorage.getItem("token"),
-                id: that.$route.query.id,
+                id: that.id,
                 number: number,
                 invoice_type: 2,
                 type: 1,
@@ -248,7 +243,7 @@ export default {
               // 个人
               jsonData = {
                 token: window.sessionStorage.getItem("token"),
-                id: that.$route.query.id,
+                id: that.id,
                 number: number,
                 invoice_type: 3,
                 type: 1,
@@ -261,7 +256,7 @@ export default {
               // 公司
               jsonData = {
                 token: window.sessionStorage.getItem("token"),
-                id: that.$route.query.id,
+                id: that.id,
                 number: number,
                 invoice_type: 3,
                 type: 1,
@@ -278,19 +273,18 @@ export default {
           if (invoice_type == 1) {
             jsonData = {
               token: window.sessionStorage.getItem("token"),
-              id: that.$route.query.id,
+              id: that.id,
               number: number,
               invoice_type: 1,
               type: 2,
               remake: remake,
               payment_password: payment_password
             };
-            console.log(jsonData);
           } else if (invoice_type == 2) {
             if (invoice_user == 1) {
               jsonData = {
                 token: window.sessionStorage.getItem("token"),
-                id: that.$route.query.id,
+                id: that.id,
                 number: number,
                 invoice_type: 2,
                 type: 2,
@@ -303,7 +297,7 @@ export default {
             } else {
               jsonData = {
                 token: window.sessionStorage.getItem("token"),
-                id: that.$route.query.id,
+                id: that.id,
                 number: number,
                 invoice_type: 2,
                 type: 2,
@@ -321,7 +315,7 @@ export default {
               // 个人
               jsonData = {
                 token: window.sessionStorage.getItem("token"),
-                id: that.$route.query.id,
+                id: that.id,
                 number: number,
                 invoice_type: 3,
                 type: 2,
@@ -335,7 +329,7 @@ export default {
               // 公司
               jsonData = {
                 token: window.sessionStorage.getItem("token"),
-                id: that.$route.query.id,
+                id: that.id,
                 number: number,
                 invoice_type: 3,
                 type: 2,
@@ -369,7 +363,7 @@ export default {
           if (res.data.code == 0) {
             Toast(res.data.msg);
             that.lang_dlg = false;
-            that.payment_password = "";
+            sessionStorage.setItem("tran_pass", that.payment_password);
             that.back();
           } else {
             Toast(res.data.msg);
@@ -453,7 +447,6 @@ export default {
     closeDialog: function() {
       var that = this;
       that.lang_dlg = false;
-      that.payment_password = "";
     },
     gotoStore() {
       this.$router.push({
@@ -471,20 +464,16 @@ export default {
     //获取领养详情
     getAdoptDetail() {
       let that = this;
-      let newId = that.$route.query.id;
-
-      console.log(newId);
       that
         .$http({
           url: "Adopt/adoptDetails",
           method: "post",
           data: {
             token: window.sessionStorage.getItem("token"),
-            id: newId
+            id: that.id
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.code == 0) {
             that.data = res.data.data;
           } else {
@@ -493,9 +482,6 @@ export default {
         })
         .catch(function(error) {});
     }
-  },
-  directives: {
-    TransferDom
   }
 };
 </script>
@@ -599,19 +585,9 @@ export default {
   padding: 0.2rem 0;
 }
 
-.money .weui-cell {
-  padding: 0;
-}
-
-.money .vux-number-selector svg {
-  padding-bottom: 6px !important;
-  margin-left: -3px !important;
-}
-
 .commiss {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  width: 100%;
+  text-align: right;
 }
 
 .commiss .yu_com {

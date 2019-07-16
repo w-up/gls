@@ -12,7 +12,7 @@
       </tab>
       <div v-if="index==0" class="tab-swiper vux-center" style="margin-top: 44px">
         <div class="record_con">
-          <div class="record_list" v-for="list1 in recordList" :key="list1.time">
+          <div class="record_list" v-for="list1 in recordList" :key="list1.id">
             <div class="record_re">
               <span>{{list1.title}}</span>
               <span>{{list1.total}}</span>
@@ -26,7 +26,7 @@
       </div>
       <div v-if="index==1" class="tab-swiper vux-center" style="margin-top: 44px">
         <div class="record_con">
-          <div class="record_list" v-for="list2 in rebateList" :key="list2.time">
+          <div class="record_list" v-for="list2 in rebateList" :key="list2.id">
             <div class="record_re">
               <span>{{list2.title}}</span>
               <span>{{list2.total}}</span>
@@ -98,7 +98,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.code == 0) {
             that.recordList = res.data.data;
           } else {
@@ -120,7 +119,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.code == 0) {
             that.rebateList = res.data.data;
           } else {

@@ -25,16 +25,21 @@
       <div class="dialog">
         <span class="iconfont icon-tabguanbi" @click="closeDialog"></span>
         <h4>购买种子</h4>
-        <div class="ktype">
+        <div class="number">
           <span>类型</span>
           <span>{{name}}</span>
         </div>
-        <div class="ktype">
+        <div class="number">
           <span>价格</span>
           <span>{{price}}</span>
         </div>
         <div class="number">
-          <p>交易密码</p>
+          <span>数量:</span>
+          <!-- <input type="number" v-model="num" name placeholder="请输入交易数量" /> -->
+          <x-number title align v-model="num" button-style="round" :min="1"></x-number>
+        </div>
+        <div class="number" v-show="pass_hide">
+          <span>交易密码</span>
           <input type="password" v-model="payment_password" name placeholder="请输入交易密码" />
         </div>
         <button @click="BuyFertilizer">确定</button>
@@ -44,10 +49,11 @@
 </template>
 
 <script>
-import { XDialog } from "vux";
+import { XNumber, XDialog } from "vux";
 import { Toast, Indicator } from "mint-ui";
 export default {
   components: {
+    XNumber,
     XDialog,
     Toast,
     Indicator
@@ -59,7 +65,9 @@ export default {
       price: "", //肥料价格
       activeId: "", //点击当前肥料id
       name: "", //肥料类型
-      payment_password: "" //支付密码
+      num: 1, // 数量
+      payment_password: sessionStorage.getItem("tran_pass"),
+      pass_hide: true, //密码隐藏
     };
   },
   created: function() {
@@ -79,9 +87,7 @@ export default {
     },
     //关闭确认弹窗
     closeDialog: function() {
-      var that = this;
       this.lang_dlg = false;
-      this.payment_password = "";
     },
     //获取化肥
     getFertilizerList() {
@@ -128,7 +134,8 @@ export default {
             data: {
               token: window.sessionStorage.getItem("token"),
               id: that.activeId,
-              payment_password: payment_password
+              payment_password: payment_password,
+              number: that.num
             }
           })
           .then(function(res) {
@@ -137,7 +144,7 @@ export default {
             if (res.data.code == 0) {
               Toast("支付成功");
               that.lang_dlg = false;
-              that.payment_password = "";
+              sessionStorage.setItem("tran_pass", payment_password);
             } else {
               Toast(msg);
             }
@@ -225,8 +232,8 @@ export default {
 .dialog {
   width: 80%;
   margin: 0 auto;
-  height: 4rem;
-  padding-top: 0.2rem;
+  /* height: 4rem; */
+  padding: 0.2rem 0 0.25rem;
 }
 
 .dialog span.iconfont {
@@ -257,16 +264,25 @@ export default {
 .dialog .number {
   margin-top: 0.2rem;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   font-size: 0.26rem;
   align-items: center;
 }
-
+.dialog .number span:nth-child(1) {
+  width: 35%;
+  text-align: right;
+  padding-right: 5%;
+}
 .dialog .number input {
-  width: 70%;
+  width: 65%;
   border: 1px solid #e8e8e8;
   height: 0.6rem;
   padding-left: 0.1rem;
+}
+
+.dialog .number span:nth-last-child(1) {
+  width: 65%;
+  text-align: left;
 }
 
 .dialog button {

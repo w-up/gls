@@ -182,10 +182,12 @@ export default {
     },
     // 进入店铺
     gotoStore(item) {
-      window.sessionStorage.setItem("title", item.name);
-      window.sessionStorage.setItem("storeId", item.id);
       this.$router.push({
-        path: "/store"
+        path: "/store",
+        query: {
+          name: item.name,
+          storeId: item.id
+        }
       });
     }
   }

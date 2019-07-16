@@ -246,7 +246,7 @@ export default {
       sell_mili_rate: "", //出让米粒加工费
       number: "", //出让/受让(米粒/谷粒)数量
       price: "", //出让/受让(米粒/谷粒)价格
-      payment_password: "" //支付密码
+      payment_password: sessionStorage.getItem("tran_pass"), //支付密码
     };
   },
   mounted: function() {
@@ -476,7 +476,6 @@ export default {
       var type = that.dealindex == 0 ? 2 : 1;
       //typea(2) => 米粒  typea(1) => 谷粒
       var typea = that.dealindex == 2 ? 1 : 2;
-      console.log(type);
       if (!that.price || that.price == null) {
         // Toast('请输入交易单价');
       } else if (!that.number || that.number == null) {
@@ -505,9 +504,9 @@ export default {
               that.getOrders();
               that.getBargain();
               that.getDealNum();
-              // number: "";
-              // price: "";
-              // payment_password: "";
+              that.number = "";
+              that.price = "";
+              sessionStorage.setItem("tran_pass", that.payment_password);
             } else {
               Toast(msg);
             }
@@ -562,7 +561,6 @@ export default {
 }
 
 .deal_title .deal_area select {
-  width: 1.4rem;
   height: 0.56rem;
   border: 1px solid #c8c8c8;
   border-radius: 0.1rem;
@@ -626,16 +624,16 @@ export default {
 .mili_right .mairu li {
   padding: 0.13rem 0;
   font-size: 0.26rem;
-	display: flex;
-	display: -webkit-flex;
-	flex-direction: row;
-	-webkit-flex-direction: row;
-	justify-content: space-between;
-	-webkit-justify-content: space-between;
-	align-items: center;
-	-webkit-align-items: center;
-	width: 100%;
-	box-sizing: border-box;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  align-items: center;
+  -webkit-align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .mili_right .mairu {
@@ -646,27 +644,27 @@ export default {
 .mili_right .mairu li span {
   display: inline-block;
   color: #76c076;
-	width: 33%;
+  width: 33%;
 }
 
 .mili_right .mairu li span {
   color: #e8494e;
 }
 .mili_right .maichu li span:nth-child(2) {
-	text-align: center;
+  text-align: center;
 }
 
 .mili_right .mairu li span:nth-child(2) {
-	text-align: center;
+  text-align: center;
 }
 .mili_right .maichu li span:nth-child(3) {
   color: #888;
-	text-align: right;
+  text-align: right;
 }
 
 .mili_right .mairu li span:nth-child(3) {
   color: #888;
-	text-align: right;
+  text-align: right;
 }
 
 .order {

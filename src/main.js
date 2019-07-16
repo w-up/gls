@@ -14,8 +14,13 @@ import 'vant/lib/index.css';
 import { NumberKeyboard ,Rate,Switch} from 'vant';
 Vue.use(Vant,Rate,Switch);
 
+// 复制粘贴
 import VueClipboard from 'vue-clipboard2' 
 Vue.use(VueClipboard)
+// 视频
+import VueVideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+Vue.use(VueVideoPlayer)
 
 // Axios.defaults.headers.common['Authentication-Token'] = store.state.token;
 //解决axios发送两次请求

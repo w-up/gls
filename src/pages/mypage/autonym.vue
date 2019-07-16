@@ -114,6 +114,7 @@
 							if (res.data.code == 0) {
 								//成功回调
 								Toast(res.data.msg);
+								that.$router.go(-1);
 							} else {
 								//失败
 								Toast(res.data.msg);

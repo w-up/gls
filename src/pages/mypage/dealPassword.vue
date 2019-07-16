@@ -46,7 +46,11 @@ export default {
     //设置交易密码
     setDealPass() {
       let that = this;
-      if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/.test(that.payment_password)) {
+      if (
+        !/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/.test(
+          that.payment_password
+        )
+      ) {
         Toast("密码输入有误");
       } else if (that.payment_password !== that.repayment_password) {
         Toast("两次密码不一致");
@@ -68,6 +72,7 @@ export default {
             if (res.data.code == 0) {
               //成功回调
               Toast(res.data.msg);
+              that.$router.go(-1);
             } else {
               //失败
               Toast(res.data.msg);
@@ -119,7 +124,7 @@ export default {
   margin-top: 0.5rem;
 }
 .rech_con p {
-  font-size: .24rem;
+  font-size: 0.24rem;
   color: #888;
   line-height: 1.8;
   text-align: right;

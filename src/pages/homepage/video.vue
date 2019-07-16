@@ -13,7 +13,7 @@
 			</tab>
 			<div v-if="videoIndex==0" class="tab-swiper vux-center">
 				<div class="video">
-					<div class="video_list" v-for="(videoitem,index) in videoList" :key="videoitem.id">
+					<div class="video_list" v-for="(videoitem,index) in videoList" :key="index">
 						<video controls>
 							<source :src="videoitem.url">
 						</video>
@@ -23,9 +23,9 @@
 			</div>
 			<div v-if="videoIndex==1" class="tab-swiper vux-center">
 				<div class="video">
-					<div class="video_list" v-for="(videoitem,index) in videoList" :key="videoitem.id">
+					<div class="video_list" v-for="(videoitem,index) in videoList" :key="index">
 						<video controls>
-							<source :src="videoitem.url" type="video/mp4">
+							<source :src="videoitem.url">
 						</video>
 						<span>{{videoitem.title}}</span>
 					</div>
@@ -33,9 +33,9 @@
 			</div>
 			<div v-if="videoIndex==2" class="tab-swiper vux-center">
 				<div class="video">
-					<div class="video_list" v-for="(videoitem,index) in videoList" :key="videoitem.id">
+					<div class="video_list" v-for="(videoitem,index) in videoList" :key="index">
 						<video controls>
-							<source :src="videoitem.url" type="video/mp4">
+							<source :src="videoitem.url">
 						</video>
 						<span>{{videoitem.title}}</span>
 					</div>
@@ -163,7 +163,7 @@
 	}
 
 	.video .video_list {
-		width: 100%;
+		width: 47%;
 		/* height: 3rem; */
 		margin: 0.1rem;
 		display: flex;

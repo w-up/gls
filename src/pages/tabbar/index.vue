@@ -6,8 +6,8 @@
       <div class="con-wrapper">
         <div class="swipe">
           <mt-swipe :auto="4000">
-            <mt-swipe-item v-for="item in data" :key="item.id">
-              <img :src="item" />
+            <mt-swipe-item v-for="item in data" :key="item.id" @click.native="linkTo(item.url, item.parameter)">
+              <img :src="item.link" />
             </mt-swipe-item>
           </mt-swipe>
         </div>
@@ -61,6 +61,9 @@
             <span>平台资讯</span>
           </div>
         </div>
+        <div class="img_src">
+          <img v-for="item in bottomLink" :key="item.id" @click="linkTo(item.url, item.parameter)" :src="item.link">
+        </div>
       </div>
     </div>
     <div v-if="guidePage == ''" class="guide_page">
@@ -84,6 +87,7 @@ export default {
   data() {
     return {
       data: [], //轮播图数据
+      bottomLink: [], // 底部连接
       guidePage: localStorage.getItem("guidePage") || true,
     };
   },
@@ -102,6 +106,11 @@ export default {
       localStorage.setItem("guidePage", false);
       this.guidePage = false;
     },
+    linkTo(url) {
+      this.$router.push({
+        path: url
+      });
+    },
     //获取首页轮播图
     getIndexBanner() {
       let that = this;
@@ -114,7 +123,26 @@ export default {
           var msg = res.data.msg;
           if (res.data.code == 0) {
             that.data = res.data.data;
-            console.log(res.data.data.length);
+          } else {
+            Toast(msg);
+          }
+        })
+        .catch(function(error) {
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+      that
+        .$http({
+          url: "Home/index2",
+          method: "post"
+        })
+        .then(function(res) {
+          var msg = res.data.msg;
+          if (res.data.code == 0) {
+            that.bottomLink = res.data.data;
           } else {
             Toast(msg);
           }
@@ -256,6 +284,22 @@ export default {
 .tabber {
   height: 1rem;
   z-index: 9999;
+}
+
+.img_src {
+  width: 7.25rem;
+  margin: 0 auto;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.img_src img {
+  width: 3.4rem;
+  height: 2.1rem;
+  border: 1px solid #e5e5e5;
+  margin-bottom: 0.2rem;
 }
 
 .guide_page {

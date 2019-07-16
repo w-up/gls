@@ -108,7 +108,7 @@ export default {
       localshop: [], //商铺数据
       areaList: [], //区域列表
       lang_dlg: false, //购买弹窗
-      payment_password: "", //支付密码
+      payment_password: sessionStorage.getItem("tran_pass"), //支付密码
       money: "", //金额
       code: "", //商户识别码
       load: true, //加载图标显示
@@ -155,7 +155,6 @@ export default {
       var that = this;
       that.lang_dlg = false;
       that.money = "";
-      that.payment_password = "";
     },
     //下拉刷新
     onRefresh() {
@@ -240,7 +239,6 @@ export default {
           if (res.data.code == 0) {
             //成功回调
             that.areaList = res.data.data;
-            console.log(that.areaList);
           } else {
             //失败
             Toast(res.data.msg);
@@ -257,7 +255,6 @@ export default {
     //付款
     payMoney() {
       let that = this;
-      console.log(123);
       if (!that.money || that.money == null) {
         Toast("请输入红包金额");
       } else if (!that.payment_password || that.payment_password == null) {
@@ -275,12 +272,11 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             if (res.data.code == 0) {
               //成功回调
               Toast("付款成功");
-              that.money = "";
-              that.payment_password = "";
+              that.closeDialog();
+              sessionStorage.setItem("tran_pass", that.payment_password);
             } else {
               //失败
               Toast(res.data.msg);

@@ -65,7 +65,7 @@ export default {
       rechargeList: [], //我的资产
       money: "", //充值金额
       type: 1, //充值类型
-      payment_password: "", //交易密码
+      payment_password: sessionStorage.getItem("tran_pass"), //交易密码
       options: [
         {
           //充值类型
@@ -163,7 +163,8 @@ export default {
           .then(function(res) {
             if (res.data.code == 0) {
               //成功回调
-							Toast(res.data.msg);
+              Toast(res.data.msg);
+              sessionStorage.setItem("tran_pass", that.payment_password);
 							that.$router.go(-1);
             } else {
               //失败

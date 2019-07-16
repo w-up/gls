@@ -149,7 +149,10 @@ export default {
       window.sessionStorage.setItem("title", item.name);
       window.sessionStorage.setItem("storeId", item.id);
       this.$router.push({
-        path: "/marketDetail"
+        path: "/marketDetail",
+        query: {
+          storeId: item.id
+        }
       });
     }
   }

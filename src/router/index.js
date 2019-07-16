@@ -113,29 +113,29 @@ import CloseAccount from '@/pages/storepage/closeAccount' //结算
 import SubmitOrder from '@/pages/storepage/submitOrder' //提交订单
 Vue.use(Router)
 export default new Router({
-	mode: "history",
-  scrollBehavior(to, from, savedPosition) {
-		//判断如果滚动条的位置存在直接返回到当前位置，否者返回到起点
-		console.log(to);
-		console.log(from);
-		console.log(savedPosition);
-    if (to.hash) {
-      return {
-        selector: to.hash
-      }
-    }
-    // if (savedPosition) {
-		// 	console.log("111");
-    //   return {x: 500, y: 500}
-    // } else {
-		// 	console.log("222");
-    //   if (to.hash) {
-    //     return {
-    //       selector: to.hash
-    //     }
-    //   }
-    // }
-  },
+	// mode: "history",
+  // scrollBehavior(to, from, savedPosition) {
+	// 	//判断如果滚动条的位置存在直接返回到当前位置，否者返回到起点
+	// 	console.log(to);
+	// 	console.log(from);
+	// 	console.log(savedPosition);
+  //   if (to.hash) {
+  //     return {
+  //       selector: to.hash
+  //     }
+  //   }
+  //   // if (savedPosition) {
+	// 	// 	console.log("111");
+  //   //   return {x: 500, y: 500}
+  //   // } else {
+	// 	// 	console.log("222");
+  //   //   if (to.hash) {
+  //   //     return {
+  //   //       selector: to.hash
+  //   //     }
+  //   //   }
+  //   // }
+  // },
   routes: [{ //默认路由
       path: '/',
       redirect: "/tabs/index"

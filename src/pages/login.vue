@@ -38,20 +38,26 @@ export default {
   data() {
     return {
       account: "",
-			password: "",
-			hint: true, // 提示
+      password: "",
+      hint: true // 提示
     };
   },
   watch: {
     // password(val, oldVal) {
-		// 	if (/^[A-Za-z0-9]+{6,}$/.test(val)) {
-		// 		this.hint = true;
-		// 	}
-		// }
+    // 	if (/^[A-Za-z0-9]+{6,}$/.test(val)) {
+    // 		this.hint = true;
+    // 	}
+    // }
   },
   methods: {
     back() {
-      this.$router.go(-1); //返回上一层
+      if (sessionStorage.getItem("clickExit") == "true") {
+        this.$router.push({
+          path: "/"
+        });
+      } else {
+        this.$router.go(-1);
+      }
     },
     //登录
     login() {
@@ -80,7 +86,14 @@ export default {
             if (code == 0) {
               window.sessionStorage.setItem("token", data);
               window.sessionStorage.setItem("account", account);
-              that.$router.go(-1);
+              if (sessionStorage.getItem("clickExit") == "true") {
+                that.$router.push({
+                  path: "/"
+                });
+              } else {
+                that.$router.go(-1);
+              }
+              sessionStorage.setItem("clickExit", true);
               Toast("登录成功");
             } else {
               Toast(msg);

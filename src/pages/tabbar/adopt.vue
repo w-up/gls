@@ -24,7 +24,7 @@
       </tab>
       <div class="tab-swiper vux-center">
         <div class="fruit" v-show="data.length != 0">
-          <div class="fruit_list" v-for="(item,itemIndex) in data" :key="item.id">
+          <div class="fruit_list" v-for="(item,itemIndex) in data" :key="itemIndex">
             <div class="fruit_img">
               <img :src="item.head_img" alt />
               <span>{{item.phase}}</span>
@@ -33,14 +33,15 @@
               <div class="fruit_title">
                 <h4>{{item.title}}</h4>
                 <div class="leixing">
-                  <span>类型</span>
+                  <!-- <span>类型</span>
                   <select @change="selectChange(itemIndex,$event)">
                     <option
                       v-for="option in mold"
                       :key="option.id"
                       :value="option.id"
                     >{{option.name}}</option>
-                  </select>
+                  </select> -->
+                  <span @click="selectChange(item.id)" :class="item.id == mold_id?'active_type':''" v-for="item in mold" :key="item.id">{{item.name}}</span>
                 </div>
               </div>
               <h5 v-if="item.type.id == 0">预计代售券{{item.bonus}}</h5>
@@ -59,102 +60,6 @@
         </div>
         <p class="not_open" v-show="data.length == 0">暂未开放</p>
       </div>
-      <!-- <div v-show="tabindex==0" class="tab-swiper vux-center">
-        <div class="fruit" v-show="data1.length != 0">
-          <div class="fruit_list" v-for="(item,itemIndex) in data1" :key="item.id">
-            <div class="fruit_img">
-              <img :src="item.head_img" alt />
-              <span>{{item.phase}}</span>
-            </div>
-            <div class="fruit_con">
-              <div class="fruit_title">
-                <h4>{{item.title}}</h4>
-                <div class="leixing">
-                  <span>类型</span>
-                  <select @change="selectChange(itemIndex,$event)">
-                    <option v-for="option in mold" :key="option.id" :value="option.id">{{option.name}}</option>
-                  </select>
-                </div>
-              </div>
-              <h5>预计年化分红{{item.bonus}}</h5>
-              <div class="mian">
-                <span>米宝/亩 {{item.price}}</span>
-                <span>{{item.surplus}}</span>
-              </div>
-              <div class="qixian">
-                <span>期限</span>
-                <span>{{item.term}}</span>
-                <mt-button type="primary" @click="gotoAdoptD(item)">确定</mt-button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="not_open" v-show="data1.length == 0">暂未开放</p>
-      </div>
-      <div v-show="tabindex==1" class="tab-swiper vux-center">
-        <div class="fruit" v-show="data2.length != 0">
-          <div class="fruit_list" v-for="(item1,itemIndex) in data2" :key="itemIndex">
-            <div class="fruit_img">
-              <img :src="item1.head_img" />
-              <span>{{item1.phase}}</span>
-            </div>
-            <div class="fruit_con">
-              <div class="fruit_title">
-                <h4>{{item1.title}}</h4>
-                <div class="leixing">
-                  <span>类型</span>
-                  <select @change="selectChanget(itemIndex,$event)">
-                    <option v-for="option in mold" :key="option.id" :value="option.id">{{option.name}}</option>
-                  </select>
-                </div>
-              </div>
-              <h5>预计年化分红{{item1.bonus}}</h5>
-              <div class="mian">
-                <span>米宝/棵 {{item1.price}}</span>
-                <span>{{item1.surplus}}</span>
-              </div>
-              <div class="qixian">
-                <span>期限</span>
-                <span>{{item1.term}}</span>
-                <mt-button type="primary" @click="gotoAdoptD(item1)">确定</mt-button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="not_open" v-show="data2.length == 0">暂未开放</p>
-      </div>
-      <div v-show="tabindex==2" class="tab-swiper vux-center">
-        <div class="muchang" v-show="data3.length != 0">
-          <div class="fruit_list" v-for="(item1,itemIndex) in data3" :key="itemIndex">
-            <div class="fruit_img">
-              <img :src="item1.head_img" />
-              <span>{{item1.phase}}</span>
-            </div>
-            <div class="fruit_con">
-              <div class="fruit_title">
-                <h4>{{item1.title}}</h4>
-                <div class="leixing">
-                  <span>类型</span>
-                  <select @change="selectChanget(itemIndex,$event)">
-                    <option v-for="option in mold" :key="option.id" :value="option.id">{{option.name}}</option>
-                  </select>
-                </div>
-              </div>
-              <h5>预计年化分红{{item1.bonus}}</h5>
-              <div class="mian">
-                <span>米宝/棵 {{item1.price}}</span>
-                <span>{{item1.surplus}}</span>
-              </div>
-              <div class="qixian">
-                <span>期限</span>
-                <span>{{item1.term}}</span>
-                <mt-button type="primary" @click="gotoAdoptD(item1)">确定</mt-button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="not_open" v-show="data3.length == 0">暂未开放</p>
-      </div>-->
     </div>
   </div>
 </template>
@@ -186,11 +91,11 @@ export default {
       mold: [
         {
           id: 0,
-          name: "委托代售"
+          name: "领养到家"
         },
         {
           id: 1,
-          name: "领养到家"
+          name: "委托代售"
         }
       ]
     };
@@ -208,10 +113,11 @@ export default {
       this.$router.go(-1); //返回上一层
     },
     //类型 选择方式
-    selectChange(itemIndex, e) {
-      let that = this;
-      var moldIndex = Number(e.target.value);
-      that.data[itemIndex].type = that.mold[moldIndex];
+    selectChange(index) {
+      this.mold_id = index;
+      // let that = this;
+      // var moldIndex = Number(e.target.value);
+      // that.data[itemIndex].type = that.mold[moldIndex];
     },
     onItemFun(index) {
       this.tabindex = index;
@@ -225,12 +131,13 @@ export default {
     },
     //前往领养详情页
     gotoAdoptD(item) {
+      console.log(item);
       let that = this;
       that.$router.push({
         path: "/adoptDetail",
         query: {
-          id: item.id,
-          name: item.type.name,
+          storeId: item.id,
+          name: that.mold[that.mold_id].name,
           tabindex: that.tabindex
         }
       });
@@ -313,7 +220,7 @@ export default {
 
 .fruit {
   /* padding-top: 0.1rem; */
-  width: 90%;
+  width: 96%;
   margin: 0 auto;
 }
 
@@ -363,8 +270,15 @@ export default {
   color: #333;
 }
 
-.fruit_list .fruit_con .fruit_title span {
-  font-size: 0.24rem;
+.leixing span {
+  font-size: .28rem;
+  border: 1px solid #ddd;
+  border-radius: .08rem;
+  padding: 0 0.1rem;
+}
+.leixing .active_type {
+  border: 1px solid #ef6213;
+  color: #ef6213;
 }
 
 .fruit_list .fruit_con h5 {

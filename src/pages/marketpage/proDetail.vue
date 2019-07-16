@@ -110,14 +110,14 @@
                     <div
                       class="comment_list"
                       v-for="(comItem,index) in commnetList"
-                      :key="comItem.id"
+                      :key="index"
                     >
                       <div class="com_title">
                         <span>{{comItem.name}} {{comItem.phone}}</span>
                         <span>{{comItem.time}}</span>
                       </div>
                       <div class="star">
-                        <van-rate v-model="comItem.score -''" readonly />
+                        <van-rate v-model="comItem.score" readonly />
                       </div>
                       <p>{{comItem.text}}</p>
                       <div class="com_img">
@@ -160,6 +160,7 @@ export default {
       onFetching: false,
       bottomCount: 20,
       name: sessionStorage.getItem("shopName") || "商品详情",
+      shopId: this.$route.query.storeId, //商品id
       shopinfo: {}, //商品信息
       popupVisible: true,
       num: 1, //购买数量
@@ -203,7 +204,7 @@ export default {
           url: "Pjshop/goods_detail",
           method: "post",
           data: {
-            id: sessionStorage.getItem("shopId")
+            id: that.shopId
           }
         })
         .then(function(res) {
@@ -257,7 +258,7 @@ export default {
           url: "Pjshop/evaluateList",
           method: "post",
           data: {
-            id: sessionStorage.getItem("shopId"),
+            id: that.shopId,
             p: that.pageindex
           }
         })
@@ -267,7 +268,10 @@ export default {
           if (res.data.code == 0) {
             //成功回调
             if (res.data.data.list != "") {
-              that.commnetList = that.commnetList.concat(res.data.data.list);
+              that.commnetList = res.data.data.list;
+              for (let i = 0; i < that.commnetList.length; i++) {
+                that.commnetList[i].score = Number(that.commnetList[i].score);
+              }
             } else {
               that.nif = true;
               that.loading = true;
@@ -307,7 +311,7 @@ export default {
           method: "post",
           data: {
             token: sessionStorage.getItem("token"),
-            goods_id: sessionStorage.getItem("shopId"),
+            goods_id: that.shopId,
             number: 1
           }
         })
