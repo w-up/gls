@@ -399,11 +399,13 @@ export default {
   margin-top: 0.15rem;
   width: 49%;
   font-size: 0;
+  border: 1px solid #eee;
+  border-radius: 0.1rem;
+  overflow: hidden;
 }
 .content_list img {
   width: 100%;
   height: 3rem;
-  border-radius: 0.1rem 0.1rem 0 0;
 }
 .content_list .con-title {
   padding: 0 0.22rem;
@@ -479,10 +481,8 @@ export default {
   line-height: 35px !important;
 }
 .text-box {
-  border: 1px solid #ddd;
-  border-top: none;
+  border-top: 1px solid #ddd;
   padding: 0.2rem 0;
-  border-radius: 0 0 0.1rem 0.1rem;
 }
 /* 暂无数据 */
 #no-data {

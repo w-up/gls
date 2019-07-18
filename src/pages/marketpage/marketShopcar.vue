@@ -263,10 +263,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 #test,
@@ -358,20 +358,6 @@ export default {
 .shopping_info >>> .vux-number-selector {
   height: 100% !important;
   line-height: 0.4rem !important;
-}
-
-.shopping_info >>> .vux-number-input {
-  float: left;
-  height: 100%;
-  font-size: 0.28rem;
-  color: #666;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border: 1px solid #ececec;
-  padding: 3px 0;
-  text-align: center;
-  border-radius: 1px;
 }
 
 .shopping_info .shop_num {

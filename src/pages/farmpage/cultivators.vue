@@ -39,10 +39,6 @@
           <span>价格</span>
           <span>{{price}}</span>
         </div>
-        <div class="number">
-          <p>交易密码</p>
-          <input type="password" v-model="payment_password" name placeholder="请输入交易密码" />
-        </div>
         <button @click="Buycultivator">确定</button>
       </div>
     </x-dialog>
@@ -64,8 +60,7 @@ export default {
       data: [], //获取开垦机数据
       activeId: "", //点击当开垦机id
       price: "", //开垦机价格
-      name: "", //开垦机类型
-      payment_password: sessionStorage.getItem("tran_pass"), //交易密码
+      name: "" //开垦机类型
     };
   },
   created: function() {
@@ -121,41 +116,34 @@ export default {
     //购买开垦机
     Buycultivator() {
       let that = this;
-      let payment_password = that.payment_password;
-      if (!payment_password || payment_password == null) {
-        Toast("请输入支付密码");
-      } else {
-        that
-          .$http({
-            url: "Farm/machineBuy",
-            method: "post",
-            data: {
-              token: localStorage.getItem("token"),
-              id: that.activeId,
-              payment_password: payment_password
-            }
-          })
-          .then(function(res) {
-            var msg = res.data.msg;
-            if (res.data.code == 0) {
-              Toast("支付成功");
-              that.lang_dlg = false;
-              that.$router.push({
-                path: "myfarm"
-              });
-              sessionStorage.setItem("tran_pass", that.payment_password);
-            } else {
-              Toast(msg);
-            }
-          })
-          .catch(function(error) {
-            Toast({
-              message: "网络连接失败",
-              position: "bottom",
-              duration: 5000
+      that
+        .$http({
+          url: "Farm/machineBuy",
+          method: "post",
+          data: {
+            token: localStorage.getItem("token"),
+            id: that.activeId
+          }
+        })
+        .then(function(res) {
+          var msg = res.data.msg;
+          if (res.data.code == 0) {
+            Toast("支付成功");
+            that.lang_dlg = false;
+            that.$router.push({
+              path: "myfarm"
             });
+          } else {
+            Toast(msg);
+          }
+        })
+        .catch(function(error) {
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
           });
-      }
+        });
     }
   }
 };
@@ -171,10 +159,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - .8rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
 }
 
 .mint-header {
@@ -258,8 +246,7 @@ export default {
 .dialog {
   width: 80%;
   margin: 0 auto;
-  height: 4rem;
-  padding-top: 0.2rem;
+  padding: 0.2rem 0;
 }
 
 .dialog span.iconfont {

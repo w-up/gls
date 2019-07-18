@@ -7,7 +7,11 @@
     </mt-header>
     <div class="con-wrapper">
       <div class="detail_con">
-        <div class="detail_address" v-for="(addressitem,index) in addressList" :key="addressitem.id">
+        <div
+          class="detail_address"
+          v-for="(addressitem,index) in addressList"
+          :key="addressitem.id"
+        >
           <div class="detail_list1" @click="gotoClose(index)">
             <div class="pe_name">
               <span>{{addressitem.name}}</span>
@@ -22,9 +26,9 @@
             <span @click="gotoChangeAddress(addressitem)">修改</span>
             <span @click="deleteAddress(addressitem.id)">删除</span>
             <h5
-              :class="addressitem.is_default == 1 || addressList.length == 1 ? 'addclass' : '' "
+              :class="addressitem.is_default == 1 ? 'addclass' : '' "
               @click="setDefault(addressitem.id)"
-            >{{addressitem.is_default == 1 || addressList.length == 1 ? '默认地址' : defAddress}}</h5>
+            >{{addressitem.is_default == 1 ? '默认地址' : defAddress}}</h5>
           </div>
         </div>
         <mt-button type="default" @click="gotoAddaddress">新增地址</mt-button>
@@ -42,7 +46,7 @@ export default {
   data() {
     return {
       addressList: [], //地址列表
-      defAddress: "设为默认"
+      defAddress: "设为默认",
     };
   },
   mounted() {
@@ -90,8 +94,8 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             //成功回调
-						that.addressList = res.data.data; //地址列表
-						that.visited = res.data.data[0].id;
+            that.addressList = res.data.data; //地址列表
+            that.visited = res.data.data[0].id;
             window.sessionStorage.setItem(
               "address",
               JSON.stringify(that.addressList)
@@ -146,8 +150,8 @@ export default {
     setDefault(id) {
       let that = this;
       if (that.visited == id) {
-				return;
-			}
+        return;
+      }
       Indicator.open({
         text: "加载中..."
       });
@@ -194,10 +198,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - .8rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
 }
 
 .mint-header {
@@ -235,12 +239,12 @@ export default {
 .detail_address .pe_name span {
   padding-right: 0.3rem;
 }
-.detail_address  .nuum {
+.detail_address .nuum {
   border-left: 1px solid #e8e8e8;
   height: 0.8rem;
   padding-left: 0.12rem;
 }
- .detail_address .nuum span {
+.detail_address .nuum span {
   color: #888;
   font-size: 0.24rem;
   padding: 0 0.1rem;

@@ -56,6 +56,11 @@
           <img src="../../assets/img/s.png" />
           <span>正在偷粮者</span>
         </div>
+        <div class="fa_muban">
+          <span v-show="$store.state.areaType == 1">黄土地</span>
+          <span v-show="$store.state.areaType == 2">黑土地</span>
+          <span v-show="$store.state.areaType == 3">金土地</span>
+        </div>
         <!-- 地 -->
         <div class="farm-list">
           <div>
@@ -64,7 +69,7 @@
               :key="index"
               :class="{ 'huangFarm': item.land_type==1, 'heiFarm': item.land_type==2,'jinFarm': item.land_type==3}"
               class="greenFarm"
-              @click="Plant(item.seed_id)"
+              @click="Plant(item.seed_id, item.id)"
             >
               <!-- 农作物名称 -->
               <p>{{item.seed_status}}</p>
@@ -85,7 +90,10 @@
     <x-dialog v-model="lang_dlg" class="de_dialog lang_dialog" hide-on-blur>
       <div class="dialog">
         <span class="iconfont icon-tabguanbi" @click="closeDialog"></span>
-        <p>不要着急!距离收获还有{{dataDetail}}0天，通过以下方式增快生长</p>
+        <p>
+          不要着急! 距离收获还有
+          <strong class="time">{{dataDetail}}</strong> 天，通过以下方式增快生长
+        </p>
         <div class="fei">
           <img src="../../assets/img/sf.png" @click="fertilizer" />
           <img src="../../assets/img/js.png" @click="watering" />
@@ -109,7 +117,7 @@ export default {
       area: "", //当前区域
       lang_dlg: false, //种子详情 是否展示
       dataDetail: "", //农作物详细信息
-      type: 1, //土地类型：1黄土地，2黑土地，3金土地
+      type: this.$store.state.areaType, //土地类型：1黄土地，2黑土地，3金土地
       activeId: "", //点击当前土地id
       fApply: "", //是否有好友申请
       seedId: window.localStorage.getItem("seed_id") //种子id
@@ -176,7 +184,8 @@ export default {
           url: "Farm/index",
           method: "post",
           data: {
-            token: localStorage.getItem("token")
+            token: localStorage.getItem("token"),
+            type: that.type
           }
         })
         .then(function(res) {
@@ -227,6 +236,7 @@ export default {
     changeLand() {
       let that = this;
       var type = that.type == 1 ? 2 : that.type == 2 ? 3 : 1;
+      console.log(type);
       that
         .$http({
           url: "Farm/landList",
@@ -239,6 +249,8 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             that.type = type;
+            console.log(type);
+            that.$store.commit("areaTypeFun", type);
             that.data = res.data.data;
           } else {
             Toast(res.data.msg);
@@ -256,7 +268,6 @@ export default {
     seedDetail(id) {
       let that = this;
       that.activeId = id;
-
       that
         .$http({
           url: "farm_user/seedDetails",
@@ -270,8 +281,11 @@ export default {
           var msg = res.data.msg;
           if (res.data.code == 0) {
             that.lang_dlg = true;
-            that.dataDetail = res.data.data / 86400;
-            that.dataDetail = that.dataDetail.toFixed(2);
+            that.dataDetail = res.data.data;
+            that.getFame(); // 刷新种子状态
+          } else if (res.data.code == -1){
+            Toast(msg);
+            that.getFame(); // 刷新种子状态
           } else {
             Toast(msg);
           }
@@ -301,6 +315,7 @@ export default {
           if (res.data.code == 0) {
             Toast("施肥成功");
             that.lang_dlg = false;
+            that.getFame(); // 刷新种子状态
           } else {
             Toast(msg);
           }
@@ -330,6 +345,7 @@ export default {
           if (res.data.code == 0) {
             Toast("浇水成功");
             that.lang_dlg = false;
+            that.getFame(); // 刷新种子状态
           } else {
             Toast(msg);
           }
@@ -372,7 +388,7 @@ export default {
         });
     },
     //种地
-    Plant(id) {
+    Plant(id, land_id) {
       let that = this;
       if (id !== undefined) {
         // Toast("这块土地已经种植了");
@@ -384,7 +400,8 @@ export default {
             method: "post",
             data: {
               token: localStorage.getItem("token"),
-              id: that.seedId
+              id: that.seedId,
+              land_id: land_id
             }
           })
           .then(function(res) {
@@ -413,7 +430,6 @@ export default {
     closeDialog: function() {
       var that = this;
       this.lang_dlg = false;
-      this.payment_password = "";
     }
   }
 };
@@ -446,17 +462,16 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 90px);
+  height: calc(100% - 1.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: 0.8rem;
 }
 
 .fa_content {
   height: 100%;
   width: 100%;
-  background: url("../../assets/img/bg-g.png") no-repeat center center;
-  background-size: 105%;
+  background: url("../../assets/img/bg-g.png") no-repeat 0 0 / 100% 100%;
   position: relative;
 }
 
@@ -488,7 +503,8 @@ export default {
   align-items: center;
 }
 
-.fa_title .address span:nth-child(2), .fa_title .guli span:nth-child(2) {
+.fa_title .address span:nth-child(2),
+.fa_title .guli span:nth-child(2) {
   background: #ef6213;
   padding: 1px 6px;
   border-radius: 0.1rem;
@@ -503,7 +519,7 @@ export default {
 .fa_left .gaunli,
 .fa_left .qiehuan {
   display: inline-block;
-  padding: 0.16rem 0;
+  padding: 0.1rem 0;
   width: 0.64rem;
   display: inline-block;
 }
@@ -577,6 +593,26 @@ export default {
   height: 100%;
   font-size: 0;
   line-height: 0;
+}
+.fa_muban {
+  position: fixed;
+  bottom: 3rem;
+  right: .3rem;
+  /* transform: rotateY(5deg) rotate(45deg); */
+  /* transform: rotateX(-50deg) rotate(45deg); */
+  width: 1.8rem;
+  height: 1.6rem;
+  background: url("../../assets/img/muban.png") no-repeat 0 0 / 100% 100%;
+  display: inline-block;
+  margin-top: 1rem;
+  vertical-align: top;
+  text-align: center;
+}
+.fa_muban > span {
+  display: inline-block;
+  font-size: 0.28rem;
+  color: #ef6213;
+  margin-top: 1rem;
 }
 
 .farm-list > div > div {
@@ -661,6 +697,11 @@ export default {
   margin-top: 0.5rem;
   font-size: 0.3rem;
   text-align: start;
+}
+.dialog p .time {
+  font-size: 0.32rem;
+  text-align: start;
+  color: #ef6213;
 }
 .dialog .fei img {
   margin: 0.3rem 0.3rem;

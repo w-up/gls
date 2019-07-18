@@ -260,6 +260,10 @@ export default {
 .card .card-tit {
   padding: 0.1rem 0;
   font-size: 0.26rem;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
 }
 
 .card .card-tit span:nth-child(2) {

@@ -302,9 +302,7 @@ export default {
     },
     //关闭确认弹窗
     closeDialog: function() {
-      var that = this;
       this.lang_dlg = false;
-      this.payment_password = "";
     }
   }
 };

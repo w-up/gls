@@ -294,17 +294,17 @@ export default {
   margin-top: 0.15rem;
   width: 49%;
   line-height: 0;
+  border: 1px solid #eee;
+  border-radius: 0.1rem;
+  overflow: hidden;
 }
 .content_list img {
   width: 100%;
   height: 3rem;
-  border-radius: 0.1rem 0.1rem 0 0;
 }
 .content_list .con-title {
   padding: 0.2rem 0.1rem;
-  border: 1px solid #eee;
-  border-top: none;
-  border-radius: 0 0 0.1rem 0.1rem;
+  border-top: 1px solid #eee;
 }
 .content_list .con-title h3 {
   font-size: 0.28rem;

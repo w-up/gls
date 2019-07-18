@@ -86,8 +86,8 @@
           <tab-item @on-item-click="index=1">评价({{count}})</tab-item>
         </tab>
 
-        <div v-if="index==0" class="comm_de">
-          <img :src="shopinfo.details_img" />
+        <div v-if="index==0" class="comm_de" v-html="shopinfo.details_img">
+          <!-- <img :src="shopinfo.details_img" /> -->
         </div>
         <div v-if="index==1" class="comm_de">
           <div class="scroll_div">

@@ -246,7 +246,7 @@ export default {
       sell_mili_rate: "", //出让米粒加工费
       number: "", //出让/受让(米粒/谷粒)数量
       price: "", //出让/受让(米粒/谷粒)价格
-      payment_password: sessionStorage.getItem("tran_pass"), //支付密码
+      payment_password: "", //支付密码
     };
   },
   mounted: function() {
@@ -506,7 +506,7 @@ export default {
               that.getDealNum();
               that.number = "";
               that.price = "";
-              sessionStorage.setItem("tran_pass", that.payment_password);
+              that.payment_password = "";
             } else {
               Toast(msg);
             }

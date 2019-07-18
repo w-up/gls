@@ -404,8 +404,6 @@ export default {
 .management {
   width: 96%;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-around;
   white-space: nowrap;
   overflow-x: auto;
   margin-top: 1rem;

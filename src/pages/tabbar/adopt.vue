@@ -31,7 +31,10 @@
             </div>
             <div class="fruit_con">
               <div class="fruit_title">
-                <h4>{{item.title}}</h4>
+                <div>
+                  <h4>{{item.title}}</h4>
+                  <h5>预计代售券{{item.bonus}}</h5>
+                </div>
                 <div class="leixing">
                   <!-- <span>类型</span>
                   <select @change="selectChange(itemIndex,$event)">
@@ -40,14 +43,18 @@
                       :key="option.id"
                       :value="option.id"
                     >{{option.name}}</option>
-                  </select> -->
-                  <span @click="selectChange(item.id)" :class="item.id == mold_id?'active_type':''" v-for="item in mold" :key="item.id">{{item.name}}</span>
+                  </select>-->
+                  <p
+                    @click="selectChange(typeItem.id, itemIndex)"
+                    :class="typeItem.id == item.mold_id?'active_type':''"
+                    v-for="typeItem in item.type"
+                    :key="typeItem.id"
+                  >{{typeItem.name}}</p>
                 </div>
               </div>
-              <h5 v-if="item.type.id == 0">预计代售券{{item.bonus}}</h5>
               <!-- <h5>预计年化分红{{item.bonus}}</h5> -->
               <div class="mian">
-                <span>米宝/亩 {{item.price}}</span>
+                <span>单价: {{item.price}} 米宝</span>
                 <span>{{item.surplus}}</span>
               </div>
               <div class="qixian">
@@ -113,11 +120,8 @@ export default {
       this.$router.go(-1); //返回上一层
     },
     //类型 选择方式
-    selectChange(index) {
-      this.mold_id = index;
-      // let that = this;
-      // var moldIndex = Number(e.target.value);
-      // that.data[itemIndex].type = that.mold[moldIndex];
+    selectChange(type_id, itemIndex) {
+      this.data[itemIndex].mold_id = type_id;
     },
     onItemFun(index) {
       this.tabindex = index;
@@ -131,13 +135,12 @@ export default {
     },
     //前往领养详情页
     gotoAdoptD(item) {
-      console.log(item);
       let that = this;
       that.$router.push({
         path: "/adoptDetail",
         query: {
           storeId: item.id,
-          name: that.mold[that.mold_id].name,
+          name: item.type[item.mold_id].name,
           tabindex: that.tabindex
         }
       });
@@ -171,8 +174,8 @@ export default {
           if (res.data.code == 0) {
             var list = [];
             $.each(res.data.data, function(index, item) {
-              item["type"] = that.mold[0];
-              list.push(item);
+              item["type"] = that.mold;
+              item["mold_id"] = that.mold_id;
             });
             if (type == 1) {
               that.data1 = res.data.data;
@@ -208,10 +211,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 90px);
+  height: calc(100% - 1.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: 0.8rem;
 }
 
 .mint-header {
@@ -226,14 +229,14 @@ export default {
 
 .fruit_list {
   display: flex;
-  margin: 0.1rem 0;
+  margin: 0.2rem 0;
   height: 1.8rem;
   align-items: center;
 }
 
 .fruit_list .fruit_img {
-  width: 26%;
-  height: 90%;
+  width: 30%;
+  height: 100%;
   position: relative;
 }
 
@@ -269,24 +272,26 @@ export default {
   font-size: 0.28rem;
   color: #333;
 }
+.fruit_list .fruit_con h5 {
+  font-weight: normal;
+  color: #555;
+  font-size: 0.24rem;
+  margin-top: 0.1rem;
+}
 
-.leixing span {
-  font-size: .28rem;
+.leixing p {
+  font-size: 0.28rem;
   border: 1px solid #ddd;
-  border-radius: .08rem;
+  border-radius: 0.18rem;
   padding: 0 0.1rem;
+  line-height: 0.36rem;
+}
+.leixing p:nth-last-child(1) {
+  margin-top: 0.2rem;
 }
 .leixing .active_type {
   border: 1px solid #ef6213;
   color: #ef6213;
-}
-
-.fruit_list .fruit_con h5 {
-  font-weight: normal;
-  /* line-height: 0.6rem; */
-  margin: 3px 0;
-  color: #555;
-  font-size: 0.24rem;
 }
 
 .fruit_list .fruit_con .fruit_title select {
@@ -300,6 +305,7 @@ export default {
 .fruit_list .fruit_con .mian {
   display: flex;
   justify-content: space-between;
+  margin-top: 0.05rem;
 }
 
 .fruit_list .fruit_con .mian span {
@@ -308,7 +314,7 @@ export default {
 }
 
 .fruit_list .fruit_con .mian span:nth-child(2) {
-  padding-right: 2rem;
+  padding-right: 1.5rem;
   color: #ef6213;
 }
 
@@ -335,6 +341,7 @@ export default {
 
 .mint-button {
   height: 0.44rem;
+  line-height: 0.44rem;
   border-radius: 0.3rem;
   font-size: 0.26rem;
   background: #ef6213;

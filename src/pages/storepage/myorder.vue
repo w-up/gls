@@ -231,7 +231,7 @@ export default {
       orderIndex: 0,
       orderList: [], //我的订单列表
       lang_dlg: false, //弹窗隐藏
-      payment_password: sessionStorage.getItem("tran_pass"), //支付密码
+      payment_password: "", //支付密码
       current_id: "", //当前订单id
       status: 0, //订单状态
       load: true, //加载图标显示
@@ -258,7 +258,10 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-1); //返回上一层
+      this.$router.go(-2); //返回上一层
+      // this.$router.push({
+      //   path: "/shoppingCar"
+      // })
     },
     //去申请退货
     gotoAfter(id) {
@@ -396,8 +399,8 @@ export default {
           .then(function(res) {
             if (res.data.code == 0) {
               Toast(res.data.msg);
+              that.payment_password = "";
               that.closeDialog();
-              sessionStorage.setItem("tran_pass", that.payment_password);
               that.getMyorder();
             } else {
               Toast(res.data.msg);

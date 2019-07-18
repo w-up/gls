@@ -1,6 +1,6 @@
 <template>
   <div id="fertilizer">
-    <mt-header fixed title="种子">
+    <mt-header fixed title="肥料">
       <a slot="left">
         <mt-button icon="back" @click="back">返回</mt-button>
       </a>
@@ -14,7 +14,7 @@
           <div class="fertilizer_info">
             <div class="info_left">
               <span>{{item.name}}</span>
-              <span>{{item.price}}</span>
+              <span>{{item.price}} 谷分</span>
             </div>
             <button @click="showDialog(item.id,item.price,item.name)">购买</button>
           </div>
@@ -31,16 +31,12 @@
         </div>
         <div class="number">
           <span>价格</span>
-          <span>{{price}}</span>
+          <span>{{price * num}} 谷分</span>
         </div>
         <div class="number">
           <span>数量:</span>
           <!-- <input type="number" v-model="num" name placeholder="请输入交易数量" /> -->
           <x-number title align v-model="num" button-style="round" :min="1"></x-number>
-        </div>
-        <div class="number" v-show="pass_hide">
-          <span>交易密码</span>
-          <input type="password" v-model="payment_password" name placeholder="请输入交易密码" />
         </div>
         <button @click="BuyFertilizer">确定</button>
       </div>
@@ -65,9 +61,7 @@ export default {
       price: "", //肥料价格
       activeId: "", //点击当前肥料id
       name: "", //肥料类型
-      num: 1, // 数量
-      payment_password: sessionStorage.getItem("tran_pass"),
-      pass_hide: true, //密码隐藏
+      num: 1 // 数量
     };
   },
   created: function() {
@@ -123,40 +117,33 @@ export default {
     //购买肥料
     BuyFertilizer() {
       let that = this;
-      let payment_password = that.payment_password;
-      if (!payment_password || payment_password == null) {
-        Toast("请输入支付密码");
-      } else {
-        that
-          .$http({
-            url: "Farm/fertilizerBuy",
-            method: "post",
-            data: {
-              token: localStorage.getItem("token"),
-              id: that.activeId,
-              payment_password: payment_password,
-              number: that.num
-            }
-          })
-          .then(function(res) {
-            console.log(res);
-            var msg = res.data.msg;
-            if (res.data.code == 0) {
-              Toast("支付成功");
-              that.lang_dlg = false;
-              sessionStorage.setItem("tran_pass", payment_password);
-            } else {
-              Toast(msg);
-            }
-          })
-          .catch(function(error) {
-            Toast({
-              message: "网络连接失败",
-              position: "bottom",
-              duration: 5000
-            });
+      that
+        .$http({
+          url: "Farm/fertilizerBuy",
+          method: "post",
+          data: {
+            token: localStorage.getItem("token"),
+            id: that.activeId,
+            number: that.num
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          var msg = res.data.msg;
+          if (res.data.code == 0) {
+            Toast("支付成功");
+            that.lang_dlg = false;
+          } else {
+            Toast(msg);
+          }
+        })
+        .catch(function(error) {
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
           });
-      }
+        });
     }
   }
 };

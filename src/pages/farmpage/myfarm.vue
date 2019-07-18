@@ -178,7 +178,6 @@ export default {
     closeDialoggu: function() {
       var that = this;
       this.lang_dlggu = false;
-      this.payment_password = "";
     },
     //弹出协议弹窗
     showDialogxie: function() {
@@ -189,7 +188,6 @@ export default {
     closeDialogxie: function() {
       var that = this;
       this.lang_dlgxie = false;
-      this.payment_password = "";
     },
     //判断注册协议是否选择
     check() {
@@ -282,6 +280,7 @@ export default {
           if (res.data.code == 0) {
             Toast("开垦成功");
             that.lang_dlg = false;
+            that.getkaiken(); // 刷新开垦机
           } else {
             Toast(msg);
           }

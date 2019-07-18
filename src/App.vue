@@ -15,7 +15,17 @@ export default {
       timedown: this.arr
     };
   },
-  created() {},
+  created() {
+    // 此举是防止浏览器刷新造成vuex数据丢失
+    //在页面加载时读取sessionStorage里的状态信息
+    if (sessionStorage.getItem("store") ) {
+      this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+    } 
+    //在页面刷新时将vuex里的信息保存到sessionStorage里
+    window.addEventListener("beforeunload",()=>{
+      sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+    })
+  },
   watch: {
     // 使用watch 监听$router的变化
     $route(to, from) {
@@ -41,7 +51,10 @@ export default {
   components: {},
   mounted() {
     let that = this;
-
+    window.document.oncontextmenu = function() {
+      //屏蔽右键事件
+      return false;
+    };
     /**
      * 横竖屏
      * @param {Object}

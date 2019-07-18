@@ -50,7 +50,7 @@ export default {
       rechargeList: [], //我的资产
       money: "", //提现金额
       type: 1, //提现类型
-      payment_password: sessionStorage.getItem("tran_pass"), //交易密码
+      payment_password: "", //交易密码
       options: [
         {
           //提现类型
@@ -142,7 +142,6 @@ export default {
               } else {
                 Toast(res.data.msg);
               }
-              sessionStorage.setItem("tran_pass", that.payment_password);
               that.$router.go(-1);
             } else {
               //失败

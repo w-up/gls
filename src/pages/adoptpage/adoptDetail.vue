@@ -143,7 +143,7 @@ export default {
       invoice_header: "", //发票抬头
       invoice_phone: "", //发票手机号
       invoice_code: "", //发票识别码
-      payment_password: sessionStorage.getItem("tran_pass"), //密码
+      payment_password: "", //密码
       invoice_user: 1, //发票信息（个人）
       invoice_type: 1, //发票类型不开发票
       remake: "",
@@ -363,7 +363,6 @@ export default {
           if (res.data.code == 0) {
             Toast(res.data.msg);
             that.lang_dlg = false;
-            sessionStorage.setItem("tran_pass", that.payment_password);
             that.back();
           } else {
             Toast(res.data.msg);

@@ -108,7 +108,7 @@ export default {
       localshop: [], //商铺数据
       areaList: [], //区域列表
       lang_dlg: false, //购买弹窗
-      payment_password: sessionStorage.getItem("tran_pass"), //支付密码
+      payment_password: "", //支付密码
       money: "", //金额
       code: "", //商户识别码
       load: true, //加载图标显示
@@ -276,7 +276,7 @@ export default {
               //成功回调
               Toast("付款成功");
               that.closeDialog();
-              sessionStorage.setItem("tran_pass", that.payment_password);
+              that.payment_password = "";
             } else {
               //失败
               Toast(res.data.msg);

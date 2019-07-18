@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import $ from 'jquery'
 import './vuex/font'
+import store from './vuex/store';
 import axios from 'axios'
 import Qs from 'qs'
 import MintUI from 'mint-ui'
@@ -67,6 +68,7 @@ error => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
