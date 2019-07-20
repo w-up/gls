@@ -7,10 +7,10 @@
     </mt-header>
     <div class="con-wrapper">
       <tab :line-width="2" bar-active-color="#ef6213" active-color="#ef6213" :scroll-threshold="5">
-        <tab-item selected @on-item-click="tabindex=0">开垦机</tab-item>
-        <tab-item @on-item-click="tabindex=1" id="tabtow">土地</tab-item>
-        <tab-item @on-item-click="tabindex=2">种子</tab-item>
-        <tab-item @on-item-click="tabindex=3">肥料</tab-item>
+        <tab-item :selected="selected == 0" @on-item-click="tabindex=0">开垦机</tab-item>
+        <tab-item :selected="selected == 1" @on-item-click="tabindex=1" id="tabtow">土地</tab-item>
+        <tab-item :selected="selected == 2" @on-item-click="tabindex=2">种子</tab-item>
+        <tab-item :selected="selected == 3" @on-item-click="tabindex=3">肥料</tab-item>
       </tab>
       <!-- 开垦机 -->
       <div v-if="tabindex==0" class="tab-swiper vux-center">
@@ -126,8 +126,8 @@ export default {
   data() {
     return {
       disabled: true, //开垦土地没有勾选同意协议禁止点击
-      selected: 0, //tab默认选中
-      tabindex: 0, //tab下内容默认
+      selected: this.$route.query.numType || 0, //tab默认选中
+      tabindex: this.$route.query.numType || 0, //tab下内容默认
       lang_dlg: false, //开垦弹窗
       lang_dlggu: false, // 谷分加油弹窗
       lang_dlgxie: false, //协议
@@ -157,7 +157,6 @@ export default {
     showDialogkai: function(id) {
       var that = this;
       that.activeId = id;
-      console.log(id);
       this.lang_dlg = true;
     },
     //关闭开垦弹窗
@@ -169,7 +168,6 @@ export default {
     showDialoggu: function(id, name) {
       var that = this;
       that.activeId = id;
-      console.log(id);
       that.name = name;
       this.lang_dlggu = true;
     },
@@ -192,7 +190,6 @@ export default {
     //判断注册协议是否选择
     check() {
       if ($("#checked").is(":checked")) {
-        console.log(123);
         $("#accept").prop("disabled", false);
         $("#accept").css("background", "#EF6213");
       } else {
@@ -223,7 +220,14 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             that.data = res.data.data;
-            console.log(that.data);
+            if (res.data.data.length != 0) {
+              function sortBy(field) { //数字类型的比较
+                return function(a,b) {
+                  return a[field] - b[field];
+                }
+              }
+              that.data.sort(sortBy("type"));
+            }
           } else {
             Toast("获取信息失败");
           }
@@ -250,7 +254,6 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             that.agreement = res.data.data;
-            console.log(that.data);
           } else {
             Toast("获取信息失败");
           }
@@ -280,7 +283,13 @@ export default {
           if (res.data.code == 0) {
             Toast("开垦成功");
             that.lang_dlg = false;
-            that.getkaiken(); // 刷新开垦机
+            for (let i = 0; i < that.data.length; i++) {
+              if (that.data[i].id == that.activeId) {
+                that.$store.commit("areaTypeFun", that.data[i].type);
+                that.$router.go(-1); //返回上一层
+              }
+            }
+            // that.getkaiken(); // 刷新开垦机
           } else {
             Toast(msg);
           }
@@ -436,19 +445,18 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
   background: #ef6213;
 }
 .myfarm_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 .myfarm_con .myfarm_list {
   display: flex;
@@ -466,7 +474,7 @@ export default {
 }
 .myfarm_con .myfarm_list .myfarm_info {
   flex: 1;
-  margin-left: 0.3rem;
+  margin-left: 0.2rem;
 }
 .myfarm_con .myfarm_list .myfarm_info .info_list {
   display: flex;
@@ -509,8 +517,8 @@ export default {
 .dialog span.iconfont,
 .dialogxie span.iconfont {
   position: absolute;
-  top: 0.2rem;
-  right: 0.2rem;
+  top: .2rem;
+  right: .2rem;
 }
 .dialogxie > div {
   overflow-y: auto;

@@ -23,7 +23,7 @@
             <div class="shop_num">
               <!-- 黑色 -->
               <span></span>
-              <inline-x-number :min="1" v-model="item.number"></inline-x-number>
+              <van-stepper v-model="item.number" :min="1" input-width="1rem" button-size="0.4rem" />
             </div>
             <h3>{{item.price}}元红包+{{item.integral}}谷分</h3>
           </div>
@@ -253,10 +253,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 1.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 #test,
@@ -279,12 +279,12 @@ export default {
 }
 
 .dis-none:checked ~ .checkboxdiv {
-  background: url(../../assets/img/checkbox_icon.png) no-repeat center;
+  background: url("../../assets/img/checkbox_icon.png") no-repeat center;
   background-size: 100% 100%;
   border: 2px solid #ef6213;
 }
 #test1:checked ~ .checkboxdiv {
-  background: url(../../assets/img/checkbox_icon.png) no-repeat center;
+  background: url("../../assets/img/checkbox_icon.png") no-repeat center;
   background-size: 100% 100%;
   border: 2px solid #ef6213;
 }
@@ -294,17 +294,22 @@ export default {
 }
 
 .sh_content {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
-  padding-bottom: 2rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .shapping_list {
-  display: flex;
   width: 100%;
   padding: 0.2rem 0;
   border-bottom: 1px dashed #ddd;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+	-webkit-flex-direction: row;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  align-items: center;
+  -webkit-align-items: center;
 }
 
 .shapping_list .check {
@@ -323,8 +328,14 @@ export default {
 
 .shopping_info {
   padding-left: 0.1rem;
-  flex: 1;
-  font-size: 0.3rem;
+  font-size: .28rem;
+  width: 100%;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+	-webkit-flex-direction: column;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
 }
 
 .shopping_info .shop_tit {
@@ -333,36 +344,6 @@ export default {
   justify-content: space-between;
 }
 
-/* .shopping_info >>> .vux-inline-x-number {
-  height: 0.5rem !important;
-}
-
-.shopping_info >>> .vux-number-selector-sub {
-  padding: 2px 6px !important;
-}
-
-.shopping_info >>> .vux-number-selector-plus {
-  padding: 2px 6px !important;
-}
-
-.shopping_info >>> .vux-number-selector {
-  height: 100% !important;
-  line-height: 23px !important;
-}
-
-.shopping_info >>> .vux-number-input {
-  height: 100% !important;
-  padding: 2px 2px !important;
-} */
-.shopping_info >>> .vux-number-input {
-  height: 35px !important;
-  padding: 2px 2px !important;
-}
-
-.shopping_info >>> .vux-number-selector {
-  height: 35px !important;
-  line-height: 30px !important;
-}
 .shopping_info .shop_num {
   display: flex;
   justify-content: space-between;
@@ -383,9 +364,14 @@ export default {
   position: fixed;
   bottom: 0;
   display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+	-webkit-flex-direction: row;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
   align-items: center;
-  padding: 0.2rem 5%;
+  -webkit-align-items: center;
+  padding: 0.2rem;
   font-size: 0.28rem;
   background: #fff;
   border-top: 1px solid #ddd;

@@ -15,9 +15,15 @@
             :value="areaitem.id"
           >{{areaitem.name}}</option>
         </select>
-        <div class="search">
-          <input type="search" v-model="name" name placeholder="请输入名称进行搜索" />
+        <!-- <div class="search">
+          <input type="search" v-model="name" @blur="search" placeholder="请输入名称进行搜索" />
           <span class="iconfont icon-tabsearch" @click="search"></span>
+        </div> -->
+        <div class="search">
+          <input type="search" placeholder="请输入名称进行搜索" style="border: 1px solid #c8c8c8; color: #333;" @blur="search" v-model="name">
+          <button :disabled="name == ''" @click="search">
+            <i class="iconfont icon-tabsearch"></i>
+          </button>
         </div>
       </div>
       <div class="scroll_div">
@@ -42,25 +48,21 @@
                     <img :src="subitem.img" />
                   </div>
                   <div class="yipin_con">
-                    <div class="yipin_title">
-                      <h4>{{subitem.title}}</h4>
+                    <h4 class="yipin_title">{{subitem.title}}</h4>
+                    <div class="spend">
+                      <span>单价:</span>
+                      <span>{{subitem.spend}}</span>
+                      <span>数量 1</span>
+                    </div>
+                    <h5  class="yipin_time">出售时间：{{subitem.sell_time}}</h5>
+                    <div class="yipin_btm">
+                      <van-stepper v-model="subitem.number" />
                       <button
                         class="yi_btn"
                         type="primary"
                         @click="reserve(subitem.id,subitem.number)"
                       >预定</button>
                     </div>
-                    <div class="mian">
-                      <div class="spend">
-                        <span>单价:</span>
-                        <span>{{subitem.spend}}</span>
-                        <span>数量 1</span>
-                      </div>
-                      <div class="stepp">
-                        <van-stepper v-model="subitem.number" />
-                      </div>
-                    </div>
-                    <h5>出售时间：{{subitem.sell_time}}</h5>
                   </div>
                 </div>
               </div>
@@ -266,125 +268,121 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: 0.8rem;
 }
 
 .mint-header {
   background: #ef6213;
 }
-.scroll_div {
-  width: 90%;
-  height: 100%;
-  margin: 0 auto;
-  margin-top: 0.1rem;
-}
+
 .yipin_se {
   display: flex;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
-  padding: 0.2rem 0;
+  padding: 0.2rem .2rem 0;
   position: relative;
 }
-
+.scroll_div {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 .2rem;
+}
 .yipin_se select {
-  width: 22%;
-  height: 0.7rem;
+  width: 2rem;
+  height: 0.6rem;
   border: 1px solid #c8c8c8;
-  border-radius: 0.1rem;
+  border-radius: 1rem;
   color: #333;
+  background: white;
 }
 
-.yipin_se .search {
-  width: 76%;
-}
-
-.yipin_se .search input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-}
-
-.yipin_se .search input {
+.search {
+  position: relative;
   margin-left: 0.2rem;
   width: 100%;
-  height: 0.7rem;
-  font-size: 0.26rem;
-  border: none;
-  border: 1px solid #c8c8c8;
-  border-radius: 0.1rem;
-  padding-left: 0.1rem;
 }
-
-.yipin_se .search span {
-  position: absolute;
-  top: 0.4rem;
-  right: 0.1rem;
+.search input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+/* .search button i {
+  display: inline-block;
+  font-size: 0.28rem;
+  line-height: 0.6rem;
+} */
+.search button:disabled {
+  background: transparent;
   color: #ef6213;
 }
 
 .yipin_list {
-  display: flex;
   margin: 0.2rem 0;
-  height: 1.8rem;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+	-webkit-flex-direction: row;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
   align-items: center;
+  -webkit-align-items: center;
+}
+.yipin_img {
+  width: 2rem;
+  height: 2rem;
+}
+.yipin_img img {
+  width: 2rem;
+  height: 2rem;
 }
 
-.yipin_list .yipin_img {
-  width: 26%;
-  height: 90%;
-}
-
-.yipin_list .yipin_img img {
-  width: 100%;
-  height: 100%;
-}
-
-.yipin_list .yipin_con {
+.yipin_con {
   margin-left: 0.2rem;
-  flex: 1;
+  height: 2rem;
+  width: 100%;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
 }
 
-.yipin_list .yipin_con .yipin_title h4 {
+.yipin_title {
   font-size: 0.28rem;
   color: #333;
 }
-.yipin_list .yipin_con .yipin_title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.yipin_list .yipin_con h5 {
+.yipin_time {
   font-weight: normal;
   /* line-height: 0.6rem; */
   color: #555;
 }
 
-.yipin_list .yipin_con .mian {
-  padding: 0.1rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.yipin_list .yipin_con .mian span {
+.spend span {
   font-size: 0.26rem;
   color: #666;
 }
 
-.yipin_list .yipin_con .mian span:nth-child(2) {
-  padding-right: 0.3rem;
+.spend span:nth-child(2) {
+  padding-right: 0.2rem;
   color: #ef6213;
 }
 
-.yipin_list .yipin_con .qixian {
-  /* margin-top: 2px; */
+.yipin_btm {
   display: flex;
-  justify-content: flex-end;
+  display: -webkit-flex;
+  flex-direction: row;
+	-webkit-flex-direction: row;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  align-items: center;
+  -webkit-align-items: center;
 }
 .yipin_list .yipin_con .yi_btn {
-  width: 1rem;
-  height: 0.5rem;
+  width: 1.5rem;
+  height: .56rem;
   border: none;
   background: #ef6213;
   color: #fff;
@@ -392,7 +390,6 @@ export default {
   border-radius: 0.1rem;
 }
 .yipin_list .mint-button--normal {
-  /* height: 0.8rem; */
   padding: 0 0.4rem;
 }
 /* 暂无数据 */

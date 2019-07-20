@@ -296,7 +296,7 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
   top: 0.8rem;
@@ -308,20 +308,18 @@ export default {
 
 .scroll_div {
   width: 100%;
-  height: 100%;
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.1rem;
+  height: calc(100% - .8rem);
+  padding: 0 0.2rem;
 }
 .news {
   height: 100%;
 }
 .activity_news {
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
 }
 
 .news_list {
-  margin: 0.3rem 0;
+  margin: 0.2rem 0;
   display: flex;
   justify-content: space-between;
 }

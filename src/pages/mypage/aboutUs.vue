@@ -6,9 +6,7 @@
 			</a>
 		</mt-header>
 		<div class="con-wrapper">
-			<div class="about-con" v-html="data">
-		          
-			</div>
+			<div class="about-con" v-html="data"></div>
 		</div>
 	</div>
 </template>

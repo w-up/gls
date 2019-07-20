@@ -473,11 +473,11 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 2.4rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
-  padding-bottom: 3rem;
+  top: .8rem;
+  padding-bottom: 0.2rem;
 }
 
 .mint-header {
@@ -486,13 +486,11 @@ export default {
 
 .sh_content {
   width: 100%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
 }
 
 .shop_address {
-  padding: 0 5% 0.2rem;
-  margin-bottom: 0.2rem;
+  padding: 0 0.2rem;
   border-bottom: 1px solid #ddd;
 }
 
@@ -501,11 +499,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.1rem 0;
+  padding: 0.2rem 0;
 }
 
 .address_list:nth-child(1) {
-  padding: 0 0.3rem;
+  padding: 0;
 }
 
 .address_list .iconfont {
@@ -517,7 +515,7 @@ export default {
 }
 
 .list-box {
-  padding: 0 5%;
+  padding: 0 0.2rem;
 }
 
 .list-box .shapping_list:last-child {
@@ -529,16 +527,15 @@ export default {
   width: 100%;
   padding: 0.2rem 0;
   border-bottom: 1px dashed #ddd;
-  margin-bottom: 0.3rem;
 }
 
 .shapping_list img {
-  width: 24%;
+  width: 1.6rem;
   height: 1.6rem;
 }
 
 .shopping_info {
-  padding-left: 0.4rem;
+  padding-left: 0.2rem;
   flex: 1;
   font-size: 0.28rem;
   display: flex;
@@ -566,18 +563,18 @@ export default {
   display: flex;
   align-items: center;
   font-size: 0.28rem;
-  padding: 5%;
+  padding: 0.2rem;
 }
 
 .invoice select {
   height: 0.6rem;
   flex: 1;
   border-radius: 0.1rem;
-  margin-left: 0.3rem;
+  margin-left: 0.2rem;
 }
 
 .invoice_info {
-  padding: 0 5% 0.2rem;
+  padding: 0 0.2rem;
 }
 
 .invoice_info h4 {
@@ -586,7 +583,7 @@ export default {
 
 .invoice_radio {
   border-bottom: 1px solid #e9e9e9;
-  padding-bottom: 0.3rem;
+  padding-bottom: 0.2rem;
   font-size: 0.28rem;
 }
 
@@ -598,18 +595,19 @@ export default {
 .invoice_radio > label,
 .cl_radio > label {
   position: relative;
-  margin-right: 0.2rem;
+  margin-left: 0.2rem;
+  font-size: .32rem;
 }
 
 .invoice_radio > label::before,
 .cl_radio > label::before {
   display: inline-block;
   content: "";
-  width: 16px;
-  height: 16px;
+  width: .32rem;
+  height: .32rem;
   border-radius: 50%;
   border: 1px solid rgb(219, 219, 219);
-  margin-right: 6px;
+  margin-right: .12rem;
   vertical-align: bottom;
 }
 
@@ -622,12 +620,12 @@ export default {
 .cl_radio > input:checked + label::after {
   display: inline-block;
   content: "";
-  width: 6px;
-  height: 6px;
+  width: .12rem;
+  height: .12rem;
   border-radius: 50%;
   position: absolute;
-  left: 6px;
-  bottom: 6px;
+  left: .12rem;
+  bottom: .12rem;
   background-color: white;
 }
 
@@ -654,7 +652,7 @@ export default {
 .rise .rise_list {
   display: flex;
   align-items: center;
-  padding: 0.2rem 0;
+  padding-top: 0.2rem;
   font-size: 0.28rem;
 }
 
@@ -684,7 +682,7 @@ export default {
 .close_footer .cl_radio {
   display: flex;
   justify-content: flex-end;
-  padding: 0.2rem 5%;
+  padding: 0.2rem;
 }
 
 .close_ac {
@@ -692,25 +690,24 @@ export default {
   justify-content: space-between;
   align-items: center;
   font-size: 0.28rem;
-  padding: 0.2rem 5%;
+  padding: 0 0.2rem 0.2rem;
 }
 
 .close_ac h4 {
   font-weight: normal;
   color: #ef6213;
-  padding-left: 0.2rem;
 }
 .close_ac h4 span:nth-child(1) {
   padding-right: 0.2rem;
 }
 
 .close_ac button {
-  width: 100px;
-  font-size: 14px;
-  line-height: 30px;
+  width: 2rem;
+  font-size: .28rem;
+  line-height: .6rem;
   background: #ef6213;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: .08rem;
 }
 </style>

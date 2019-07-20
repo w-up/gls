@@ -249,7 +249,6 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             that.type = type;
-            console.log(type);
             that.$store.commit("areaTypeFun", type);
             that.data = res.data.data;
           } else {
@@ -283,7 +282,7 @@ export default {
             that.lang_dlg = true;
             that.dataDetail = res.data.data;
             that.getFame(); // 刷新种子状态
-          } else if (res.data.code == -1){
+          } else if (res.data.code == -1) {
             Toast(msg);
             that.getFame(); // 刷新种子状态
           } else {
@@ -486,8 +485,7 @@ export default {
 }
 
 .fa_title {
-  /* width: 3.2rem; */
-  height: 1.2rem;
+  /* height: 1.2rem; */
   border-radius: 1rem;
   background: rgba(0, 0, 0, 0.4);
   font-size: 0.26rem;
@@ -497,7 +495,7 @@ export default {
 
 .fa_title .address,
 .fa_title .guli {
-  padding: 4px 0;
+  padding: 0.08rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -506,8 +504,9 @@ export default {
 .fa_title .address span:nth-child(2),
 .fa_title .guli span:nth-child(2) {
   background: #ef6213;
-  padding: 1px 6px;
+  padding: 1px 0.12rem;
   border-radius: 0.1rem;
+  line-height: 0.36rem;
 }
 
 .fa_left {
@@ -596,10 +595,10 @@ export default {
 }
 .fa_muban {
   position: fixed;
-  bottom: 3rem;
-  right: .3rem;
-  /* transform: rotateY(5deg) rotate(45deg); */
-  /* transform: rotateX(-50deg) rotate(45deg); */
+  top: 20%;
+  left: 1.5rem;
+  /* bottom: 2.5rem;
+  right: 0.3rem; */
   width: 1.8rem;
   height: 1.6rem;
   background: url("../../assets/img/muban.png") no-repeat 0 0 / 100% 100%;
@@ -611,8 +610,9 @@ export default {
 .fa_muban > span {
   display: inline-block;
   font-size: 0.28rem;
-  color: #ef6213;
-  margin-top: 1rem;
+  color: #69341b;
+  margin-top: 0.15rem;
+  font-weight: 900;
 }
 
 .farm-list > div > div {

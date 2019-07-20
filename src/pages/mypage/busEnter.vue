@@ -236,10 +236,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
@@ -252,15 +252,14 @@ export default {
 }
 
 .bus_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.2rem;
 }
 
 .bus_con .bus_list {
   display: flex;
   flex-direction: column;
-  padding: 0.2rem 0;
+  padding-bottom: 0.2rem;
 }
 
 .bus_con .bus_list span {

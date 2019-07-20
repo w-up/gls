@@ -18,6 +18,7 @@
               v-for="(adoptitem,index) in adopt"
               :key="index"
               @click="gotoBlac(adoptitem.id)"
+              :class="{'card_1':adoptitem.type == 1, 'card_2':adoptitem.type == 2, 'card_3':adoptitem.type == 3}"
             >
               <div class="card-tit">
                 <span>{{adoptitem.title}}</span>
@@ -37,11 +38,7 @@
           </div>
           <div class="card_list">
             <div class="card" @click="gotoMeDe">
-              <div class="card-tit">
-                <span>会员卡</span>
-              </div>
-              <h4>VIP</h4>
-              <div class="card_time">
+              <div class="card_num">
                 <span>{{member_card.card_number}}</span>
               </div>
             </div>
@@ -54,11 +51,7 @@
           </div>
           <div class="card_list">
             <div class="card" @click="gotoGul">
-              <div class="card-tit">
-                <span>谷联卡</span>
-              </div>
-              <h4>谷联卡</h4>
-              <div class="card_time">
+              <div class="card_num">
                 <span>{{gulian_card.card_number}}</span>
               </div>
             </div>
@@ -192,10 +185,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: 0.8rem;
 }
 
 .mint-header {
@@ -203,8 +196,8 @@ export default {
 }
 
 .card_con {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .card_head {
@@ -219,13 +212,28 @@ export default {
 }
 
 .card {
-  width: 96%;
-  margin: 0 auto;
-  padding: 0 0.1rem;
-  background: #000000;
+  width: 100%;
+  height: 1.8rem;
+  padding: 0.2rem;
   border-radius: 0.1rem;
   color: #fff;
   margin-bottom: 0.2rem;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  position: relative;
+}
+.card_1 {
+  background: url("../../assets/img/ruralCard.png") 0 0 no-repeat / 100% 100%;
+}
+.card_2 {
+  background: url("../../assets/img/orchardCard.png") 0 0 no-repeat / 100% 100%;
+}
+.card_3 {
+  background: url("../../assets/img/pastureCard.png") 0 0 no-repeat / 100% 100%;
 }
 
 .card_huang {
@@ -237,7 +245,7 @@ export default {
 }
 
 .huiyuan_card .card {
-  background: #ec7d37;
+  background: url("../../assets/img/vipCard.png") 0 0 no-repeat / 100% 100%;
 }
 
 .huiyuan_card h4,
@@ -254,12 +262,12 @@ export default {
 }
 
 .gulian_card .card {
-  background: #55a532;
+  background: url("../../assets/img/glCard.png") 0 0 no-repeat / 100% 100%;
 }
 
 .card .card-tit {
-  padding: 0.1rem 0;
   font-size: 0.26rem;
+  line-height: 0.26rem;
   display: flex;
   display: -webkit-flex;
   -webkit-justify-content: space-between;
@@ -276,8 +284,16 @@ export default {
 }
 
 .card .card_time {
-  padding: 0.16rem 0;
   text-align: right;
   font-size: 0.24rem;
+  color: white;
+}
+.card_num {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.2rem;
+  font-size: 0.24rem;
+  line-height: 0.24rem;
+  color: #c39b5a;
 }
 </style>

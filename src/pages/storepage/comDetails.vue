@@ -56,7 +56,7 @@
         <div class="comd_info">
           <h4>
             <span>{{shopinfo.price}}元红包+{{shopinfo.integral}}谷分</span>
-            <inline-x-number :min="1" v-model="num"></inline-x-number>
+            <van-stepper v-model="num" :min="1" input-width="1rem" button-size="0.5rem" />
           </h4>
           <h5>{{shopinfo.name}}</h5>
           <div class="specific" v-show="shopTypeList.length != 0">
@@ -97,7 +97,7 @@
                     infinite-scroll-distance="10"
                     infinite-scroll-immediate-check="false"
                   >
-                    <div class="comment comd_con">
+                    <div>
                       <div class="box2">
                         <div
                           class="comment_list"
@@ -206,11 +206,11 @@
 </template>
 
 <script>
-import { Tab, LoadMore, TabItem, InlineXNumber } from "vux";
+import { XNumber, Tab, LoadMore, TabItem } from "vux";
 import { Indicator, Toast } from "mint-ui";
 export default {
   components: {
-    InlineXNumber,
+    XNumber,
     Toast,
     Tab,
     TabItem,
@@ -385,8 +385,8 @@ export default {
     // 加入购物车
     addShopCar() {
       let that = this;
-
-      if (that.shopType == "") {
+      if (that.shopType == "" && that.shopTypeList.length != 0) {
+        // 部分商品有规格
         Toast("请选择规格");
       } else {
         Indicator.open({
@@ -400,7 +400,7 @@ export default {
               token: localStorage.getItem("token"),
               goods_id: that.shopId,
               number: that.num,
-              shopType: that.shopType // 规格
+              specs: that.shopType // 规格
             }
           })
           .then(function(res) {
@@ -412,7 +412,7 @@ export default {
                 duration: 2000
               });
             } else {
-              //失败
+              Toast(res.data.msg);
             }
             Indicator.close();
           })
@@ -437,7 +437,7 @@ export default {
           price: that.shopinfo.price, //红包
           number: that.num, //数量
           name: that.shopinfo.name, //名字
-          shopType: that.shopType // 规格
+          specs: that.shopType // 规格
         }
       ];
       sessionStorage.setItem("orderList", JSON.stringify(arr));
@@ -493,8 +493,8 @@ export default {
 }
 
 .comd_con {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .comd_con .comd_info h4 {
@@ -508,17 +508,7 @@ export default {
 
 .comd_con .comd_info h4 span {
   display: inline-block;
-  line-height: 35px;
-}
-
-.comd_con .comd_info >>> .vux-number-input {
-  height: 35px !important;
-  padding: 2px 2px !important;
-}
-
-.comd_con .comd_info >>> .vux-number-selector {
-  height: 35px !important;
-  line-height: 30px !important;
+  line-height: .56rem;
 }
 
 .comd_con .comd_info h5 {
@@ -529,7 +519,7 @@ export default {
 
 .specific {
   display: flex;
-  padding: 0.1rem;
+  padding: 0.2rem 0;
   border-bottom: 1px solid #e9e9e9;
 }
 
@@ -570,21 +560,14 @@ export default {
 
 .comm_de {
   width: 100%;
-  margin: 0 auto;
-  height: auto;
+  padding: 0 0.2rem;
 }
 
-.comm_de img {
-  width: 100%;
-  height: auto;
-}
-
-.comment {
-  padding-bottom: 1rem;
-}
 
 .comment_list .com_title {
   display: flex;
+  display: -webkit-flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   padding: 0.2rem 0;
   font-size: 0.28rem;
@@ -608,14 +591,17 @@ export default {
 
 .com_img {
   display: flex;
+  display: -webkit-flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
 }
 
 .com_img img {
-  width: 48%;
-  height: 100%;
-  margin-bottom: 0.1rem;
+  width: 3.45rem;
+  height: 2.346rem;
+  margin-bottom: 0.2rem;
 }
 
 .com_bottom {

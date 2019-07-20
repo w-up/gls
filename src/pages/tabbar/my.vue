@@ -393,7 +393,7 @@ export default {
 
 .mint-header img {
   position: absolute;
-  right: 0.3rem;
+  right: 0.2rem;
   top: 0.2rem;
   width: 0.44rem;
 }
@@ -468,9 +468,8 @@ export default {
 }
 
 .my-content {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0.2rem;
 }
 
 .my-content .my-btn {

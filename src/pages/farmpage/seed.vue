@@ -35,8 +35,7 @@
         </div>
         <div class="number">
           <span>数量:</span>
-          <!-- <input type="number" v-model="num" name placeholder="请输入交易数量" /> -->
-          <x-number title align v-model="num" button-style="round" :min="1"></x-number>
+          <van-stepper v-model="num" :min="1" input-width="1rem" button-size="0.5rem" />
         </div>
         <button @click="BuySeed">确定</button>
       </div>
@@ -45,11 +44,10 @@
 </template>
 
 <script>
-import { XNumber, XDialog } from "vux";
+import { XDialog } from "vux";
 import { Toast, Indicator } from "mint-ui";
 export default {
   components: {
-    XNumber,
     XDialog,
     Toast,
     Indicator
@@ -139,8 +137,14 @@ export default {
         .then(function(res) {
           var msg = res.data.msg;
           if (res.data.code == 0) {
-            Toast("支付成功");
+            Toast(msg);
             that.lang_dlg = false;
+            that.$router.push({
+              path: "myfarm",
+              query: {
+                numType: 2
+              }
+            });
           } else {
             Toast(msg);
           }
@@ -260,22 +264,17 @@ export default {
 }
 
 .dialog .number {
-  margin-top: 0.2rem;
   display: flex;
-  /* justify-content: space-between; */
-  font-size: 0.26rem;
+  display: -webkit-flex;
   align-items: center;
+  -webkit-align-items: center;
+  padding: 0.1rem 0;
+  font-size: 0.28rem;
 }
 .dialog .number span:nth-child(1) {
   width: 35%;
   text-align: right;
   padding-right: 5%;
-}
-.dialog .number input {
-  width: 65%;
-  border: 1px solid #e8e8e8;
-  height: 0.6rem;
-  padding-left: 0.1rem;
 }
 
 .dialog .number span:nth-last-child(1) {

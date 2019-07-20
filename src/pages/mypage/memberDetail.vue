@@ -9,11 +9,8 @@
       <div class="card_con">
         <div class="huiyuan_card">
           <div class="card">
-            <div class="card-tit">
-              <span>会员卡</span>
-            </div>
-            <h4>VIP</h4>
-            <div class="card_time">
+            
+            <div class="card_num">
               <span>{{memberDetails.card_number}}</span>
             </div>
           </div>
@@ -143,19 +140,19 @@ export default {
 }
 
 .card_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0.2rem;
 }
 
 .card {
-  width: 96%;
-  margin: 0 auto;
-  padding: 0 0.1rem;
-  background: #df5000;
+  position: relative;
+  width: 100%;
+  height: 1.8rem;
+  padding: 0.2rem;
   border-radius: 0.1rem;
   color: #fff;
   margin-bottom: 0.2rem;
+  background: url("../../assets/img/vipCard.png") 0 0 no-repeat / 100% 100%;
 }
 
 .card .card-tit {
@@ -172,10 +169,13 @@ export default {
   text-align: center;
 }
 
-.card .card_time {
-  padding: 0.16rem 0;
-  text-align: right;
+.card .card_num {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.2rem;
   font-size: 0.24rem;
+  line-height: 0.24rem;
+  color: #c39b5a;
 }
 
 .card_deta .deta-list {

@@ -59,7 +59,7 @@
               <span>售价:{{shopinfo.price}}元</span>
               <span>会员价:{{shopinfo.integral}}元</span>
             </p>
-            <inline-x-number :min="1" v-model="num"></inline-x-number>
+            <van-stepper v-model="num" :min="1" input-width="1rem" button-size="0.4rem" />
           </div>
           <h5>{{shopinfo.name}}</h5>
           <!-- <div class="specific">
@@ -369,11 +369,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 1.6rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
-  padding-bottom: 0.8rem;
+  top: .8rem;
 }
 
 .mint-header {
@@ -398,14 +397,14 @@ export default {
 }
 
 .comd_con {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .comd_con .comd_info .comd_price {
   display: flex;
   justify-content: space-between;
-  padding: 0.2rem 0;
+  padding-bottom: 0.2rem;
 }
 .comd_con .comd_info .comd_price p span:nth-child(1) {
   color: #666;
@@ -418,28 +417,18 @@ export default {
 }
 .comd_con .comd_info span {
   display: inline-block;
-  line-height: 35px;
-}
-
-.comd_con .comd_info >>> .vux-number-input {
-  height: 35px !important;
-  padding: 2px 2px !important;
-}
-
-.comd_con .comd_info >>> .vux-number-selector {
-  height: 35px !important;
-  line-height: 30px !important;
+  line-height: .56rem;
 }
 
 .comd_con .comd_info h5 {
   font-size: 0.28rem;
-  padding-bottom: 0.3rem;
+  padding-bottom: 0.2rem;
   border-bottom: 1px solid #e9e9e9;
 }
 
 .specific {
   display: flex;
-  padding: 0.1rem 0;
+  padding: 0.2rem 0;
 }
 
 .specific p {
@@ -448,7 +437,7 @@ export default {
 }
 
 .specific .com_ch {
-  width: 91%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -469,7 +458,6 @@ export default {
 
 .comm_de {
   width: 100%;
-  margin: 0 auto;
   height: auto;
 }
 

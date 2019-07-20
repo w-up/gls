@@ -182,9 +182,7 @@ export default {
             let code = res.data.code;
             if (code == 0) {
               Toast("修改成功");
-              that.$router.push({
-                path: "/marketAddress"
-              });
+              that.$router.go(-1);
             } else {
               Toast(res.data.msg);
             }

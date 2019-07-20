@@ -156,10 +156,10 @@
 	.con-wrapper {
 		position: fixed;
 		width: 100%;
-		height: calc(100% - 40px);
+		height: calc(100% - .8rem);
 		overflow-x: hidden;
 		overflow-y: scroll;
-		top: 40px;
+		top: .8rem;
 	}
 
 	.mint-header {
@@ -172,9 +172,8 @@
 	}
 
 	.up_con {
-		width: 90%;
-		margin: 0 auto;
-
+		width: 100%;
+		padding: 0.2rem;
 	}
 
 	.img_title {
@@ -185,7 +184,7 @@
 		font-size: 0.25rem;
 	}
 	.bus_license{
-		padding: 0.2rem;
+		padding-bottom: 0.2rem;
 		font-size: 0.28rem;
 	}
 	.license_box {

@@ -33,34 +33,24 @@
               <div class="fruit_title">
                 <div>
                   <h4>{{item.title}}</h4>
-                  <h5>预计代售券{{item.bonus}}</h5>
+                  <h5>预计代售券 {{item.bonus}}</h5>
+                  <div class="mian">
+                    <span>单价: {{item.price}} 米宝</span>
+                    <span>{{item.surplus}}</span>
+                  </div>
+                  <div class="qixian">
+                    <span>期限</span>
+                    <span>{{item.term}}</span>
+                  </div>
                 </div>
                 <div class="leixing">
-                  <!-- <span>类型</span>
-                  <select @change="selectChange(itemIndex,$event)">
-                    <option
-                      v-for="option in mold"
-                      :key="option.id"
-                      :value="option.id"
-                    >{{option.name}}</option>
-                  </select>-->
                   <p
-                    @click="selectChange(typeItem.id, itemIndex)"
+                    @click="selectChange(typeItem.id, itemIndex, item)"
                     :class="typeItem.id == item.mold_id?'active_type':''"
                     v-for="typeItem in item.type"
                     :key="typeItem.id"
                   >{{typeItem.name}}</p>
                 </div>
-              </div>
-              <!-- <h5>预计年化分红{{item.bonus}}</h5> -->
-              <div class="mian">
-                <span>单价: {{item.price}} 米宝</span>
-                <span>{{item.surplus}}</span>
-              </div>
-              <div class="qixian">
-                <span>期限</span>
-                <span>{{item.term}}</span>
-                <mt-button type="primary" @click="gotoAdoptD(item)">确定</mt-button>
               </div>
             </div>
           </div>
@@ -119,9 +109,17 @@ export default {
     back() {
       this.$router.go(-1); //返回上一层
     },
-    //类型 选择方式
-    selectChange(type_id, itemIndex) {
+    //类型 选择方式 //前往领养详情页
+    selectChange(type_id, itemIndex, item) {
       this.data[itemIndex].mold_id = type_id;
+      this.$router.push({
+        path: "/adoptDetail",
+        query: {
+          storeId: item.id,
+          name: item.type[item.mold_id].name,
+          tabindex: this.tabindex
+        }
+      });
     },
     onItemFun(index) {
       this.tabindex = index;
@@ -132,18 +130,6 @@ export default {
       } else if (index == 2) {
         this.data = this.data3;
       }
-    },
-    //前往领养详情页
-    gotoAdoptD(item) {
-      let that = this;
-      that.$router.push({
-        path: "/adoptDetail",
-        query: {
-          storeId: item.id,
-          name: item.type[item.mold_id].name,
-          tabindex: that.tabindex
-        }
-      });
     },
     //前往记录页
     gotoRecored() {
@@ -223,20 +209,19 @@ export default {
 
 .fruit {
   /* padding-top: 0.1rem; */
-  width: 96%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0.2rem;
 }
 
 .fruit_list {
   display: flex;
-  margin: 0.2rem 0;
-  height: 1.8rem;
+  margin-bottom: 0.2rem;
   align-items: center;
 }
 
 .fruit_list .fruit_img {
-  width: 30%;
-  height: 100%;
+  width: 2rem;
+  height: 2rem;
   position: relative;
 }
 
@@ -280,18 +265,21 @@ export default {
 }
 
 .leixing p {
-  font-size: 0.28rem;
+  width: 1.5rem;
+  height: 0.5rem;
+  line-height: 0.5rem;
+  text-align: center;
+  font-size: 0.24rem;
   border: 1px solid #ddd;
-  border-radius: 0.18rem;
-  padding: 0 0.1rem;
-  line-height: 0.36rem;
+  border-radius: 0.25rem;
 }
 .leixing p:nth-last-child(1) {
   margin-top: 0.2rem;
 }
 .leixing .active_type {
   border: 1px solid #ef6213;
-  color: #ef6213;
+  color: white;
+  background: #ef6213;
 }
 
 .fruit_list .fruit_con .fruit_title select {
@@ -314,24 +302,17 @@ export default {
 }
 
 .fruit_list .fruit_con .mian span:nth-child(2) {
-  padding-right: 1.5rem;
   color: #ef6213;
+  margin-left: 0.2rem;
 }
 
-.fruit_list .fruit_con .qixian {
-  /* margin-top: 2px; */
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.fruit_list .fruit_con .qixian span {
+.qixian span {
   font-size: 0.24rem;
   color: #666;
 }
 
-.fruit_list .fruit_con .qixian span:nth-child(2) {
-  margin-right: 1rem;
+.qixian span:nth-child(2) {
+  margin-left: 0.2rem;
 }
 
 .fruit_list .mint-button--normal {

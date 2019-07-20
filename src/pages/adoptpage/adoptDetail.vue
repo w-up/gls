@@ -37,7 +37,7 @@
           </div>
           <div class="money">
             <span>米宝: {{number * data.price}}</span>
-            <x-number title align v-model="number" button-style="round" :min="1"></x-number>
+            <van-stepper v-model="number" :min="1" input-width="1rem" button-size="0.4rem" />
           </div>
           <div class="commiss">
             <button>{{moldname}}</button>
@@ -113,12 +113,7 @@
 
 <script>
 import {} from "vux";
-import {
-  XNumber,
-  XInput,
-  XDialog,
-  TransferDomDirective as TransferDom
-} from "vux";
+import { XNumber, XInput, XDialog } from "vux";
 import { Toast, Indicator } from "mint-ui";
 export default {
   components: {
@@ -528,9 +523,8 @@ export default {
 }
 
 .adopt_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0.2rem;
 }
 
 .adopt_info .ad_title {

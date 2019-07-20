@@ -14,7 +14,7 @@
           <div class="cult_info">
             <div class="info_left">
               <span>{{item.name}}</span>
-              <span>{{item.price}}</span>
+              <span>{{item.price}} 谷分</span>
             </div>
             <!-- 购买 -->
             <button
@@ -37,7 +37,11 @@
         </div>
         <div class="ktype">
           <span>价格</span>
-          <span>{{price}}</span>
+          <span>{{price * num}} 谷分</span>
+        </div>
+        <div class="ktype">
+          <span>数量</span>
+          <van-stepper v-model="num" :min="1" input-width="1rem" button-size="0.5rem" />
         </div>
         <button @click="Buycultivator">确定</button>
       </div>
@@ -60,7 +64,8 @@ export default {
       data: [], //获取开垦机数据
       activeId: "", //点击当开垦机id
       price: "", //开垦机价格
-      name: "" //开垦机类型
+      name: "", //开垦机类型
+      num: 1,
     };
   },
   created: function() {
@@ -122,16 +127,20 @@ export default {
           method: "post",
           data: {
             token: localStorage.getItem("token"),
-            id: that.activeId
+            id: that.activeId,
+            number: that.num
           }
         })
         .then(function(res) {
           var msg = res.data.msg;
           if (res.data.code == 0) {
-            Toast("支付成功");
+            Toast(res.data.msg);
             that.lang_dlg = false;
             that.$router.push({
-              path: "myfarm"
+              path: "myfarm",
+              query: {
+                numType: 0
+              }
             });
           } else {
             Toast(msg);
@@ -263,8 +272,11 @@ export default {
 
 .dialog .ktype {
   display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  -webkit-align-items: center;
   padding: 0.1rem 0;
-  font-size: 0.26rem;
+  font-size: 0.28rem;
 }
 
 .dialog .ktype span:nth-child(1) {

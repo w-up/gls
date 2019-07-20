@@ -287,19 +287,22 @@ export default {
 }
 
 .img_src {
-  width: 7.25rem;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0.2rem;
   margin-top: 0.5rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
 .img_src img {
-  width: 3.4rem;
-  height: 2.1rem;
+  width: 3.45rem;
+  height: 2.346rem;
   border: 1px solid #e5e5e5;
   margin-bottom: 0.2rem;
+}
+.img_src img:nth-last-child(1), .img_src img:nth-last-child(2) {
+  margin-bottom: 0;
 }
 
 .guide_page {

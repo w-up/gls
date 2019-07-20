@@ -148,9 +148,7 @@ export default {
             console.log(code);
             if (code == 0) {
               Toast("添加成功");
-              that.$router.push({
-                path: "/marketAddress"
-              });
+              that.$router.go(-1);
             } else {
               Toast(res.data.msg);
             }

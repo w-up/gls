@@ -143,10 +143,10 @@
 	.con-wrapper {
 		position: fixed;
 		width: 100%;
-		height: calc(100% - 50px);
+		height: calc(100% - .8rem);
 		overflow-x: hidden;
 		overflow-y: scroll;
-		top: 40px;
+		top: .8rem;
 	}
 	.mint-header {
 		background: #ef6213;
@@ -154,9 +154,7 @@
 	.scroll_div {
 		width: 100%;
 		height: 100%;
-		width: 90%;
-		margin: 0 auto;
-		margin-top: 0.1rem;
+		padding: 0 0.2rem;
 	}
 	.pay_con .pay_list {
 		border-bottom: 1px solid #E9E9E9;

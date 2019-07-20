@@ -159,7 +159,10 @@ export default {
     },
     gotoOrder() {
       this.$router.push({
-        path: "/myorder"
+        path: "/myorder",
+        query: {
+          isMine: 1
+        }
       });
     },
     gotoAdd() {
@@ -236,9 +239,8 @@ export default {
 }
 
 .my-content {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0.2rem;
 }
 
 .my-content .my-btn {
@@ -292,7 +294,7 @@ export default {
   margin-right: 0.1rem;
 }
 .balance {
-  margin-top: 0.26rem;
+  margin-top: 0.2rem;
   padding-bottom: 0.2rem;
   border-bottom: 1px solid #e9e9e9;
 }
@@ -303,7 +305,6 @@ export default {
 
 .name img {
   width: 0.44rem;
-  margin-left: 0.1rem;
 }
 
 .balance h4 {
@@ -324,7 +325,7 @@ export default {
 }
 
 .balance .ba_tit img {
-  width: 0.4rem;
+  width: 0.32rem;
 }
 .blue-zuan {
   background: url(../../assets/img/lz.png) no-repeat center center / 0.34rem

@@ -16,7 +16,7 @@
 					<span>摇钱树</span>
 				</div>
 				<div class="recreat_list" @click="gotoPrize">
-					<img src="../../assets/img/choujiang.jpg" />
+					<img src="../../assets/img/choujiang.png" />
 					<span>抽奖</span>
 				</div>
 			</div>

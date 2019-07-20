@@ -102,21 +102,21 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
   background: rgb(252, 207, 133) url("../../assets/img/color_pillar.png")
     no-repeat 100% 100%;
   background-size: 100%;
 }
 
 .result_info {
-  padding: 0.3rem;
+  padding: 0 0.2rem;
 }
 
 .result_list {
-  padding: 0.16rem 0;
+  padding-top: 0.2rem;
   font-size: 0.28rem;
   display: flex;
   justify-content: space-between;

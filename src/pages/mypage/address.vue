@@ -27,7 +27,7 @@
             <span @click="deleteAddress(addressitem.id)">删除</span>
             <h5
               :class="addressitem.is_default == 1 ? 'addclass' : '' "
-              @click="setDefault(addressitem.id)"
+              @click="setDefault(addressitem.id, addressitem.is_default)"
             >{{addressitem.is_default == 1 ? '默认地址' : defAddress}}</h5>
           </div>
         </div>
@@ -147,9 +147,9 @@ export default {
         });
     },
     //设置默认地址
-    setDefault(id) {
+    setDefault(id, is_default) {
       let that = this;
-      if (that.visited == id) {
+      if (is_default == 1) {
         return;
       }
       Indicator.open({
@@ -214,14 +214,12 @@ export default {
 }
 
 .detail_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.1rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .detail_con .detail_address {
   border-bottom: 1px solid #e9e9e9;
-  padding: 0 0.2rem;
   font-size: 0.26rem;
   padding: 0.2rem 0;
   display: flex;

@@ -227,6 +227,7 @@ export default {
   },
   data() {
     return {
+      isMine: this.$route.query.isMine, // 从mine页面进来
       pageindex: 1, // 第一页
       orderIndex: 0,
       orderList: [], //我的订单列表
@@ -258,7 +259,12 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-2); //返回上一层
+      if (this.isMine == 1) {
+        this.$router.go(-1); //返回上一层
+      } else {
+        this.$router.go(-2); //返回上一层
+      }
+      
       // this.$router.push({
       //   path: "/shoppingCar"
       // })
@@ -544,14 +550,12 @@ export default {
 }
 
 .fruit {
-  margin-top: 0.2rem;
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .fruit .fruit_tit {
-  padding-top: 0.3rem;
-  padding-bottom: 0.1rem;
+  padding: 0.2rem 0;
   font-size: 0.26rem;
   display: flex;
   justify-content: space-between;

@@ -30,7 +30,7 @@
               target="_blank"
               v-html="addressitem.is_default == 1 ? '默认地址' : defAddress "
               :class="addressitem.is_default == 1 ? 'addclass' : '' "
-              @click="setDefault(addressitem.id)"
+              @click="setDefault(addressitem.id, addressitem.is_default)"
             ></h5>
           </div>
         </div>
@@ -155,42 +155,43 @@ export default {
         });
     },
     //设置默认地址
-    setDefault(id) {
+    setDefault(id, is_default) {
       let that = this;
-      that.visited = id;
-      let addclass = $(".addclass");
-      console.log(id);
-      Indicator.open({
-        text: "加载中..."
-      });
-      that
-        .$http({
-          url: "Goodspj/setting_address",
-          method: "post",
-          data: {
-            token: localStorage.getItem("token"),
-            id: id
-          }
-        })
-        .then(function(res) {
-          if (res.data.code == 0) {
-            //成功回调
-            Toast("设置成功");
-            that.getMyAddress();
-          } else {
-            //失败
-            Toast(res.data.msg);
-          }
-          Indicator.close();
-        })
-        .catch(function(error) {
-          Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
+      if (is_default != 1) {
+        that.visited = id;
+        let addclass = $(".addclass");
+        Indicator.open({
+          text: "加载中..."
         });
+        that
+          .$http({
+            url: "Goodspj/setting_address",
+            method: "post",
+            data: {
+              token: localStorage.getItem("token"),
+              id: id
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 0) {
+              //成功回调
+              Toast("设置成功");
+              that.getMyAddress();
+            } else {
+              //失败
+              Toast(res.data.msg);
+            }
+            Indicator.close();
+          })
+          .catch(function(error) {
+            Indicator.close();
+            Toast({
+              message: "网络连接失败",
+              position: "bottom",
+              duration: 5000
+            });
+          });
+      }
     }
   }
 };

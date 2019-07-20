@@ -1,14 +1,12 @@
 <template>
   <div id="supermarket">
     <!-- 头部 -->
-
     <mt-header fixed title="谷联超市">
       <a slot="left">
         <mt-button icon="back" @click="back">返回</mt-button>
       </a>
     </mt-header>
     <!-- 轮播 -->
-
     <div class="con-wrapper">
       <div class="swipe">
         <mt-swipe :auto="4000">
@@ -42,7 +40,6 @@
       <div id="no-data" v-if="shopList.length == 0">
         <img src="../../assets/img/nodata.png" />
       </div>
-      <div style="height:50px;"></div>
     </div>
   </div>
 </template>
@@ -177,7 +174,7 @@ export default {
 }
 .swipe .search {
   position: absolute;
-  top: 0.1rem;
+  top: 0.2rem;
   left: 0;
   right: 0;
   margin: auto;
@@ -206,11 +203,11 @@ export default {
 .swipe .search input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-.swipe .search button i {
+/* .swipe .search button i {
   display: inline-block;
   font-size: 0.28rem;
   line-height: 0.6rem;
-}
+} */
 .swipe .search button:disabled {
   background: transparent;
   color: #ef6213;
@@ -243,14 +240,14 @@ export default {
 }
 .content-con {
   display: flex;
-  width: 93%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem 0.2rem;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 .content_list {
-  margin-top: 0.15rem;
-  width: 49%;
+  margin-top: 0.2rem;
+  width: 3.45rem;
   line-height: 0;
   border: 1px solid #eee;
   border-radius: 0.1rem;

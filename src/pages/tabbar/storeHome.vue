@@ -8,12 +8,12 @@
       <div class="swipe">
         <mt-swipe :auto="4000">
           <mt-swipe-item v-for="(item,index) in banner" :key="index">
-            <img :src="item">
+            <img :src="item" />
           </mt-swipe-item>
         </mt-swipe>
         <div class="search">
-          <input type="search" placeholder="请输入店铺名称" v-model="name">
-          <button :disabled="name == ''" @click="setIndustryData(industry_id)">
+          <input type="search" placeholder="请输入店铺名称" v-model="name" @blur="setIndustryData(name)" />
+          <button :disabled="name == ''" @click="setIndustryData(name)">
             <i class="iconfont icon-tabsearch"></i>
           </button>
         </div>
@@ -22,7 +22,11 @@
       <div class="content">
         <div class="nav">
           <ul :style="{width: percentage + '%'}">
-            <li :class="{'shop-key-active': industry_id == ''}" :style="{width: 100 / (shopKey.length + 1) + '%'}" @click="getShopData">
+            <li
+              :class="{'shop-key-active': industry_id == ''}"
+              :style="{width: 100 / (shopKey.length + 1) + '%'}"
+              @click="getShopData"
+            >
               <a>全部</a>
             </li>
             <li
@@ -30,7 +34,7 @@
               :key="index"
               :class="{'shop-key-active': industry_id == item.id}"
               :style="{width: 100 / (shopKey.length + 1) + '%'}"
-              @click="setIndustryData(item.name, item.id)"
+              @click="setIndustryData('', item.id)"
             >
               <a>{{item.name}}</a>
             </li>
@@ -43,7 +47,7 @@
             v-for="(item,index) in shopList"
             :key="index"
           >
-            <img :src="item.img">
+            <img :src="item.img" />
             <div class="con-title">
               <h3>{{item.name}}</h3>
               <!-- 蓝钻 -->
@@ -69,9 +73,8 @@
         </div>
       </div>
       <div id="no-data" v-if="shopList.length == 0">
-        <img src="../../assets/img/nodata.png">
+        <img src="../../assets/img/nodata.png" />
       </div>
-      <div style="height:50px;"></div>
     </div>
   </div>
 </template>
@@ -111,9 +114,9 @@ export default {
         .$http({
           url: "Ckshop/index",
           method: "post",
-					 data: {
-					  token: localStorage.getItem("token")
-					}
+          data: {
+            token: localStorage.getItem("token")
+          }
         })
         .then(function(res) {
           Indicator.close();
@@ -124,7 +127,7 @@ export default {
             that.shopList = res.data.data.shop.list;
             that.industry_id = "";
             that.name = "";
-            if (that.shopKey.length>=4) {
+            if (that.shopKey.length >= 4) {
               that.percentage = 20 * (that.shopKey.length + 1);
             } else {
               that.percentage = 100;
@@ -157,7 +160,7 @@ export default {
           url: "Ckshop/shopList",
           method: "post",
           data: {
-            name: "",
+            name: name,
             industry_id: id
           }
         })
@@ -205,7 +208,7 @@ export default {
   height: calc(100% - 1.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
 }
 #storehome .mint-header {
   background: #ef6213;
@@ -224,7 +227,7 @@ export default {
 
 .swipe .search {
   position: absolute;
-  top: 0.1rem;
+  top: 0.2rem;
   left: 0;
   right: 0;
   margin: auto;
@@ -253,18 +256,21 @@ export default {
 .swipe .search input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-.swipe .search button i {
+/* .swipe .search button i {
   display: inline-block;
-  font-size: 0.28rem;
+  font-size: 0.32rem;
   line-height: 0.6rem;
-}
+} */
 .swipe .search button:disabled {
   background: transparent;
   color: #ef6213;
 }
+.content {
+  width: 100%;
+  padding: 0.2rem;
+}
 .content .nav {
-  width: 95%;
-  margin: 0 auto;
+  width: 100%;
   overflow-x: scroll;
 }
 .content .nav ul {
@@ -275,8 +281,7 @@ export default {
   white-space: nowrap;
 }
 .content .nav ul li {
-  padding: 0.3rem 0;
-  /* width: 20%; */
+  padding: 0.2rem 0;
   font-size: 0.28rem;
   border-bottom: 1px solid #e9e9e9;
 }
@@ -285,14 +290,13 @@ export default {
 }
 .content-con {
   display: flex;
-  width: 96%;
-  margin: 0 auto;
+  width: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 .content_list {
-  margin-top: 0.15rem;
-  width: 49%;
+  margin-top: 0.2rem;
+  width: 3.45rem;
   line-height: 0;
   border: 1px solid #eee;
   border-radius: 0.1rem;

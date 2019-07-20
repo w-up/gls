@@ -334,42 +334,42 @@ export default {
   height: 0.8rem;
   padding: 0.2rem;
 }
-.swipe .search {
+.search {
   position: absolute;
-  top: 0.1rem;
+  top: 0.2rem;
   left: 0;
   right: 0;
   margin: auto;
   width: 6rem;
 }
-.swipe input::-webkit-input-placeholder {
+.search input::-webkit-input-placeholder {
   color: red;
   text-align: center;
 }
-.swipe input::-moz-placeholder {
+.search input::-moz-placeholder {
   /* Mozilla Firefox 19+ */
   color: red;
   text-align: center;
 }
-.swipe input::-moz-placeholder {
+.search input::-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
   color: red;
   text-align: center;
 }
-.swipe input::-ms-input-placeholder {
+.search input::-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: red;
   text-align: center;
 }
-.swipe .search input[type="search"]::-webkit-search-cancel-button {
+.search input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-.swipe .search button i {
+/* .swipe .search button i {
   display: inline-block;
   font-size: 0.28rem;
   line-height: 0.6rem;
-}
-.swipe .search button:disabled {
+} */
+.search button:disabled {
   background: transparent;
   color: #ef6213;
 }
@@ -385,10 +385,8 @@ export default {
 }
 
 .scroll_div {
-  width: 96%;
-  height: 2rem;
-  margin: 0 auto;
-  /* margin-top: 0.1rem; */
+  width: 100%;
+  padding: 0 0.2rem 0.2rem;
 }
 .content-con {
   display: flex;
@@ -396,8 +394,8 @@ export default {
   justify-content: space-between;
 }
 .content_list {
-  margin-top: 0.15rem;
-  width: 49%;
+  margin-top: 0.2rem;
+  width: 3.45rem;
   font-size: 0;
   border: 1px solid #eee;
   border-radius: 0.1rem;

@@ -183,10 +183,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 .mint-header {
   position: relative;
@@ -200,10 +200,8 @@ export default {
   width: 0.44rem;
 }
 .content {
-  width: 92%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
-  padding-bottom: 60px;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .balance {
@@ -228,7 +226,7 @@ export default {
   color: #c6c6c6;
 }
 .balance .ba_tit img {
-  width: 0.4rem;
+  width: 0.32rem;
 }
 .content .quit {
   position: relative;

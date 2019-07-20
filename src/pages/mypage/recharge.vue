@@ -204,16 +204,15 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .recha_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .recha_con .recha_list {
@@ -228,7 +227,6 @@ export default {
   border: 1px solid #c8c8c8;
   border-radius: 0.1rem;
   color: #555555;
-  background: #fff;
 }
 .recha_con .recha_list span {
   color: #333;
@@ -243,14 +241,14 @@ export default {
 .recha_con .recha_list input {
   flex: 1;
   height: 0.8rem;
+  line-height: 0.8rem;
   border: 1px solid #c8c8c8;
   border-radius: 0.1rem;
   padding-left: 0.1rem;
 }
 .recha_con .mint-button {
-  position: relative;
-  left: 50%;
-  margin-left: -3rem;
+  display: block;
+  margin: auto;
   font-size: 0.3rem;
   width: 6rem;
   height: 0.8rem;

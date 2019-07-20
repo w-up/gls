@@ -26,7 +26,7 @@
         </div>
         <div class="cover_list covertext">
           <span class="span_text">
-            <a>谷粒、米粒兑换时请选择区域</a>
+            <a>谷粒兑换时请选择区域</a>
           </span>
         </div>
         <!-- 红包兑谷分 -->
@@ -149,18 +149,18 @@ export default {
           id: 1,
           name: "红包兑谷分"
         },
-        {
-          id: 2,
-          name: "红包兑米粒"
-        },
+        // {
+        //   id: 2,
+        //   name: "红包兑米粒"
+        // },
         {
           id: 3,
           name: "米宝兑谷分"
         },
-        {
-          id: 4,
-          name: "米宝兑米粒"
-        },
+        // {
+        //   id: 4,
+        //   name: "米宝兑米粒"
+        // },
         {
           id: 5,
           name: "米宝对红包"
@@ -376,10 +376,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
@@ -392,16 +392,15 @@ export default {
 }
 
 .cover_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .cover_con .cover_list {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.2rem 0;
+  padding-top: 0.2rem;
 }
 
 .cover_con .cover_list select {
@@ -416,6 +415,7 @@ export default {
 .cover_con .cover_list span {
   color: #333;
   font-size: 0.28rem;
+  width: 1.5rem;
 }
 
 .cover_list .cover_con .cover_list span:nth-child(1) {
@@ -427,20 +427,21 @@ export default {
 }
 
 .cover_con .cover_text {
-  padding-top: 0;
+  padding-top: 0.2rem;
 }
 
 .cover_con .cover_list input {
   flex: 1;
   height: 0.8rem;
+  line-height: 0.8rem;
   border: 1px solid #c8c8c8;
   border-radius: 0.1rem;
   padding-left: 0.1rem;
 }
 .cover_con .cover_list .span_text {
   width: 100%;
-  text-align: center;
   font-size: 0.24rem;
+  margin-left: 1.5rem;
 }
 .cover_con .cover_list .span_text a,
 .cover_con .cover_list .span_text span:nth-child(2) {

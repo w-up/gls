@@ -259,7 +259,7 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-1); //返回上一层
+      this.$router.go(-2); //返回上一层
     },
     //去申请退货
     gotoAfter(id) {
@@ -377,38 +377,42 @@ export default {
     //付款
     SubmitPayment() {
       let that = this;
-      Indicator.open({
-        text: "支付中..."
-      });
-      that
-        .$http({
-          url: "goods_orderpj/paymentOrder",
-          method: "post",
-          data: {
-            token: localStorage.getItem("token"),
-            id: that.current_id,
-            payment_password: that.payment_password
-          }
-        })
-        .then(function(res) {
-          if (res.data.code == 0) {
-            Toast(res.data.msg);
-            that.closeDialog();
-            that.payment_password = "";
-            that.getMyorder();
-          } else {
-            Toast(res.data.msg);
-          }
-          Indicator.close();
-        })
-        .catch(function(error) {
-          Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
+      if (that.payment_password == "") {
+        Toast("请输入支付密码");
+      } else {
+        Indicator.open({
+          text: "支付中..."
         });
+        that
+          .$http({
+            url: "goods_orderpj/paymentOrder",
+            method: "post",
+            data: {
+              token: localStorage.getItem("token"),
+              id: that.current_id,
+              payment_password: that.payment_password
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 0) {
+              Toast(res.data.msg);
+              that.closeDialog();
+              that.payment_password = "";
+              that.getMyorder();
+            } else {
+              Toast(res.data.msg);
+            }
+            Indicator.close();
+          })
+          .catch(function(error) {
+            Indicator.close();
+            Toast({
+              message: "网络连接失败",
+              position: "bottom",
+              duration: 5000
+            });
+          });
+      }
     },
     //提醒发货
     RemindDelivery(id) {
@@ -542,14 +546,12 @@ export default {
 }
 
 .fruit {
-  margin-top: 0.2rem;
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .fruit .fruit_tit {
-  padding-top: 0.3rem;
-  padding-bottom: 0.1rem;
+  padding: 0.2rem 0;
   font-size: 0.26rem;
   display: flex;
   justify-content: space-between;

@@ -18,6 +18,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
   }
 
   html,
@@ -27,10 +29,33 @@
     overflow: hidden;
   }
 
+  /* 去掉默认样式 */
+  select {
+    /* appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none; */
+    border: none;
+    background: rgba(0, 0, 0, 0);
+  }
+
+  input[type="number"] {
+    -webkit-appearance: none !important;
+  }
+
+  input[type="password"] {
+    -webkit-appearance: none !important;
+  }
+
+  input[type="text"] {
+    -webkit-appearance: none !important;
+  }
+
+
   /* 头部标题栏 */
   .mint-header {
     height: 0.8rem;
     background: #ef6213;
+    padding: 0 0.2rem;
   }
 
   .mint-header.is-fixed {
@@ -84,7 +109,7 @@
   }
 
   /* 搜索框 */
-  .swipe .search input {
+  .search input {
     height: 0.6rem;
     width: 100%;
     background: rgba(255, 255, 255, 0.5);
@@ -98,7 +123,7 @@
     overflow: hidden;
   }
 
-  .swipe .search button {
+  .search button {
     position: absolute;
     top: 0;
     right: 0;
@@ -111,6 +136,12 @@
     background: #ef6213;
     -webkit-transition: all 0.2s;
     transition: all 0.2s;
+  }
+
+  .search button i {
+    display: inline-block;
+    font-size: 0.32rem;
+    line-height: 0.6rem;
   }
 
   /* 轮播图 */

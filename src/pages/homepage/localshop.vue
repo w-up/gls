@@ -305,7 +305,7 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 1.8rem);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
   top: 0.8rem;
@@ -322,13 +322,12 @@ export default {
 }
 .local_se {
   display: flex;
-  width: 90%;
-  margin: 0 auto;
-  padding: 0.2rem 0;
+  width: 100%;
+  padding: 0.2rem;
   position: relative;
 }
 .local_se select {
-  width: 22%;
+  width: 25%;
   height: 0.7rem;
   border: 1px solid #c8c8c8;
   border-radius: 0.1rem;
@@ -336,7 +335,9 @@ export default {
 }
 
 .local_se .search {
-  width: 76%;
+  width: 75%;
+  position: relative;
+  margin-left: 0.2rem;
 }
 
 .local_se .search input[type="search"]::-webkit-search-cancel-button {
@@ -344,7 +345,6 @@ export default {
 }
 
 .local_se .search input {
-  margin-left: 0.2rem;
   width: 100%;
   height: 0.7rem;
   border: none;
@@ -356,16 +356,16 @@ export default {
 
 .local_se .search span {
   position: absolute;
-  top: 0.4rem;
-  right: 0.1rem;
+  top: 0;
+  right: 0;
+  padding: 0.2rem;
   color: #ef6213;
+  font-size: .3rem;
 }
 .scroll_div {
   width: 100%;
   height: 100%;
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.1rem;
+  padding: 0 0.2rem;
 }
 /* .van-pull-refresh{
 		 height: 100%;
@@ -377,12 +377,12 @@ export default {
 }
 
 .local .content_list {
-  padding: 0.3rem 0;
-  width: 48%;
+  width: 3.45rem;
 }
 
 .local .content_list img {
-  width: 100%;
+  width: 3.45rem;
+  height: 3.45rem;
 }
 
 .local .content_list .con-title {

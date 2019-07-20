@@ -102,10 +102,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .box {
@@ -146,8 +146,8 @@ export default {
 }
 
 .g_content {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0.2rem;
   font-size: 0.28rem;
 }
 
@@ -155,7 +155,6 @@ export default {
   display: flex;
   justify-content: space-between;
   color: #ef6213;
-  margin-top: 0.3rem;
 }
 
 .gu_head span:nth-child(1) {
