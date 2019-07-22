@@ -178,11 +178,6 @@ export default {
         })
         .catch(function(error) {
           Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
         });
     },
     // 删除购物车
@@ -219,11 +214,6 @@ export default {
         })
         .catch(function(error) {
           Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
         });
     },
     // 结算

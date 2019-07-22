@@ -19,6 +19,17 @@
           <span>我的二维码</span>
           <img :src="invitation.invitation_img" />
         </div>
+        <div class="link">
+          <p>我的推广链接</p>
+          <div>
+            <p>{{invitation.url}}</p>
+            <span
+              v-clipboard:copy="invitation.url"
+              v-clipboard:success="onCopy"
+              v-clipboard:error="onError"
+            >复制</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -76,6 +87,49 @@ export default {
             duration: 5000
           });
         });
+    },
+    //复制失败
+    onError() {
+      // 移动端走的失败
+      // alert(navigator.userAgent);
+      if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+        if (/ baiduboxapp/i.test(navigator.userAgent)) {
+          window.location.replace(
+            "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
+          );
+        } else {
+          window.location.replace("weixin://");
+        }
+      } else {
+        window.location.replace("weixin://");
+      }
+      Toast({
+        message: "复制成功",
+        position: "center",
+        duration: 3000
+      });
+    },
+    //复制成功
+    onCopy() {
+      // web走的成功
+      // 邀请
+      let that = this;
+      if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+        if (/ baiduboxapp/i.test(navigator.userAgent)) {
+          window.location.replace(
+            "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
+          );
+        } else {
+          window.location.replace("weixin://");
+        }
+      } else {
+        window.location.replace("weixin://");
+      }
+      Toast({
+        message: "复制成功",
+        position: "center",
+        duration: 3000
+      });
     }
   }
 };
@@ -110,14 +164,13 @@ export default {
 }
 
 .black_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .black_list {
   font-size: 0.28rem;
-  padding: 0.1rem 0;
+  padding-top: 0.2rem;
   color: #555;
   display: flex;
 }
@@ -129,5 +182,25 @@ export default {
 .black_list img {
   width: 50%;
   height: 50%;
+}
+.link {
+  color: #555;
+  padding-top: 0.2rem;
+  font-size: 0.28rem;
+}
+.link > div {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+}
+.link > div > p {
+  width: 80%;
+  word-wrap: break-word;
+  font-size: 0.28rem;
+}
+.link > div > span {
+  color: #ffbe00;
+  font-size: 0.28rem;
 }
 </style>

@@ -74,7 +74,15 @@
               <!-- 农作物名称 -->
               <p>{{item.seed_status}}</p>
               <!-- 农作物图片 -->
+              <img v-if="item.status == 11" src="../../assets/img/farmCrop1.png" @click="seedDetail(item.id)" />
+              <img v-if="item.status == 12" src="../../assets/img/farmCrop2.png" @click="seedDetail(item.id)" />
+              <img v-if="item.status == 13" src="../../assets/img/farmCrop3.png" @click="seedDetail(item.id)" />
+              <img v-if="item.status == 14" src="../../assets/img/farmCrop4.png" @click="seedDetail(item.id)" />
+              <img v-if="item.status == 2" src="../../assets/img/farmCrop5.png" @click="seedDetail(item.id)" />
+              <!-- <img v-if="item.seed_img" src="../../assets/img/farmCrop1.png" @click="seedDetail(item.id)" />
               <img v-if="item.seed_img" :src="item.seed_img" @click="seedDetail(item.id)" />
+              <img v-if="item.seed_img" :src="item.seed_img" @click="seedDetail(item.id)" />
+              <img v-if="item.seed_img" :src="item.seed_img" @click="seedDetail(item.id)" /> -->
               <!-- 农作物 状态 -->
               <img
                 v-if="item.status ==2"
@@ -391,7 +399,8 @@ export default {
       let that = this;
       if (id !== undefined) {
         // Toast("这块土地已经种植了");
-        return;
+      } else if (land_id == undefined) {
+        Toast("请购买土地");
       } else {
         that
           .$http({

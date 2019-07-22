@@ -304,19 +304,12 @@ export default {
   position: relative;
   margin-left: 0.2rem;
   width: 100%;
+  top: 0;
 }
 .search input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
-/* .search button i {
-  display: inline-block;
-  font-size: 0.28rem;
-  line-height: 0.6rem;
-} */
-.search button:disabled {
-  background: transparent;
-  color: #ef6213;
-}
+
 
 .yipin_list {
   margin: 0.2rem 0;

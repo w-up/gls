@@ -362,7 +362,10 @@ export default {
 .close_ac {
   width: 100%;
   position: fixed;
+  left: 0;
+  right: 0;
   bottom: 0;
+  margin: auto;
   display: flex;
   display: -webkit-flex;
   flex-direction: row;

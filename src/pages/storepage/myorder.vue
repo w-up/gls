@@ -245,6 +245,8 @@ export default {
   },
   mounted() {
     let that = this;
+    console.log(this.isMine);
+    sessionStorage.setItem("goBackMine", this.isMine);
     that.getMyorder();
   },
   activated() {

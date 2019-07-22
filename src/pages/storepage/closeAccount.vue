@@ -200,11 +200,6 @@ export default {
             }
           })
           .catch(function(error) {
-            Toast({
-              message: "网络连接失败",
-              position: "bottom",
-              duration: 5000
-            });
           });
       }
     },
@@ -312,11 +307,6 @@ export default {
         })
         .catch(function(error) {
           Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
         });
     },
     // 发票信息显示

@@ -104,7 +104,16 @@ export default {
       plus.key.addEventListener("backbutton", function() {
         webview.canBack(function(e) {
           if (e.canBack) {
-            webview.back();
+            if (that.$route.path == "/myorder" || that.$route.path == "/marketOrder") {
+              if (sessionStorage.getItem("goBackMine") == 1) {
+                webview.back();
+              } else {
+                webview.back();
+                webview.back();
+              }
+            } else {
+              webview.back();
+            }
           } else {
             webview.close(); //hide,quit
             plus.runtime.quit();

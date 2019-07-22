@@ -13,9 +13,9 @@
       </div>
       <div class="adopt_con">
         <div class="adopt_info">
-          <div class="ad_title">
-            <span>{{data.title}} 按月分红</span>
-            <span>余量{{data.bonus}}</span>
+          <div class="adopt_stat">
+            <span>{{data.title}}</span>
+            <span>{{data.surplus}}</span>
           </div>
           <div class="adopt_stat">
             <div v-if="moldname=='委托代售'" class="stat_list">
@@ -524,25 +524,16 @@ export default {
 
 .adopt_con {
   width: 100%;
-  padding: 0.2rem;
-}
-
-.adopt_info .ad_title {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.28rem;
-  padding: 0.2rem 0;
-}
-
-.adopt_info .ad_title span:nth-child(2) {
-  color: #ef6213;
+  padding: 0 0.2rem;
 }
 
 .adopt_stat {
   display: flex;
+  display: -webkit-flex;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
   font-size: 0.26rem;
-  /* 	padding-bottom: 0.3rem; */
+  padding-top: 0.2rem;
 }
 .base_address {
   font-size: 0.28rem;

@@ -172,46 +172,7 @@ export default {
 #supermarket .mint-header {
   background: #ef6213;
 }
-.swipe .search {
-  position: absolute;
-  top: 0.2rem;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 6rem;
-  text-align: center;
-}
-.swipe input::-webkit-input-placeholder {
-  color: red;
-  text-align: center;
-}
-.swipe input::-moz-placeholder {
-  /* Mozilla Firefox 19+ */
-  color: red;
-  text-align: center;
-}
-.swipe input::-moz-placeholder {
-  /* Mozilla Firefox 4 to 18 */
-  color: red;
-  text-align: center;
-}
-.swipe input::-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: red;
-  text-align: center;
-}
-.swipe .search input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-}
-/* .swipe .search button i {
-  display: inline-block;
-  font-size: 0.28rem;
-  line-height: 0.6rem;
-} */
-.swipe .search button:disabled {
-  background: transparent;
-  color: #ef6213;
-}
+
 /* 轮播图 */
 .mint-swipe {
   width: 100%;
