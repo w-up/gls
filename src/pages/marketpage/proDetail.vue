@@ -39,13 +39,10 @@
             p-id="4403"
           />
         </svg>
-        <!-- <mt-button class="button-style" icon="aa iconfont icon-tabgouwuche2" @click="gotoCar"></mt-button>
-        <mt-button class="button-2 button-style" icon="aa iconfont icon-tabwode" @click="gotoMine"></mt-button>-->
       </a>
     </mt-header>
     <div class="con-wrapper">
       <div class="comd_img">
-        <!-- <img :src="shopinfo.show_img"> -->
         <mt-swipe :auto="4000">
           <mt-swipe-item v-for="(item,index) in shopinfo.show_img" :key="index">
             <img :src="item" />
@@ -54,86 +51,95 @@
       </div>
       <div class="comd_con">
         <div class="comd_info">
-          <div class="comd_price">
-            <p>
-              <span>售价:{{shopinfo.price}}元</span>
+          <h4>
+            <span>
+              售价:{{shopinfo.price}}元
               <span>会员价:{{shopinfo.integral}}元</span>
-            </p>
-            <van-stepper v-model="num" :min="1" input-width="1rem" button-size="0.4rem" />
-          </div>
+            </span>
+            <van-stepper v-model="num" :min="1" input-width="1rem" button-size="0.5rem" />
+          </h4>
           <h5>{{shopinfo.name}}</h5>
-          <!-- <div class="specific">
+          <div class="specific" v-show="shopTypeList.length != 0">
             <p>规格</p>
             <div class="com_ch">
-              <span>选择:颜色分类，尺寸</span>
-              <div class="spe_list">
-								<span>123</span>
-              </div>
-              <span class="iconfont icon-tabxiala"></span>
+              <span
+                :class="item.title == shopType?'active_span':''"
+                v-for="item in shopTypeList"
+                :key="item.title"
+                @click="chooseTypeFun(item.title)"
+              >{{item.title}}</span>
             </div>
-          </div>-->
+          </div>
           <h6>商家地址：{{shopinfo.address}}</h6>
         </div>
       </div>
       <div class="comm_nav">
-        <tab
-          :line-width="2"
-          bar-active-color="#ef6213"
-          active-color="#ef6213"
-          :scroll-threshold="1.5"
-        >
-          <tab-item selected @on-item-click="index=0">详情</tab-item>
-          <tab-item @on-item-click="index=1">评价({{count}})</tab-item>
-        </tab>
-
-        <div v-if="index==0" class="comm_de" v-html="shopinfo.details_img">
-          <!-- <img :src="shopinfo.details_img" /> -->
-        </div>
-        <div v-if="index==1" class="comm_de">
-          <div class="scroll_div">
-            <van-pull-refresh
-              v-model="isLoading"
-              pulling-text="下拉刷新"
-              loosing-text="释放更新"
-              loading-text="正在加载..."
-              @refresh="onRefresh"
-            >
-              <div
-                class="div"
-                v-infinite-scroll="loadMore"
-                infinite-scroll-disabled="loading"
-                infinite-scroll-distance="10"
-                infinite-scroll-immediate-check="false"
-              >
-                <div class="comment comd_con">
-                  <div class="box2">
-                    <div
-                      class="comment_list"
-                      v-for="(comItem,index) in commnetList"
-                      :key="index"
-                    >
-                      <div class="com_title">
-                        <span>{{comItem.name}} {{comItem.phone}}</span>
-                        <span>{{comItem.time}}</span>
-                      </div>
-                      <div class="star">
-                        <van-rate v-model="comItem.score" readonly />
-                      </div>
-                      <p>{{comItem.text}}</p>
-                      <div class="com_img">
-                        <img v-for="imgItem in comItem.img" :key="imgItem.id" :src="imgItem" />
+        <van-tabs v-model="index" animated>
+          <van-tab :title="'详情'">
+            <div v-show="index==0" class="comm_de" v-html="shopinfo.details_img"></div>
+          </van-tab>
+          <van-tab :title="'评价('+count+')'">
+            <div v-show="index==1" class="comm_de">
+              <div class="scroll_div">
+                <van-pull-refresh
+                  v-model="isLoading"
+                  pulling-text="下拉刷新"
+                  loosing-text="释放更新"
+                  loading-text="正在加载..."
+                  @refresh="onRefresh"
+                >
+                  <div
+                    class="div"
+                    v-infinite-scroll="loadMore"
+                    infinite-scroll-disabled="loading"
+                    infinite-scroll-distance="10"
+                    infinite-scroll-immediate-check="false"
+                  >
+                    <div>
+                      <div class="box2">
+                        <div
+                          class="comment_list"
+                          v-for="(comItem,listId) in commnetList"
+                          :key="listId"
+                        >
+                          <div class="com_title">
+                            <span>{{comItem.name}} {{comItem.phone}}</span>
+                            <span>{{comItem.time}}</span>
+                          </div>
+                          <div class="star">
+                            <van-rate v-model="comItem.score" readonly />
+                          </div>
+                          <p>{{comItem.text}}</p>
+                          <div class="com_img">
+                            <img
+                              v-for="imgItem in comItem.img"
+                              @click="srcShowFun(imgItem.id, listId)"
+                              :src="imgItem.src"
+                              :key="imgItem.id"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                  <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
+                  <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
+                </van-pull-refresh>
               </div>
-              <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
-              <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
-            </van-pull-refresh>
-          </div>
-        </div>
+            </div>
+          </van-tab>
+        </van-tabs>
       </div>
     </div>
+    <van-image-preview
+      v-model="srcShow"
+      :images="images"
+      :startPosition="srcIndex"
+      @change="onChange"
+      :loop="true"
+    >
+      <template v-slot:srcIndex>第{{ srcIndex }}页</template>
+    </van-image-preview>
     <div class="com_bottom">
       <button @click="addShopCar">加入购物车</button>
       <button @click="gotoClose">立即购买</button>
@@ -171,7 +177,13 @@ export default {
       lif: true, //正在加载中 显示
       nif: false, //没有更多数据了 隐藏
       loading: false, //下拉刷新
-      isLoading: false //上拉加载更多
+      isLoading: false, //上拉加载更多
+      srcShow: false, //图片预览
+      srcIndex: 0, //图片页面索引
+      startPosition: 0, //图片预览起始位置索引
+      images: [], //图片地址
+      shopTypeList: [], //商品类型
+      shopType: "" // 选中类型
     };
   },
   mounted() {
@@ -180,7 +192,7 @@ export default {
     that.getComment();
   },
   methods: {
-		gotoCar() {
+    gotoCar() {
       this.$router.push({
         path: "/marketShopcar"
       });
@@ -211,7 +223,7 @@ export default {
           if (res.data.code == 0) {
             //成功回调
             that.shopinfo = res.data.data;
-            // console.log(that.shopinfo);
+            that.shopTypeList = res.data.data.specs; //类型
           } else {
             //失败
             Toast(res.data.msg);
@@ -226,6 +238,22 @@ export default {
             duration: 5000
           });
         });
+    },
+    chooseTypeFun(index) {
+      this.shopType = index;
+    },
+    srcShowFun(index, listId) {
+      // 图片预览
+      this.srcShow = true;
+      this.srcIndex = index - 1;
+      this.startPosition = index - 1;
+      this.images = [];
+      for (let i = 0; i < this.commnetList[listId].img.length; i++) {
+        this.images.push(this.commnetList[listId].img[i].src);
+      }
+    },
+    onChange(index) {
+      this.srcIndex = index;
     },
     //下拉刷新
     onRefresh() {
@@ -299,43 +327,49 @@ export default {
     // 加入购物车
     addShopCar() {
       let that = this;
-      Indicator.open({
-        // text: "加载中...",
-        //文字
-        spinnerType: "fading-circle"
-        //样式
-      });
-      that
-        .$http({
-          url: "Goodspj/addShopping",
-          method: "post",
-          data: {
-            token: localStorage.getItem("token"),
-            goods_id: that.shopId,
-            number: 1
-          }
-        })
-        .then(function(res) {
-          if (res.data.code == 0) {
-            //成功回调
-            Toast({
-              message: "购物车添加成功！",
-              position: "bottom",
-              duration: 2000
-            });
-          } else {
-            //失败
-          }
-          Indicator.close();
-        })
-        .catch(function(error) {
-          Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
+      if (that.shopType == "" && that.shopTypeList.length != 0) {
+        // 部分商品有规格
+        Toast("请选择规格");
+      } else {
+        Indicator.open({
+          // text: "加载中...",
+          //文字
+          spinnerType: "fading-circle"
+          //样式
         });
+        that
+          .$http({
+            url: "Goodspj/addShopping",
+            method: "post",
+            data: {
+              token: localStorage.getItem("token"),
+              goods_id: that.shopId,
+              number: that.num,
+              specs: that.shopType // 规格
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 0) {
+              //成功回调
+              Toast({
+                message: "购物车添加成功！",
+                position: "bottom",
+                duration: 2000
+              });
+            } else {
+              //失败
+            }
+            Indicator.close();
+          })
+          .catch(function(error) {
+            Indicator.close();
+            Toast({
+              message: "网络连接失败",
+              position: "bottom",
+              duration: 5000
+            });
+          });
+      }
     },
     //立即购买
     gotoClose() {
@@ -347,13 +381,18 @@ export default {
           integral: that.shopinfo.integral, //股分
           price: that.shopinfo.price, //红包
           number: that.num, //数量
-          name: that.shopinfo.name //名字
+          name: that.shopinfo.name, //名字
+          specs: that.shopType // 规格
         }
       ];
       window.sessionStorage.setItem("orderList", JSON.stringify(arr));
-      that.$router.push({
-        path: "/marketClose"
-      });
+      if (that.shopType == "") {
+        Toast("请选择规格");
+      } else {
+        that.$router.push({
+          path: "/marketClose"
+        });
+      }
     }
   }
 };
@@ -365,25 +404,26 @@ export default {
   height: 100%;
   overflow: hidden;
 }
+.shop_cart {
+  width: 0.8rem;
+  height: 0.8rem;
+  padding: 0.2rem;
+}
 
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 1.6rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
+  padding-bottom: 0.8rem;
+  z-index: 99;
 }
 
 .mint-header {
   position: relative;
   background: #ef6213;
-}
-
-.shop_cart {
-  width: 0.8rem;
-  height: 0.8rem;
-  padding: 0.2rem;
 }
 
 .comd_img {
@@ -401,51 +441,61 @@ export default {
   padding: 0 0.2rem;
 }
 
-.comd_con .comd_info .comd_price {
+.comd_con .comd_info h4 {
   display: flex;
+  display: -webkit-flex;
   justify-content: space-between;
-  padding-bottom: 0.2rem;
-}
-.comd_con .comd_info .comd_price p span:nth-child(1) {
-  color: #666;
+  -webkit-justify-content: space-between;
   font-size: 0.26rem;
+  padding: 0.2rem 0;
+  font-weight: normal;
 }
-.comd_con .comd_info .comd_price p span:nth-child(2) {
-  color: #ef6213;
-  padding-left: 0.1rem;
-  font-size: 0.28rem;
+.comd_info h4 span {
+  color: #666;
+  line-height: 0.56rem;
 }
-.comd_con .comd_info span {
+.comd_info h4 span > span {
   display: inline-block;
-  line-height: .56rem;
+  color: #ef6213;
 }
 
 .comd_con .comd_info h5 {
   font-size: 0.28rem;
-  padding-bottom: 0.2rem;
+  padding-bottom: 0.1rem;
   border-bottom: 1px solid #e9e9e9;
 }
 
 .specific {
   display: flex;
   padding: 0.2rem 0;
+  border-bottom: 1px solid #e9e9e9;
 }
 
 .specific p {
   font-size: 0.28rem;
   color: #666;
+  margin: 0.1rem 0;
+  width: 0.7rem;
 }
 
 .specific .com_ch {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: 91%;
+  padding: 0 0.1rem 0;
 }
 
-.specific .com_ch span:nth-child(1) {
+.com_ch span {
+  display: inline-block;
   font-size: 0.28rem;
-  padding-left: 0.2rem;
+  color: #333;
+  padding: 0 0.1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.1rem;
+  margin: 0.05rem;
+}
+
+.com_ch .active_span {
+  border: 1px solid #ef6213;
+  color: #ef6213;
 }
 
 .comd_info h6 {
@@ -458,20 +508,13 @@ export default {
 
 .comm_de {
   width: 100%;
-  height: auto;
-}
-
-.comm_de img {
-  width: 100%;
-  height: auto;
-}
-
-.comment {
-  padding-bottom: 1rem;
+  padding: 0 0.2rem;
 }
 
 .comment_list .com_title {
   display: flex;
+  display: -webkit-flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   padding: 0.2rem 0;
   font-size: 0.28rem;
@@ -495,18 +538,21 @@ export default {
 
 .com_img {
   display: flex;
+  display: -webkit-flex;
+  -webkit-justify-content: space-between;
   justify-content: space-between;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
 }
 
 .com_img img {
-  width: 48%;
-  height: 100%;
-  margin-bottom: 0.1rem;
+  width: 3.45rem;
+  height: 2.346rem;
+  margin-bottom: 0.2rem;
 }
 
 .com_bottom {
-  z-index: 9999;
+  z-index: 99;
   width: 100%;
   position: fixed;
   bottom: 0;

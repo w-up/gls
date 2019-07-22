@@ -131,62 +131,6 @@
             </div>
           </van-tab>
         </van-tabs>
-        <!-- <tab
-          :line-width="2"
-          bar-active-color="#ef6213"
-          active-color="#ef6213"
-          :scroll-threshold="1.5"
-        >
-          <tab-item selected @on-item-click="index=0">详情</tab-item>
-          <tab-item @on-item-click="index=1">评价({{count}})</tab-item>
-        </tab>
-        <div v-show="index==0" class="comm_de">
-          <img :src="shopinfo.details_img" />
-        </div>
-        <div v-show="index==1" class="comm_de">
-          <div class="scroll_div">
-            <van-pull-refresh
-              v-model="isLoading"
-              pulling-text="下拉刷新"
-              loosing-text="释放更新"
-              loading-text="正在加载..."
-              @refresh="onRefresh"
-            >
-              <div
-                class="div"
-                v-infinite-scroll="loadMore"
-                infinite-scroll-disabled="loading"
-                infinite-scroll-distance="10"
-                infinite-scroll-immediate-check="false"
-              >
-                <div class="comment comd_con">
-                  <div class="box2">
-                    <div class="comment_list" v-for="(comItem,listId) in commnetList" :key="listId">
-                      <div class="com_title">
-                        <span>{{comItem.name}} {{comItem.phone}}</span>
-                        <span>{{comItem.time}}</span>
-                      </div>
-                      <div class="star">
-                        <van-rate v-model="comItem.score" readonly />
-                      </div>
-                      <p>{{comItem.text}}</p>
-                      <div class="com_img">
-                        <img
-                          v-for="imgItem in comItem.img"
-                          @click="srcShowFun(imgItem.id, listId)"
-                          :src="imgItem.src"
-                          :key="imgItem.id"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
-              <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
-            </van-pull-refresh>
-          </div>
-        </div>-->
       </div>
     </div>
     <van-image-preview
