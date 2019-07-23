@@ -28,9 +28,9 @@
               <div class="shop_tit">
                 <span>{{item.name}}</span>
               </div>
-              <!-- <div class="shop_num">
-              <span>黑色</span>
-              </div>-->
+              <div class="shop_num" v-show="item.specs != ''">
+                <span>规格: {{item.specs}}</span>
+              </div>
               <div class="redpack">
                 <h3>{{item.price}}元红包+{{item.integral}}谷分</h3>
                 <span>X{{item.number}}</span>
@@ -215,7 +215,7 @@ export default {
       var jsonData;
       let comArr = [];
       $.each(that.shopList, function(i, item) {
-        comArr.push([item.goods_id, item.number]); //数组形式[[2（商品ID）,2（商品数量）],[1,3]]
+        comArr.push([item.goods_id, item.number, item.specs]); //数组形式[[2（商品ID）,2（商品数量）],[1,3]]
       });
       if (invoice_type == 1) {
         // 不开发票

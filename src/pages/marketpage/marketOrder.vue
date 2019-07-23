@@ -57,11 +57,11 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span>
-                      <span v-if="orderitem.status== 1" @click="showDialog(orderitem.id)">立即付款</span>
-                      <span v-if="orderitem.status== 2" @click="RemindDelivery(orderitem.id)">提醒发货</span>
-                      <span v-if="orderitem.status== 3" @click="Receipt(orderitem.id)">确认收货</span>
-                      <span v-if="orderitem.status== 4">已完成</span>
+                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span class="btn" v-if="orderitem.status== 1" @click="showDialog(orderitem.id)">立即付款</span>
+                      <span class="btn" v-if="orderitem.status== 2" @click="RemindDelivery(orderitem.id)">提醒发货</span>
+                      <span class="btn" v-if="orderitem.status== 3" @click="Receipt(orderitem.id)">确认收货</span>
+                      <span class="btn" v-if="orderitem.status== 4">已完成</span>
                     </div>
                   </div>
                 </div>
@@ -84,8 +84,8 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span>
-                      <span @click="showDialog(orderitem.id)">立即付款</span>
+                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span class="btn" @click="showDialog(orderitem.id)">立即付款</span>
                     </div>
                   </div>
                 </div>
@@ -107,8 +107,8 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span>
-                      <span @click="RemindDelivery(orderitem.id)">提醒发货</span>
+                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span class="btn" @click="RemindDelivery(orderitem.id)">提醒发货</span>
                     </div>
                   </div>
                 </div>
@@ -131,8 +131,8 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span>
-                      <span @click="Receipt(orderitem.id)">确认收货</span>
+                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span class="btn" @click="Receipt(orderitem.id)">确认收货</span>
                     </div>
                   </div>
                 </div>
@@ -156,8 +156,7 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span>
-                      <span>已完成</span>
+                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                     </div>
                   </div>
                 </div>
@@ -185,7 +184,7 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span>
+                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                     </div>
                   </div>
                 </div>
@@ -228,6 +227,7 @@ export default {
   },
   data() {
     return {
+      isMine: this.$route.query.isMine, // 从mine页面进来
       pageindex: 1, // 第一页
       orderIndex: 0,
       orderList: [], //我的订单列表
@@ -245,6 +245,7 @@ export default {
   },
   mounted() {
     let that = this;
+    sessionStorage.setItem("goBackMine", this.isMine);
     that.getMyorder();
   },
   activated() {
@@ -259,7 +260,11 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-2); //返回上一层
+      if (this.isMine == 1) {
+        this.$router.go(-1); //返回上一层
+      } else {
+        this.$router.go(-2); //返回上一层
+      }
     },
     //去申请退货
     gotoAfter(id) {
@@ -323,18 +328,7 @@ export default {
         that.lif = true;
       }
       let orderIndex = that.orderIndex;
-      that.status =
-        orderIndex == 0
-          ? ""
-          : orderIndex == 1
-          ? 1
-          : orderIndex == 2
-          ? 2
-          : orderIndex == 3
-          ? 3
-          : orderIndex == 4
-          ? 4
-          : 0;
+      that.status = orderIndex == 0 ? "" : orderIndex == 1 ? 1 : orderIndex == 2 ? 2 : orderIndex == 3 ? 3 : orderIndex == 4 ? 4 : 0;
       Indicator.open({
         text: "加载中..."
       });
@@ -607,7 +601,7 @@ export default {
   font-size: 0.26rem;
   color: #666;
 }
-.fruit_list .fruit_con .qixian span:nth-child(2) {
+.fruit_list .fruit_con .qixian .btn {
   width: 1.4rem;
   height: 0.5rem;
   text-align: center;

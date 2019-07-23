@@ -28,13 +28,13 @@
               <div class="shop_tit">
                 <span>{{item.name}}</span>
               </div>
-              <!-- <div class="shop_num">
-              <span>黑色</span>
-              </div>-->
+              <div class="shop_num" v-show="item.specs != ''">
+                <span>规格: {{item.specs}}</span>
+              </div>
               <div class="redpack">
                 <h3>
-                  <span>售价:{{item.price}}元</span>
-                  <span>会员价:{{item.integral}}元</span>
+                  <span>售价: {{item.price}}元</span>
+                  <span>会员价: {{item.integral}}元</span>
                 </h3>
                 <span>X{{item.number}}</span>
               </div>
@@ -226,7 +226,6 @@ export default {
     submitOrder() {
       let that = this;
       let address_id = that.address.id;
-      console.log(address_id);
       let invoice_header = that.invoice_header;
       let invoice_phone = that.invoice_phone;
       let invoice_code = that.invoice_code;
@@ -235,8 +234,10 @@ export default {
       let type = that.type;
       var jsonData;
       let comArr = [];
+      // console.log(that.shopList);
+      // return;
       $.each(that.shopList, function(i, item) {
-        comArr.push([item.goods_id, item.number]); //数组形式[[2（商品ID）,2（商品数量）],[1,3]]
+        comArr.push([item.goods_id, item.number, item.specs]); //数组形式[[2（商品ID）,2（商品数量）],[1,3]]
       });
 
       if (type == 0) {
@@ -427,10 +428,6 @@ export default {
       let that = this;
       var selectIndex = e.target.value;
       that.invoice_type = selectIndex;
-
-      // let options = $("#test option:selected"); //获取选中的项
-      // alert(options.val()); //拿到选中项的值
-      // alert(options.text()); //拿到选中项的文本
       if (that.invoice_type == 2 || that.invoice_type == 3) {
         that.showFa();
       } else {
@@ -476,7 +473,7 @@ export default {
   height: calc(100% - 2.4rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
   padding-bottom: 0.2rem;
 }
 
@@ -596,18 +593,18 @@ export default {
 .cl_radio > label {
   position: relative;
   margin-left: 0.2rem;
-  font-size: .32rem;
+  font-size: 0.32rem;
 }
 
 .invoice_radio > label::before,
 .cl_radio > label::before {
   display: inline-block;
   content: "";
-  width: .32rem;
-  height: .32rem;
+  width: 0.32rem;
+  height: 0.32rem;
   border-radius: 50%;
   border: 1px solid rgb(219, 219, 219);
-  margin-right: .12rem;
+  margin-right: 0.12rem;
   vertical-align: bottom;
 }
 
@@ -620,12 +617,12 @@ export default {
 .cl_radio > input:checked + label::after {
   display: inline-block;
   content: "";
-  width: .12rem;
-  height: .12rem;
+  width: 0.12rem;
+  height: 0.12rem;
   border-radius: 50%;
   position: absolute;
-  left: .12rem;
-  bottom: .12rem;
+  left: 0.12rem;
+  bottom: 0.12rem;
   background-color: white;
 }
 
@@ -703,11 +700,11 @@ export default {
 
 .close_ac button {
   width: 2rem;
-  font-size: .28rem;
-  line-height: .6rem;
+  font-size: 0.28rem;
+  line-height: 0.6rem;
   background: #ef6213;
   color: #fff;
   border: none;
-  border-radius: .08rem;
+  border-radius: 0.08rem;
 }
 </style>

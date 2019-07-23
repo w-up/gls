@@ -40,8 +40,6 @@
             p-id="4403"
           />
         </svg>
-        <!-- <mt-button class="button-style" icon="aa iconfont icon-tabgouwuche2" @click="gotoCar"></mt-button>
-        <mt-button class="button-2 button-style" icon="aa iconfont icon-tabwode" @click="gotoMine"></mt-button>-->
       </a>
     </mt-header>
     <!-- 轮播 -->
@@ -287,7 +285,8 @@ export default {
     // 进入商品详情页
     gotoComd(item) {
       let that = this;
-      window.sessionStorage.setItem("shopName", item.name); //商品名称
+      sessionStorage.setItem("shopName", item.name); //商品名称
+      sessionStorage.setItem("shopImg", item.img); //商品图片
       this.$router.push({
         path: "/comDetails",
         query: {

@@ -9,6 +9,7 @@
     <div class="con-wrapper">
       <div class="lucky-wheel">
         <p class="game_money">已投: {{gameMoney}} 米粒</p>
+        <img class="game_tree" :src="clickedPrize?imgActive:imgUnactive" />
         <div class="click_prize" @click="startGameFun">
           <span>点击摇大奖</span>
         </div>
@@ -69,8 +70,10 @@ export default {
       gameSpend: "", // 游戏花费
       prize: "", //奖品
       inviteLink: "123456", // 邀请链接
-      isMe: true, //自己抽奖
-      friendsId: "" //朋友参与id
+      isMe: true,
+      imgActive: require("../../assets/img/moneyTree1.gif"),
+      imgUnactive: require("../../assets/img/moneyTree1.png"),
+      clickedPrize: false,
     };
   },
   created() {
@@ -111,11 +114,17 @@ export default {
     },
     startGameFun() {
       // 弹出确认抽奖框
+      if (this.clickedPrize == true) {
+        return;
+      }
       this.confirmGame = true;
     },
     rotate_handle() {
       //开始游戏
       let that = this;
+      if (that.clickedPrize == true) {
+        return;
+      }
       that.confirmGame = false;
       if (that.isMe) {
         that.$http
@@ -124,9 +133,13 @@ export default {
           })
           .then(function(res) {
             if (res.data.code == 0) {
-              that.toast_control = true;
-              that.prize = res.data.data + "米粒";
-              that.turntableInfoFun(); //刷新已投金额
+              that.clickedPrize = true;
+              setTimeout(() => {
+                that.toast_control = true;
+                that.prize = res.data.data + "米粒";
+                that.clickedPrize = false;
+                that.turntableInfoFun(); //刷新已投金额
+              }, 3000);
             } else if (res.data.code == -1) {
               Toast({
                 message: res.data.msg,
@@ -273,10 +286,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - .8rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
   z-index: 1000;
 }
 
@@ -290,8 +303,8 @@ export default {
   width: 100%;
   height: 10.3625rem;
   height: 100%;
-  background: rgb(252, 207, 133) url("../../assets/img/moneyTree.jpg") no-repeat
-    0 0 / 100% 100%;
+  background: rgb(252, 207, 133) url("../../assets/img/moneyTreeBg.png")
+    no-repeat 0 0 / 100% 100%;
 }
 .game_money {
   height: 0.4rem;
@@ -299,6 +312,17 @@ export default {
   font-size: 0.28rem;
   font-family: PingFangSC-regular;
   padding: 0.4rem 0 0 0.6rem;
+}
+.game_tree {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 1rem;
+  margin: auto;
+  width: 100%;
+  height: 75%;
+  padding: 0 0.2rem;
 }
 .click_prize {
   position: absolute;

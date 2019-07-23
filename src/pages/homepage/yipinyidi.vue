@@ -305,6 +305,7 @@ export default {
   margin-left: 0.2rem;
   width: 100%;
   top: 0;
+  left: 0;
 }
 .search input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;

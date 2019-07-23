@@ -21,13 +21,13 @@
               <span class="iconfont icon-tabshanchu" @click="dele(index,item.id)"></span>
             </div>
             <div class="shop_num">
-              <!-- 黑色 -->
-              <span></span>
+              <span v-show="item.specs != ''">规格: {{item.specs}}</span>
+              <span v-show="item.specs == ''"></span>
               <van-stepper v-model="item.number" :min="1" input-width="1rem" button-size="0.32rem" />
             </div>
             <h3>
-              <span>售价:{{item.price}}元</span>
-              <span>会员价:{{item.integral}}元</span>
+              <span>售价: {{item.price}}元</span>
+              <span>会员价: {{item.integral}}元</span>
             </h3>
           </div>
         </div>

@@ -96,11 +96,6 @@ export default {
         })
         .catch(function(error) {
           Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
         });
     },
     back() {
@@ -108,7 +103,10 @@ export default {
     },
     gotoOrder() {
       this.$router.push({
-        path: "/marketOrder"
+        path: "/marketOrder",
+        query: {
+          isMine: 1
+        }
       });
     },
     gotoAdd() {

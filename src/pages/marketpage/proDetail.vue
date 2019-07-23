@@ -377,7 +377,7 @@ export default {
       var arr = [
         {
           goods_id: that.shopinfo.id, //商品id
-          img: that.shopinfo.details_img, //商品图片
+          img: sessionStorage.getItem("shopImg"), //商品图片
           integral: that.shopinfo.integral, //股分
           price: that.shopinfo.price, //红包
           number: that.num, //数量
@@ -386,7 +386,7 @@ export default {
         }
       ];
       window.sessionStorage.setItem("orderList", JSON.stringify(arr));
-      if (that.shopType == "") {
+      if (that.shopType == "" && that.shopTypeList.length != 0) {
         Toast("请选择规格");
       } else {
         that.$router.push({

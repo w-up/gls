@@ -284,7 +284,8 @@ export default {
     // 进入商品详情页
     gotoComd(item) {
       let that = this;
-      window.sessionStorage.setItem("shopName", item.name); //商品名称
+      sessionStorage.setItem("shopName", item.name); //商品名称
+      sessionStorage.setItem("shopImg", item.img); //商品图片
       this.$router.push({
         path: "/proDetail",
         query: {
