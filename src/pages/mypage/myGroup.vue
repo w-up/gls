@@ -65,7 +65,7 @@ export default {
     back() {
       // this.$router.go(-1); //返回上一层
       this.$router.push({
-        path: "/tabs/my#myGroup"
+        path: "/tabs/my"
       });
     },
     //获取我的团队列表
@@ -118,10 +118,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .box {
@@ -162,8 +162,8 @@ export default {
 }
 
 .g_content {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
   font-size: 0.28rem;
 }
 
@@ -171,7 +171,7 @@ export default {
   display: flex;
   justify-content: space-between;
   color: #ef6213;
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
 }
 
 .gu_head span:nth-child(1) {

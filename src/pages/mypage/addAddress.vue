@@ -336,14 +336,16 @@ div.weui-cell.vux-tap-active.weui-cell_access {
 }
 
 .add_con button {
+  display: block;
+  margin: auto;
+  font-size: 0.3rem;
   width: 6rem;
   height: 0.8rem;
-  background: #ef6213;
-  border: none;
   color: #fff;
-  position: relative;
-  left: 50%;
-  margin-left: -3rem;
-  margin-top: 0.5rem;
+  margin-top: 0.3rem;
+  border-radius: 0.2rem;
+  background: #ef6213;
+  outline: 0 none;
+  border: 0 none;
 }
 </style>

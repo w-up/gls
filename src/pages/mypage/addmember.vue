@@ -154,10 +154,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 #farmdetail .mint-tab-item-label {
   font-size: 0.3rem;
@@ -172,9 +172,8 @@ export default {
 }
 
 .rech_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .rech_con .rech_list {
@@ -197,10 +196,10 @@ export default {
 }
 
 .rech_con .mint-button {
-  position: relative;
+  display: block;
+  margin: auto;
+  font-size: 0.3rem;
   width: 6rem;
-  left: 50%;
-  margin-left: -3rem;
   height: 0.8rem;
   color: #fff;
   margin-top: 0.3rem;

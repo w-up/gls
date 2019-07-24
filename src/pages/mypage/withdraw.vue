@@ -192,9 +192,8 @@ export default {
 }
 
 .with_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .with_con .with_list {

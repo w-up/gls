@@ -340,7 +340,7 @@ export default {
     },
     gotoGru() {
       this.$router.push({
-        path: "/myGroup#myGroup"
+        path: "/myGroup"
       });
     },
     gotoReco() {

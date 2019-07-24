@@ -103,25 +103,15 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
-}
-
-.mint-header {
-  background: #ef6213;
-}
-
-.mint-navbar .mint-tab-item.is-selected {
-  color: #ef6213;
-  border-bottom: 2px solid #ef6213;
+  top: .8rem;
 }
 
 .rech_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 .rech_con p {
   font-size: 0.24rem;
@@ -132,7 +122,7 @@ export default {
 .rech_con .rech_list {
   display: flex;
   align-items: center;
-  padding: 0.2rem 0;
+  padding-top: 0.2rem;
 }
 .rech_con .rech_list span {
   width: 26%;
@@ -147,11 +137,10 @@ export default {
   padding-left: 0.1rem;
 }
 .rech_con .mint-button {
-  position: relative;
-  width: 6rem;
-  left: 50%;
-  margin-left: -3rem;
+  display: block;
+  margin: auto;
   font-size: 0.3rem;
+  width: 6rem;
   height: 0.8rem;
   color: #fff;
   margin-top: 0.3rem;

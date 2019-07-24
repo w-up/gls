@@ -229,10 +229,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
@@ -244,8 +244,8 @@ export default {
   font-size: 0.6rem;
 }
 .up_con {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 .img_title {
   width: 100%;
@@ -255,7 +255,7 @@ export default {
   font-size: 0.25rem;
 }
 .super_license {
-  padding: 0.2rem;
+  padding: 0.2rem 0;
   font-size: 0.28rem;
 }
 .license_box {

@@ -229,9 +229,8 @@ export default {
   width: 0.32rem;
 }
 .content .quit {
-  position: relative;
-  left: 50%;
-  margin-left: -3rem;
+  display: block;
+  margin: auto;
   font-size: 0.3rem;
   width: 6rem;
   height: 0.8rem;

@@ -185,7 +185,7 @@ export default {
 
 .card_deta .deta-list .span1 {
   display: inline-block;
-  width: 22%;
+  width: 20%;
 }
 
 .card_deta .deta-list:nth-child(1) {

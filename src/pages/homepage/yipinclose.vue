@@ -16,7 +16,7 @@
             <div class="add_img">
               <span class="iconfont icon-tabaddress"></span>
               <span>收货地址：</span>
-              <span>{{address.province + address.city + address.area + address.detailed}}</span>
+              <span>{{address.address}}</span>
             </div>
             <span class="iconfont icon-tabgengduo"></span>
           </div>

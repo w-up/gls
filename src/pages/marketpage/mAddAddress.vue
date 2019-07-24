@@ -176,16 +176,15 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .add_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0 0.2rem 0;
 }
 
 .mint-header {
@@ -302,14 +301,13 @@ div.weui-cell.vux-tap-active.weui-cell_access {
 }
 
 .add_con button {
+  display: block;
   width: 6rem;
   height: 0.8rem;
   background: #ef6213;
   border: none;
   color: #fff;
-  position: relative;
-  left: 50%;
-  margin-left: -3rem;
-  margin-top: 0.5rem;
+  border-radius: 0.1rem;
+  margin: 0.4rem auto 0;
 }
 </style>

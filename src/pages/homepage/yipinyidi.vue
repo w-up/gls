@@ -68,6 +68,8 @@
                       />
                       <button
                         class="yi_btn"
+                        :class="subitem.is_active == 0?'yi_btn_active':''"
+                        :disabled="subitem.is_active == 0"
                         type="primary"
                         @click="reserve(subitem.id, subitem.spend, subitem.number, subitem.img, subitem.title)"
                       >预定</button>
@@ -387,7 +389,7 @@ export default {
   align-items: center;
   -webkit-align-items: center;
 }
-.yipin_list .yipin_con .yi_btn {
+.yi_btn {
   width: 1.5rem;
   height: 0.56rem;
   border: none;
@@ -395,6 +397,9 @@ export default {
   color: #fff;
   font-size: 0.26rem;
   border-radius: 0.1rem;
+}
+.yi_btn_active {
+  background: #c8c8c8;
 }
 .yipin_list .mint-button--normal {
   padding: 0 0.4rem;

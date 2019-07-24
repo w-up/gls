@@ -91,18 +91,6 @@ export default {
     //复制失败
     onError() {
       // 移动端走的失败
-      // alert(navigator.userAgent);
-      if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        if (/ baiduboxapp/i.test(navigator.userAgent)) {
-          window.location.replace(
-            "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
-          );
-        } else {
-          window.location.replace("weixin://");
-        }
-      } else {
-        window.location.replace("weixin://");
-      }
       Toast({
         message: "复制成功",
         position: "center",
@@ -112,19 +100,6 @@ export default {
     //复制成功
     onCopy() {
       // web走的成功
-      // 邀请
-      let that = this;
-      if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        if (/ baiduboxapp/i.test(navigator.userAgent)) {
-          window.location.replace(
-            "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
-          );
-        } else {
-          window.location.replace("weixin://");
-        }
-      } else {
-        window.location.replace("weixin://");
-      }
       Toast({
         message: "复制成功",
         position: "center",
@@ -145,10 +120,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: 0.8rem;
 }
 
 .mint-header {

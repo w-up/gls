@@ -23,11 +23,7 @@
         <h5>我的投票链接</h5>
         <div class="link">
           <span>{{url}}</span>
-          <span
-            v-clipboard:copy="url"
-            v-clipboard:success="onCopy"
-            v-clipboard:error="onError"
-          >分享</span>
+          <span v-clipboard:copy="url" v-clipboard:success="onCopy" v-clipboard:error="onError">分享</span>
         </div>
       </div>
       <div class="vote_con">
@@ -127,8 +123,8 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             //成功回调
-						Toast(res.data.msg);
-						that.getRanding();
+            Toast(res.data.msg);
+            that.getRanding();
           } else {
             //失败
             Toast(res.data.msg);
@@ -147,18 +143,6 @@ export default {
     //复制失败
     onError() {
       // 移动端走的失败
-      // alert(navigator.userAgent);
-      if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        if (/ baiduboxapp/i.test(navigator.userAgent)) {
-          window.location.replace(
-            "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
-          );
-        } else {
-          window.location.replace("weixin://");
-        }
-      } else {
-        window.location.replace("weixin://");
-      }
       Toast({
         message: "链接复制成功，请粘贴到微信分享",
         position: "center",
@@ -168,34 +152,13 @@ export default {
     //复制成功
     onCopy() {
       // web走的成功
-      // 邀请
       let that = this;
-      if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        if (/ baiduboxapp/i.test(navigator.userAgent)) {
-          window.location.replace(
-            "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
-          );
-        } else {
-          window.location.replace("weixin://");
-        }
-      } else {
-        window.location.replace("weixin://");
-      }
+      window.location.replace("weixin://");
       Toast({
         message: "链接复制成功，请粘贴到微信分享",
         position: "center",
         duration: 3000
       });
-      // that.$http
-      //   .post("Active/invitationUser", {
-      //     token: sessionStorage.getItem("token")
-      //   })
-      //   .then(function(res) {
-      //     if (res.data.code == 0) {
-      //       that.inviteLink = res.data.data;
-
-      //     }
-      //   });
     }
   }
 };
@@ -211,10 +174,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
@@ -231,8 +194,8 @@ export default {
 }
 
 .vote_con {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 .vote_num {
   display: flex;
@@ -245,19 +208,19 @@ export default {
   align-items: center;
 }
 .vote_num > div span:nth-child(2) {
-  padding-top: 0.1rem;
+  padding-top: 0.2rem;
   color: #ef6213;
 }
 .vote_link {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 .vote_link h5 {
   font-weight: normal;
   font-size: 0.28rem;
 }
 .vote_link .link {
-  padding: 0.1rem 0;
+  padding: 0.2rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

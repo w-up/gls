@@ -264,8 +264,10 @@ export default {
 .detail_con .mint-button {
   bottom: 1rem;
   position: fixed;
-  left: 50%;
-  margin-left: -3rem;
+  left: 0;
+  right: 0;
+  bottom: 1rem;
+  margin: auto;
   font-size: 0.3rem;
   width: 6rem;
   height: 0.8rem;

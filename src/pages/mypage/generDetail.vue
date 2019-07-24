@@ -14,15 +14,10 @@
           </div>
           <div class="detail_time">{{item.time}}</div>
         </div>
-        <div class="havedata" v-if="invitation.length > 0">
-          <div class="get_more" v-if="count>invitation" @click="getMore">加载更多>></div>
-          <div class="get_more" v-else>我是有底线的</div>
-        </div>
       </div>
       <div id="no-data" v-if="invitation.length == 0">
         <img src="../../assets/img/nodata.png" />
       </div>
-      <div style="height:50px;"></div>
     </div>
   </div>
 </template>
@@ -67,7 +62,6 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             //成功回调
-            //成功回调
             that.invitation = that.invitation.concat(res.data.data.list);
             that.count = res.data.data.count;
           } else {
@@ -105,10 +99,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
@@ -116,9 +110,8 @@ export default {
 }
 
 .detail_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.1rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .detail_con .detail_list {

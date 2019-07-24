@@ -103,14 +103,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
-}
-
-.mint-header {
-  background: #ef6213;
+  top: .8rem;
 }
 
 .mint-navbar .mint-tab-item.is-selected {
@@ -119,21 +115,19 @@ export default {
 }
 
 .detail_con {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.1rem;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .detail_con .detail_list {
   border-bottom: 1px solid #e9e9e9;
-  padding: 0 0.2rem;
   font-size: 0.26rem;
-  padding: 0.2rem 0;
+  padding-top: 0.2rem;
 }
 
 .detail_con .detail_list1,
 .detail_con .detail_pe {
-  padding-bottom: 0.1rem;
+  padding-bottom: 0.2rem;
   display: flex;
   justify-content: space-between;
 }
