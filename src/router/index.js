@@ -23,6 +23,8 @@ import MarketAddress from '@/pages/marketpage/marketAddress' //超市收货地�
 import MAddAddress from '@/pages/marketpage/mAddAddress' //超市新增收货地址页
 import MChangeAddress from '@/pages/marketpage/mChangeAddress' //超市修改收货地址页
 import Yipinyidi from '@/pages/homepage/yipinyidi' //一品一地
+import Yipindetail from '@/pages/homepage/yipindetail' //一品一地详情
+import Yipinclose from '@/pages/homepage/yipinclose' //一品一地结算页
 import Reserecord from '@/pages/homepage/reserecord' //预定记录
 import Localshop from '@/pages/homepage/localshop' //本地店铺
 import Payrecord from '@/pages/homepage/payrecord' //付款记录
@@ -378,6 +380,26 @@ export default new Router({
       name: 'Yipinyidi',
       components: {
         main: Yipinyidi,
+      },
+      meta: {
+        index: 3,
+      }
+    },
+    {
+      path: '/yipindetail',
+      name: 'Yipindetail',
+      components: {
+        main: Yipindetail,
+      },
+      meta: {
+        index: 3,
+      }
+    },
+    {
+      path: '/yipinclose',
+      name: 'Yipinclose',
+      components: {
+        main: Yipinclose,
       },
       meta: {
         index: 3,

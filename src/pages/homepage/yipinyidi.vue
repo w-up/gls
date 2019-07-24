@@ -15,12 +15,14 @@
             :value="areaitem.id"
           >{{areaitem.name}}</option>
         </select>
-        <!-- <div class="search">
-          <input type="search" v-model="name" @blur="search" placeholder="请输入名称进行搜索" />
-          <span class="iconfont icon-tabsearch" @click="search"></span>
-        </div> -->
         <div class="search">
-          <input type="search" placeholder="请输入名称进行搜索" style="border: 1px solid #c8c8c8; color: #333;" @blur="search" v-model="name">
+          <input
+            type="search"
+            placeholder="请输入名称进行搜索"
+            style="border: 1px solid #c8c8c8; color: #333;"
+            @blur="search"
+            v-model="name"
+          />
           <button :disabled="name == ''" @click="search">
             <i class="iconfont icon-tabsearch"></i>
           </button>
@@ -44,23 +46,30 @@
             <div class="yi_content">
               <div class="yipin">
                 <div class="yipin_list" v-for="(subitem,index) in subscribe" :key="index">
-                  <div class="yipin_img">
+                  <div
+                    class="yipin_img"
+                    @click="goDetailFun(subitem.id, subitem.spend, subitem.img, subitem.title)"
+                  >
                     <img :src="subitem.img" />
                   </div>
                   <div class="yipin_con">
                     <h4 class="yipin_title">{{subitem.title}}</h4>
                     <div class="spend">
                       <span>单价:</span>
-                      <span>{{subitem.spend}}</span>
-                      <span>数量 1</span>
+                      <span>{{subitem.spend}} 元</span>
                     </div>
-                    <h5  class="yipin_time">出售时间：{{subitem.sell_time}}</h5>
+                    <h5 class="yipin_time">出售时间：{{subitem.sell_time}}</h5>
                     <div class="yipin_btm">
-                      <van-stepper v-model="subitem.number" />
+                      <van-stepper
+                        v-model="subitem.number"
+                        :min="1"
+                        input-width="1rem"
+                        button-size="0.32rem"
+                      />
                       <button
                         class="yi_btn"
                         type="primary"
-                        @click="reserve(subitem.id,subitem.number)"
+                        @click="reserve(subitem.id, subitem.spend, subitem.number, subitem.img, subitem.title)"
                       >预定</button>
                     </div>
                   </div>
@@ -101,12 +110,14 @@ export default {
   },
   mounted: function() {
     let that = this;
-    that.getSubscribe(); //
+    that.getSubscribe();
     that.getAreaList();
   },
   methods: {
     back() {
-      this.$router.go(-1); //返回上一层
+      this.$router.push({
+				path: "/tabs/index",
+			});
     },
     gotoRecord() {
       this.$router.push({
@@ -220,39 +231,32 @@ export default {
         });
     },
     //预定
-    reserve(id, number) {
-      let that = this;
-      Indicator.open({
-        text: "提交中..."
+    reserve(id, price, number, img, title) {
+      var arr = {
+        goods_id: id, //商品id
+        img: img, //商品图片
+        number: number, //数量
+        name: title, //名字
+        price: price // 价格
+      };
+      sessionStorage.setItem("orderList", JSON.stringify(arr));
+      this.$router.push({
+        path: "/yipinclose",
+        query: {
+          id: id
+        }
       });
-      that
-        .$http({
-          url: "Subscribe/subscribeActive",
-          method: "post",
-          data: {
-            token: window.sessionStorage.getItem("token"),
-            id: id,
-            number: number
-          }
-        })
-        .then(function(res) {
-          if (res.data.code == 0) {
-            //成功回调
-            Toast(res.data.msg);
-          } else {
-            //失败
-            Toast(res.data.msg);
-          }
-          Indicator.close();
-        })
-        .catch(function(error) {
-          Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
-        });
+    },
+    goDetailFun(id, price, img, title) {
+      sessionStorage.setItem("shopImg", img);
+      sessionStorage.setItem("shopName", title);
+      this.$router.push({
+        path: "/yipindetail",
+        query: {
+          id: id,
+          price: price
+        }
+      });
     }
   }
 };
@@ -282,14 +286,14 @@ export default {
   display: flex;
   width: 100%;
   margin: 0 auto;
-  padding: 0.2rem .2rem 0;
+  padding: 0.2rem 0.2rem 0;
   position: relative;
 }
 .scroll_div {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 0 .2rem;
+  padding: 0 0.2rem;
 }
 .yipin_se select {
   width: 2rem;
@@ -298,6 +302,16 @@ export default {
   border-radius: 1rem;
   color: #333;
   background: white;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  padding: 0 0.28rem 0.05rem 0.1rem;
+  line-height: 0.6rem;
+  background: url("../../assets/img/downArrows.png") no-repeat 1.7rem center /
+    0.2rem 25%;
+}
+.yipin_se select option {
+  line-height: 0.6rem !important;
 }
 
 .search {
@@ -311,13 +325,12 @@ export default {
   -webkit-appearance: none;
 }
 
-
 .yipin_list {
   margin: 0.2rem 0;
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
-	-webkit-flex-direction: row;
+  -webkit-flex-direction: row;
   justify-content: space-between;
   -webkit-justify-content: space-between;
   align-items: center;
@@ -368,7 +381,7 @@ export default {
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
-	-webkit-flex-direction: row;
+  -webkit-flex-direction: row;
   justify-content: space-between;
   -webkit-justify-content: space-between;
   align-items: center;
@@ -376,7 +389,7 @@ export default {
 }
 .yipin_list .yipin_con .yi_btn {
   width: 1.5rem;
-  height: .56rem;
+  height: 0.56rem;
   border: none;
   background: #ef6213;
   color: #fff;

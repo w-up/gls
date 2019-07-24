@@ -40,8 +40,6 @@
             p-id="4403"
           />
         </svg>
-        <!-- <mt-button class="button-style" icon="aa iconfont icon-tabgouwuche2" @click="gotoCar"></mt-button>
-        <mt-button class="button-2 button-style" icon="aa iconfont icon-tabwode" @click="gotoMine"></mt-button>-->
       </a>
     </mt-header>
     <!-- 轮播 -->
