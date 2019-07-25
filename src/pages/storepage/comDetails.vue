@@ -51,14 +51,15 @@
       </div>
       <div class="comd_con">
         <div class="comd_info">
-          <h4>
+          <div class="comd_info_title">
             <span>{{shopinfo.price}}元红包+{{shopinfo.integral}}谷分</span>
-            <van-stepper v-model="num" :min="1" input-width="1rem" button-size="0.5rem" />
-          </h4>
+            <p>库存: {{shopinfo.surplus}}</p>
+            <van-stepper v-model="num" :min="1" :max="shopinfo.surplus" input-width="1rem" button-size="0.5rem" />
+          </div>
           <h5>{{shopinfo.name}}</h5>
           <div class="specific" v-show="shopTypeList.length != 0">
             <p>规格</p>
-            <div class="com_ch">
+            <div class="shop_size">
               <span
                 :class="item.title == shopType?'active_span':''"
                 v-for="item in shopTypeList"
@@ -436,22 +437,32 @@ export default {
   width: 100%;
   padding: 0 0.2rem;
 }
-
-.comd_con .comd_info h4 {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.26rem;
+.comd_info {
   padding: 0.2rem 0;
-  color: #ef6213;
+}
+.comd_info .comd_info_title {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  align-items: center;
+  -webkit-align-items: center;
+  font-size: 0.26rem;
   font-weight: normal;
+  padding-bottom: 0.2rem;
 }
 
-.comd_con .comd_info h4 span {
+.comd_info .comd_info_title span {
+  display: inline-block;
+  color: #ef6213;
+}
+.comd_info .comd_info_title p {
   display: inline-block;
   line-height: .56rem;
+  color: #ef6213;
 }
 
-.comd_con .comd_info h5 {
+.comd_info h5 {
   font-size: 0.28rem;
   padding-bottom: 0.1rem;
   border-bottom: 1px solid #e9e9e9;
@@ -470,12 +481,12 @@ export default {
   width: 0.7rem;
 }
 
-.specific .com_ch {
+.shop_size {
   width: 91%;
   padding: 0 0.1rem 0;
 }
 
-.com_ch span {
+.shop_size span {
   display: inline-block;
   font-size: 0.28rem;
   color: #333;
@@ -485,7 +496,7 @@ export default {
   margin: 0.05rem;
 }
 
-.com_ch .active_span {
+.shop_size .active_span {
   border: 1px solid #ef6213;
   color: #ef6213;
 }

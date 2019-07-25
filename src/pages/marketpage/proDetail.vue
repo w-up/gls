@@ -51,13 +51,14 @@
       </div>
       <div class="comd_con">
         <div class="comd_info">
-          <h4>
+          <div class="comd_info_title">
             <span>
               售价:{{shopinfo.price}}元
-              <span>会员价:{{shopinfo.integral}}元</span>
+              <br /><span>会员价:{{shopinfo.integral}}元</span>
             </span>
-            <van-stepper v-model="num" :min="1" input-width="1rem" button-size="0.5rem" />
-          </h4>
+            <p>库存: {{shopinfo.surplus}}</p>
+            <van-stepper v-model="num" :min="1" :max="shopinfo.surplus" input-width="1rem" button-size="0.5rem" />
+          </div>
           <h5>{{shopinfo.name}}</h5>
           <div class="specific" v-show="shopTypeList.length != 0">
             <p>规格</p>
@@ -441,20 +442,21 @@ export default {
   padding: 0 0.2rem;
 }
 
-.comd_con .comd_info h4 {
+.comd_info .comd_info_title {
   display: flex;
   display: -webkit-flex;
   justify-content: space-between;
   -webkit-justify-content: space-between;
+  align-items: center;
+  -webkit-align-items: center;
   font-size: 0.26rem;
-  padding: 0.2rem 0;
   font-weight: normal;
+  padding-bottom: 0.2rem;
 }
-.comd_info h4 span {
+.comd_info .comd_info_title span {
   color: #666;
-  line-height: 0.56rem;
 }
-.comd_info h4 span > span {
+.comd_info .comd_info_title span > span {
   display: inline-block;
   color: #ef6213;
 }
