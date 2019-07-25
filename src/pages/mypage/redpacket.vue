@@ -17,6 +17,14 @@
         <tab-item @click.native="navTap(1)">实拆红包</tab-item>
       </tab>
       <div v-if="redIndex==0" class="detail_con">
+        <div class="red_num">
+          <div>
+            <span>100</span>
+            <p>红包总个数</p>
+          </div>
+          <span class="red_click1" @click="goRedOpenFun">直接拆</span>
+          <span class="red_click2" @click="goRedMoreOpenFun">多倍拆</span>
+        </div>
         <div
           class="detail_list"
           v-for="(item,index) in haveList"
@@ -31,6 +39,16 @@
         </div>
       </div>
       <div v-if="redIndex==1" class="detail_con">
+        <div class="red_num">
+          <div>
+            <span>100个</span>
+            <p>实拆红包个数</p>
+          </div>
+          <div>
+            <span>18.25元</span>
+            <p>红包金额</p>
+          </div>
+        </div>
         <div class="detail_list" v-for="(item,index) in haveList" :key="index">
           <div class="detail_re">
             <span>{{item.name}}</span>
@@ -120,6 +138,16 @@ export default {
             duration: 5000
           });
         });
+    },
+    goRedOpenFun() {
+      this.$router.push({
+        path: "/redopen"
+      });
+    },
+    goRedMoreOpenFun() {
+      this.$router.push({
+        path: "/redmoreopen"
+      });
     }
   }
 };
@@ -135,10 +163,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - .8rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
 }
 
 #farmdetail .mint-tab-item-label {
@@ -153,6 +181,52 @@ export default {
 .detail_con {
   width: 100%;
   padding: 0 0.2rem;
+}
+
+.red_num {
+  width: 100%;
+  height: 2rem;
+  padding: 0.2rem;
+  margin-top: 0.2rem;
+  border-radius: 1rem;
+  box-shadow: 0px 1px 3px 1px rgba(230, 230, 230, 1);
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+  justify-content: space-around;
+  -webkit-justify-content: space-around;
+  align-items: center;
+  -webkit-align-items: center;
+}
+.red_num > div {
+  text-align: center;
+}
+.red_num > div > span {
+  color: rgba(239, 98, 19, 1);
+  font-size: 0.36rem;
+  font-weight: 900;
+}
+.red_num > div > p {
+  color: rgba(159, 159, 159, 1);
+  font-size: 0.28rem;
+  margin-top: 0.1rem;
+}
+
+.red_click1,
+.red_click2 {
+  display: inline-block;
+  width: 1.76rem;
+  height: 0.68rem;
+  line-height: 0.68rem;
+  border-radius: 0.6rem;
+  background-color: rgba(74, 147, 73, 1);
+  color: rgba(255, 255, 255, 1);
+  font-size: 0.28rem;
+  text-align: center;
+}
+.red_click2 {
+  background-color: rgba(239, 98, 19, 1);
 }
 
 .detail_con .detail_list {

@@ -64,6 +64,8 @@ import Conver from '@/pages/mypage/conver' //兑换页
 import ConverDetail from '@/pages/mypage/converDetail' //兑换明细页
 import FarmDetail from '@/pages/mypage/farmDetail' //农场明细页
 import RedPacket from '@/pages/mypage/redpacket' //红包明细页
+import Redopen from '@/pages/mypage/redopen' //拆红包
+import Redmoreopen from '@/pages/mypage/redmoreopen' //多倍拆
 import ReceiveRed from '@/pages/mypage/receiveRed' //所领红包
 import ShareRed from '@/pages/mypage/shareRed' //分享领红包
 import Manycard from '@/pages/mypage/manycard' //多倍卡
@@ -761,6 +763,26 @@ export default new Router({
       name: 'RedPacket',
       components: {
         main: RedPacket,
+      },
+      meta: {
+        index: 3,
+      }
+    },
+    {
+      path: '/redopen',
+      name: '/Redopen',
+      components: {
+        main: Redopen,
+      },
+      meta: {
+        index: 3,
+      }
+    },
+    {
+      path: '/redmoreopen',
+      name: '/Redmoreopen',
+      components: {
+        main: Redmoreopen,
       },
       meta: {
         index: 3,

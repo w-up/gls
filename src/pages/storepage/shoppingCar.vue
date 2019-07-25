@@ -37,7 +37,7 @@
           </label>
           <span>全选</span>
         </div>
-        <h4>合计：{{allMoney}}元红包+{{allGufen}}积分</h4>
+        <h4>合计：{{allMoney}}元红包+{{allGufen}}谷分</h4>
         <button @click="pay" :disabled="disabled">结算</button>
       </div>
     </div>

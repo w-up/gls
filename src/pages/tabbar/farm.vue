@@ -128,12 +128,16 @@ export default {
       type: this.$store.state.areaType, //土地类型：1黄土地，2黑土地，3金土地
       activeId: "", //点击当前土地id
       fApply: "", //是否有好友申请
-      seedId: window.localStorage.getItem("seed_id") //种子id
+      seedId: localStorage.getItem("seed_id"), //种子id
+      timer: "", // 计时器
     };
   },
   created: function() {
     this.getFame();
     this.getfriendApply();
+    this.timer = setInterval(() => {
+      this.getFame();
+    }, 5000);
   },
   methods: {
     back() {
@@ -244,7 +248,6 @@ export default {
     changeLand() {
       let that = this;
       var type = that.type == 1 ? 2 : that.type == 2 ? 3 : 1;
-      console.log(type);
       that
         .$http({
           url: "Farm/landList",
@@ -439,6 +442,16 @@ export default {
       var that = this;
       this.lang_dlg = false;
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    //切换路由 离开页面清除计时器
+    clearInterval(this.timer);
+    next();
+  },
+  beforeDestroy() {
+    //在开始销毁实例时调用。此时实例仍然有功能。
+    //清除定时器
+    // clearInterval(this.timer);
   }
 };
 </script>

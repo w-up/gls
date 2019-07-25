@@ -94,7 +94,7 @@
     </div>
     <div class="close_footer">
       <div class="close_ac">
-        <h4>合计：{{allMoney}}元红包+{{allGufen}}积分</h4>
+        <h4>合计：{{allMoney}}元红包+{{allGufen}}谷分</h4>
         <button @click="submitOrder">提交订单</button>
       </div>
     </div>

@@ -286,7 +286,9 @@ export default {
             for (let i = 0; i < that.data.length; i++) {
               if (that.data[i].id == that.activeId) {
                 that.$store.commit("areaTypeFun", that.data[i].type);
-                that.$router.go(-1); //返回上一层
+                that.$router.push({
+                  path: "tabs/farm"
+                });
               }
             }
             // that.getkaiken(); // 刷新开垦机
