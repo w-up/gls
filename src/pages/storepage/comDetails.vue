@@ -54,7 +54,13 @@
           <div class="comd_info_title">
             <span>{{shopinfo.price}}元红包+{{shopinfo.integral}}谷分</span>
             <p>库存: {{shopinfo.surplus}}</p>
-            <van-stepper v-model="num" :min="1" :max="shopinfo.surplus" input-width="1rem" button-size="0.5rem" />
+            <van-stepper
+              v-model="num"
+              :min="1"
+              :max="shopinfo.surplus"
+              input-width="1rem"
+              button-size="0.5rem"
+            />
           </div>
           <h5>{{shopinfo.name}}</h5>
           <div class="specific" v-show="shopTypeList.length != 0">
@@ -74,8 +80,7 @@
       <div class="comm_nav">
         <van-tabs v-model="index" animated>
           <van-tab :title="'详情'">
-            <div v-show="index==0" class="comm_de" v-html="shopinfo.details_img">
-            </div>
+            <div v-show="index==0" class="comm_de" v-html="shopinfo.details_img"></div>
           </van-tab>
           <van-tab :title="'评价('+count+')'">
             <div v-show="index==1" class="comm_de">
@@ -458,7 +463,7 @@ export default {
 }
 .comd_info .comd_info_title p {
   display: inline-block;
-  line-height: .56rem;
+  line-height: 0.56rem;
   color: #ef6213;
 }
 
@@ -513,7 +518,6 @@ export default {
   width: 100%;
   padding: 0 0.2rem;
 }
-
 
 .comment_list .com_title {
   display: flex;

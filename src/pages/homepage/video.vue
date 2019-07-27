@@ -11,29 +11,27 @@
         <tab-item @on-item-click="setvideoIndex(1)">果园</tab-item>
         <tab-item @on-item-click="setvideoIndex(2)">牧场</tab-item>
       </tab>
-      <div v-if="videoIndex==0" class="tab-swiper vux-center">
+      <div v-show="videoIndex==0" class="tab-swiper vux-center">
         <div class="video">
-          <div class="video_list">
-            <video-player class="video-player vjs-custom-skin" :options="playerOptions" @ready="playerReadied"></video-player>
-          </div>
-          <div class="video_list">
-            <video-player class="vjs-custom-skin" :options="playerOptions" @ready="playerReadied"></video-player>
-          </div>
-          <div class="video_list">
-            <video-player class="vjs-custom-skin" :options="playerOptions" @ready="playerReadied"></video-player>
+          <div class="video_list" v-for="(item, index) in listOptions1" :key="index">
+            <video-player class="vjs-custom-skin" :options="item" @ready="playerReadied"></video-player>
+            <span>{{item.videoTitle}}</span>
           </div>
         </div>
       </div>
-      <div v-if="videoIndex==1" class="tab-swiper vux-center">
+      <div v-show="videoIndex==1" class="tab-swiper vux-center">
         <div class="video">
-          <div class="item" style="width:46%; display:inline-block; margin-top: 10px;">
-            <video-player class="vjs-custom-skin" :options="playerOptions" @ready="playerReadied"></video-player>
+          <div class="video_list" v-for="(item, index) in listOptions2" :key="index">
+            <video-player class="vjs-custom-skin" :options="item" @ready="playerReadied"></video-player>
+            <span>{{item.videoTitle}}</span>
           </div>
-          <div class="item" style="width:46%; display:inline-block; margin-top: 10px;">
-            <video-player class="vjs-custom-skin" :options="playerOptions" @ready="playerReadied"></video-player>
-          </div>
-          <div class="item" style="width:46%; display:inline-block; margin-top: 10px;">
-            <video-player class="vjs-custom-skin" :options="playerOptions" @ready="playerReadied"></video-player>
+        </div>
+      </div>
+      <div v-show="videoIndex==2" class="tab-swiper vux-center">
+        <div class="video">
+          <div class="video_list" v-for="(item, index) in listOptions3" :key="index">
+            <video-player class="vjs-custom-skin" :options="item" @ready="playerReadied"></video-player>
+            <span>{{item.videoTitle}}</span>
           </div>
         </div>
       </div>
@@ -62,14 +60,17 @@ export default {
       videoIndex: 0,
       // type: 1,
       videoList: "",
+      listOptions1: [],
+      listOptions2: [],
+      listOptions3: [],
       playerOptions: {
         // videojs and plugin options
-        height: "360",
+        // height: "360",
         autoplay: false, //如果true,浏览器准备好时开始回放。
         muted: false, // 默认情况下将会消除任何音频。
         preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
         language: "zh-CN",
-        // aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
           {
@@ -92,8 +93,9 @@ export default {
     };
   },
   mounted: function() {
-    let that = this;
-    // that.getVideoList();
+    this.getVideoList(1);
+    this.getVideoList(2);
+    this.getVideoList(3);
   },
   methods: {
     back() {
@@ -105,8 +107,7 @@ export default {
       let that = this;
       if (index != that.videoIndex) {
         that.videoIndex = index;
-
-        that.getVideoList();
+        // that.getVideoList();
       }
     },
     playerReadied(player) {
@@ -117,11 +118,10 @@ export default {
       };
     },
     //获取视频列表
-    getVideoList() {
+    getVideoList(index) {
       let that = this;
       // typev = 1 =>田园,typev = 2 =>果园,typev = 3 =>牧场
-      let typev = that.videoIndex == 0 ? 1 : that.videoIndex == 1 ? 2 : 3;
-      console.log(typev);
+      // let typev = that.videoIndex == 0 ? 1 : that.videoIndex == 1 ? 2 : 3;
       Indicator.open({
         text: "加载中..."
       });
@@ -130,16 +130,101 @@ export default {
           url: "Subscribe/videoList",
           method: "post",
           data: {
-            type: typev
+            type: index
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.code == 0) {
             //成功回调
             that.videoList = res.data.data;
-            console.log(that.videoList);
-            that.playerOptions.sources = that.videoList;
+            if (index == 1) {
+              for (let i = 0; i < res.data.data.length; i++) {
+                that.listOptions1.push({
+                  // videojs and plugin options
+                  // height: "360",
+                  videoTitle: res.data.data[i].title, // 视频名字
+                  autoplay: false, //如果true,浏览器准备好时开始回放。
+                  muted: false, // 默认情况下将会消除任何音频。
+                  preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+                  language: "zh-CN",
+                  aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+                  fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+                  sources: [
+                    {
+                      withCredentials: false,
+                      type: "application/x-mpegURL",
+                      src: res.data.data[i].url
+                    }
+                  ],
+                  controlBar: {
+                    timeDivider: false,
+                    durationDisplay: false,
+                    fullscreenToggle: true //全屏按钮
+                  },
+                  flash: { hls: { withCredentials: false } },
+                  html5: { hls: { withCredentials: false } },
+                  poster: res.data.data[i].link
+                });
+              }
+            } else if (index == 2) {
+              for (let i = 0; i < res.data.data.length; i++) {
+                that.listOptions2.push({
+                  // videojs and plugin options
+                  // height: "360",
+                  videoTitle: res.data.data[i].title, // 视频名字
+                  autoplay: false, //如果true,浏览器准备好时开始回放。
+                  muted: false, // 默认情况下将会消除任何音频。
+                  preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+                  language: "zh-CN",
+                  aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+                  fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+                  sources: [
+                    {
+                      withCredentials: false,
+                      type: "application/x-mpegURL",
+                      src: res.data.data[i].url
+                    }
+                  ],
+                  controlBar: {
+                    timeDivider: false,
+                    durationDisplay: false,
+                    fullscreenToggle: true //全屏按钮
+                  },
+                  flash: { hls: { withCredentials: false } },
+                  html5: { hls: { withCredentials: false } },
+                  poster: res.data.data[i].link
+                });
+              }
+            } else if (index == 3) {
+              for (let i = 0; i < res.data.data.length; i++) {
+                that.listOptions3.push({
+                  // videojs and plugin options
+                  // height: "360",
+                  videoTitle: res.data.data[i].title, // 视频名字
+                  autoplay: false, //如果true,浏览器准备好时开始回放。
+                  muted: false, // 默认情况下将会消除任何音频。
+                  preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+                  language: "zh-CN",
+                  aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+                  fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+                  sources: [
+                    {
+                      withCredentials: false,
+                      type: "application/x-mpegURL",
+                      src: res.data.data[i].url
+                    }
+                  ],
+                  controlBar: {
+                    timeDivider: false,
+                    durationDisplay: false,
+                    fullscreenToggle: true //全屏按钮
+                  },
+                  flash: { hls: { withCredentials: false } },
+                  html5: { hls: { withCredentials: false } },
+                  poster: res.data.data[i].link
+                });
+              }
+            }
           } else {
             //失败
             Toast(res.data.msg);
@@ -181,25 +266,33 @@ export default {
 
 .tab-swiper {
   width: 100%;
+  padding: 0.2rem;
 }
 
 .video {
   width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
   position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .video .video_list {
-  width: 47%;
-  /* height: 3rem; */
-  margin: 0.1rem;
+  width: 3.45rem;
+  /* height: 2.346rem; */
+  margin-bottom: 0.2rem;
+  text-align: center;
 }
-
-/* .video .video_list video {
-  width: 100%;
-  margin-bottom: 0.1rem;
-  border: 1px solid #e5e5e5;
-} */
+.video_list span {
+  font-size: .28rem;
+  color: #333;
+}
 </style>

@@ -57,10 +57,23 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
-                      <span class="btn" v-if="orderitem.status== 1" @click="showDialog(orderitem.id)">立即付款</span>
-                      <span class="btn" v-if="orderitem.status== 2" @click="RemindDelivery(orderitem.id)">提醒发货</span>
-                      <span class="btn" v-if="orderitem.status== 3" @click="Receipt(orderitem.id)">确认收货</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span
+                        class="btn"
+                        v-if="orderitem.status== 1"
+                        @click="showDialog(orderitem.id)"
+                      >立即付款</span>
+                      <span
+                        class="btn"
+                        v-if="orderitem.status== 2"
+                        @click="RemindDelivery(orderitem.id)"
+                      >提醒发货</span>
+                      <span
+                        class="btn"
+                        v-if="orderitem.status== 3"
+                        @click="Receipt(orderitem.id)"
+                      >确认收货</span>
                       <span class="btn" v-if="orderitem.status== 4">已完成</span>
                     </div>
                   </div>
@@ -84,7 +97,8 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                       <span class="btn" @click="showDialog(orderitem.id)">立即付款</span>
                     </div>
                   </div>
@@ -107,7 +121,8 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                       <span class="btn" @click="RemindDelivery(orderitem.id)">提醒发货</span>
                     </div>
                   </div>
@@ -131,7 +146,8 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                       <span class="btn" @click="Receipt(orderitem.id)">确认收货</span>
                     </div>
                   </div>
@@ -156,7 +172,8 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                     </div>
                   </div>
                 </div>
@@ -184,7 +201,8 @@
                     </div>
                     <h5>售价: {{orderitem.price}} 元 会员: {{orderitem.integral}} 元</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                     </div>
                   </div>
                 </div>
@@ -328,7 +346,18 @@ export default {
         that.lif = true;
       }
       let orderIndex = that.orderIndex;
-      that.status = orderIndex == 0 ? "" : orderIndex == 1 ? 1 : orderIndex == 2 ? 2 : orderIndex == 3 ? 3 : orderIndex == 4 ? 4 : 0;
+      that.status =
+        orderIndex == 0
+          ? ""
+          : orderIndex == 1
+          ? 1
+          : orderIndex == 2
+          ? 2
+          : orderIndex == 3
+          ? 3
+          : orderIndex == 4
+          ? 4
+          : 0;
       Indicator.open({
         text: "加载中..."
       });
@@ -637,19 +666,22 @@ export default {
   font-size: 0.28rem;
 }
 .dialog .number {
-  /* 	width: 90%; */
+  width: 90%;
   margin: 0.3rem 0;
   display: flex;
   justify-content: space-between;
   font-size: 0.26rem;
   align-items: center;
 }
-
+.dialog .number p {
+  width: 30%;
+}
 .dialog .number input {
   width: 70%;
   border: 1px solid #e8e8e8;
   height: 0.6rem;
   padding-left: 0.1rem;
+  border-radius: 0.1rem;
 }
 
 .dialog button {

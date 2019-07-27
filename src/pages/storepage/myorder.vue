@@ -642,19 +642,25 @@ export default {
   font-size: 0.28rem;
 }
 .dialog .number {
-  /* 	width: 90%; */
+  width: 90%;
   margin: 0.3rem 0;
   display: flex;
+  display: -webkit-flex;
   justify-content: space-between;
-  font-size: 0.26rem;
+  -webkit-justify-content: space-between;
   align-items: center;
+  -webkit-align-items: center;
+  font-size: 0.26rem;
 }
-
+.dialog .number p {
+  width: 30%;
+}
 .dialog .number input {
   width: 70%;
   border: 1px solid #e8e8e8;
   height: 0.6rem;
   padding-left: 0.1rem;
+  border-radius: 0.1rem;
 }
 
 .dialog button {

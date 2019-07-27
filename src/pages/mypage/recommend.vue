@@ -23,15 +23,18 @@
           <p>我的推广链接</p>
           <div>
             <p>{{invitation.url}}</p>
-            <span
-              v-clipboard:copy="invitation.url"
-              v-clipboard:success="onCopy"
-              v-clipboard:error="onError"
-            >复制</span>
+            <span @click="shareFun">分享</span>
           </div>
         </div>
       </div>
     </div>
+    <van-action-sheet
+      v-model="shareShow"
+      :actions="actions"
+      cancel-text="取消"
+      @select="onSelect"
+      @cancel="onCancel"
+    />
   </div>
 </template>
 
@@ -44,16 +47,145 @@ export default {
   },
   data() {
     return {
-      invitation: [] //推广有礼
+      invitation: "", //推广有礼
+      shareShow: false,
+      actions: [{ name: "分享给朋友" }, { name: "分享到朋友圈" }],
+      shareUrl: "",
     };
   },
   mounted: function() {
-    let that = this;
-    that.getInvitation();
+    this.getInvitation();
+    this.onShare();
   },
   methods: {
     back() {
       this.$router.go(-1); //返回上一层
+    },
+    // 分享
+    onShare() {
+      let that = this;
+      this.$http({
+        url: "Wechat/getSignPackage",
+        method: "post"
+      })
+        .then(res => {
+          if (res.data.code === 0) {
+            that.shareUrl = res.data.data.url;
+            // 配置config
+            wx.config({
+              // 开启调试模式时,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              debug: true,
+              // 后台返回之前获取的appId
+              appId: res.data.data.appId,
+              // 必填，生成签名的时间戳
+              timestamp: res.data.data.timestamp,
+              // 必填，生成签名的随机串
+              nonceStr: res.data.data.nonceStr,
+              // 必填，签名，见附录1
+              signature: res.data.data.signature,
+              // 必填，需要使用的JS接口列表，所有JS接口列表见附录3
+              jsApiList: [
+                "checkJsApi",
+                "updateAppMessageShareData",
+                "updateTimelineShareData",
+              ]
+            });
+
+            // 微信检查接口列表
+            wx.checkJsApi({
+              jsApiList: [
+                "checkJsApi",
+                "updateAppMessageShareData",
+                "updateTimelineShareData",
+              ], // 需要检测的JS接口列表
+              success: function(res) {
+                console.log(res);
+                // alert('checkJsApi' + res);
+              }
+            });
+
+            // // 隐藏微信右上角弹出菜单中部分功能按钮
+            // wx.hideMenuItems({
+            //   menuList: [
+            //     "menuItem:share:qq",
+            //     "menuItem:share:QZone",
+            //     "menuItem:share:weiboApp",
+            //     "menuItem:copyUrl"
+            //   ], // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录4
+            //   success: function(res) {
+            //     // alert(res);
+            //   }
+            // });
+            wx.ready(function() {
+              // alert("加载");
+              console.log("加载");
+            });
+            // 微信预加载失败回调
+            wx.error(function(res) {
+              console.log("微信预加载失败");
+              console.log(res);
+              // alert("微信预加载失败");
+            });
+          }
+        })
+        .catch(error => {
+          // 请求接口失败回调函数
+          alert("请求接口失败");
+        });
+    },
+    shareFun() {
+      this.shareShow = true;
+    },
+    onSelect(item) {
+      let that = this;
+      // that.shareShow = false;
+      alert(location.href.split('#')[0]);
+      console.log(item.name);
+      if (item.name == "分享给朋友") {
+        wx.updateAppMessageShareData({
+          // 分享标题
+          title: "好友",
+          // 分享描述
+          desc: "分享好友描述",
+          // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: "http://glsapp.shienkeji.com",
+          // 分享图标
+          imgUrl: "http://img3.imgtn.bdimg.com/it/u=400062461,2874561526&fm=26&gp=0.jpg",
+          // 用户确认分享后执行的回调函数
+          success: function() {
+            console.log("分享好友回调函数");
+            console.log("shareLink= " + that.shareUrl);
+          },
+          // 用户取消分享后执行的回调函数
+          cancel: function() {
+            // alert('取消分享回调函数');
+            console.log('分享回好友调函数');
+          }
+        });
+      } else {
+        wx.updateTimelineShareData({
+          // 分享标题
+          title: "朋友圈",
+          // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: that.shareUrl,
+          // 分享图标
+          imgUrl: "http://img3.imgtn.bdimg.com/it/u=400062461,2874561526&fm=26&gp=0.jpg",
+          // 用户确认分享后执行的回调函数
+          success: function() {
+            console.log("分享回调函数");
+            console.log("shareLink= " + that.invitation.url);
+            // alert('分享回成功调函数');
+          },
+          // 用户取消分享后执行的回调函数
+          cancel: function() {
+            console.log("取消分享回调函数");
+            // alert('取消分享回调函数');
+          }
+        });
+      }
+    },
+    onCancel() {
+      console.log("取消");
     },
     //获取推广有礼
     getInvitation() {

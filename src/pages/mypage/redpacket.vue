@@ -16,10 +16,10 @@
         <tab-item @click.native="navTap(0)">所领红包</tab-item>
         <tab-item @click.native="navTap(1)">实拆红包</tab-item>
       </tab>
-      <div v-if="redIndex==0" class="detail_con">
+      <div v-show="redIndex==0" class="detail_con">
         <div class="red_num">
           <div>
-            <span>100</span>
+            <span>{{haveDetail.number}}</span>
             <p>红包总个数</p>
           </div>
           <span class="red_click1" @click="goRedOpenFun">直接拆</span>
@@ -38,14 +38,14 @@
           <div class="detail_time">{{item.time}}</div>
         </div>
       </div>
-      <div v-if="redIndex==1" class="detail_con">
+      <div v-show="redIndex==1" class="detail_con">
         <div class="red_num">
           <div>
-            <span>100个</span>
+            <span>{{haveDetail.number}}个</span>
             <p>实拆红包个数</p>
           </div>
           <div>
-            <span>18.25元</span>
+            <span>{{haveDetail.money}}元</span>
             <p>红包金额</p>
           </div>
         </div>
@@ -75,8 +75,9 @@ export default {
   data() {
     return {
       redIndex: 0,
-      haveList: [],
-      type: "" //红包类型
+      haveList: [], // 红包列表
+      haveDetail: "", // 红包详情
+      type: "", //红包类型
     };
   },
   mounted: function() {
@@ -123,7 +124,8 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             //成功回调
-            that.haveList = res.data.data;
+            that.haveList = res.data.data.list;
+            that.haveDetail = res.data.data.details;
           } else {
             //失败
             Toast(res.data.msg);

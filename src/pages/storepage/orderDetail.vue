@@ -40,6 +40,19 @@
           <span>付款时间：{{orderDetail.payment_time}}</span>
           <span>发货时间：{{orderDetail.delivery_time}}</span>
           <span>完成时间：{{orderDetail.complete_time}}</span>
+          <span v-show="orderDetail.remind_img != ''">
+            电子发票:
+            <img @click="showPreview" :src="orderDetail.remind_img" />
+            <van-image-preview
+              v-model="srcShow"
+              :images="images"
+              :startPosition="srcIndex"
+              @change="onChange"
+              :loop="true"
+            >
+              <template v-slot:srcIndex>第{{ srcIndex }}页</template>
+            </van-image-preview>
+          </span>
         </div>
       </div>
     </div>
@@ -55,7 +68,10 @@ export default {
   data() {
     return {
       id: this.$route.query.id, //订单id
-      orderDetail: [] //订单详情
+      orderDetail: [], //订单详情
+      srcShow: false, //图片预览
+      srcIndex: 0, //图片页面索引
+      images: []
     };
   },
   mounted() {
@@ -65,6 +81,12 @@ export default {
   methods: {
     back() {
       this.$router.go(-1); //返回上一层
+    },
+    onChange(index) {
+      this.srcIndex = index;
+    },
+    showPreview() {
+      this.srcShow = true;
     },
     //获取我的订单
     getOrderDetail() {
@@ -85,6 +107,10 @@ export default {
           if (res.data.code == 0) {
             //成功回调
             that.orderDetail = res.data.data;
+            that.images = [];
+
+            that.images.push(that.orderDetail.remind_img);
+            console.log(that.images);
           } else {
             //失败
             Toast(res.data.msg);
@@ -114,11 +140,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
-  padding-bottom: 3rem;
+  top: .8rem;
 }
 
 .mint-header {
@@ -127,13 +152,11 @@ export default {
 
 .order_content {
   width: 100%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  padding: 0.2rem;
 }
 
 .order_address {
-  padding: 0 5% 0.2rem;
-  margin-bottom: 0.2rem;
+  padding: 0;
   border-bottom: 1px solid #ddd;
 }
 
@@ -142,11 +165,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.1rem 0;
+  padding: 0.2rem 0;
 }
 
 .address_list:nth-child(1) {
-  padding: 0 0.3rem;
+  padding: 0 0.2rem;
 }
 
 .address_list .iconfont {
@@ -158,7 +181,7 @@ export default {
 }
 
 .list-box {
-  padding: 0 5%;
+  padding: 0;
 }
 
 .list-box .shapping_list:last-child {
@@ -170,7 +193,6 @@ export default {
   width: 100%;
   padding: 0.2rem 0;
   border-bottom: 1px dashed #ddd;
-  margin-bottom: 0.3rem;
 }
 
 .shapping_list img {
@@ -179,30 +201,37 @@ export default {
 }
 
 .shopping_info {
-  padding-left: 0.4rem;
+  padding-left: 0.2rem;
   flex: 1;
   font-size: 0.28rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .shopping_info .redpack {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
 }
+
 .shopping_info h3 {
   font-weight: normal;
   font-size: 0.28rem;
   color: #ef6213;
 }
+
 .order_info {
-  padding: 0 5% 0.2rem;
   display: flex;
   flex-direction: column;
   font-size: 0.24rem;
 }
+
 .order_info span {
   padding: 2px 0;
+}
+
+.order_info span img {
+  width: 100%;
 }
 </style>

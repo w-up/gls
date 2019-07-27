@@ -292,7 +292,7 @@ export default {
 
 .fruit_list .fruit_con .mian {
   display: flex;
-  justify-content: space-between;
+  display: -webkit-flex;
   margin-top: 0.05rem;
 }
 

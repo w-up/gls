@@ -99,7 +99,7 @@
         <h4>确认信息</h4>
         <span class="haufei">
           领养需花费
-          <a>{{number * data.price}}</a>米宝
+          <a>{{spend}}</a> 米宝
         </span>
         <div class="number">
           <p>交易密码</p>
@@ -126,6 +126,7 @@ export default {
   data() {
     return {
       number: 1,
+      spend: 0, // 花费
       fainfo: false, //发票信息隐藏
       showper: true, //个人发票信息显示
       gongsi: false, //公司发票信息隐藏
@@ -428,11 +429,16 @@ export default {
       var that = this;
       if (that.moldname == "委托代售") {
         that.verifyFun();
+        that.spend = that.number * that.data.price;
       } else if (that.moldname == "领养到家") {
         if (that.remake == "") {
           Toast("请输入备注");
           // that.$toast("请输入备注");
         } else {
+          that.spend =
+            (that.number - that.data.free_number <= 0
+              ? 0
+              : that.number - that.data.free_number) * that.data.price;
           that.verifyFun();
         }
       }
@@ -739,7 +745,7 @@ export default {
 }
 
 .dialogt .number {
-  /* 	width: 90%; */
+  width: 90%;
   margin: 0.3rem 0;
   display: flex;
   justify-content: space-between;
