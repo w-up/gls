@@ -13,10 +13,11 @@
       </tab>
       <div v-show="videoIndex==0" class="tab-swiper vux-center">
         <div class="video">
-          <div class="video_list" v-for="(item, index) in listOptions1" :key="index">
-            <video-player class="vjs-custom-skin" :options="item" @ready="playerReadied"></video-player>
+          <div id="id_test_video" style="width:100%; height:auto;"></div>
+          <!-- <div class="video_list" v-for="(item, index) in listOptions1" :key="index">
+            
             <span>{{item.videoTitle}}</span>
-          </div>
+          </div>-->
         </div>
       </div>
       <div v-show="videoIndex==1" class="tab-swiper vux-center">
@@ -40,14 +41,9 @@
 </template>
 
 <script>
+require("../../assets/js/TcPlayer");
 import { Indicator, Toast } from "mint-ui";
 import { Tab, TabItem } from "vux";
-import "videojs-flash";
-// videojs
-import videojs from "video.js";
-window.videojs = videojs;
-// hls plugin for videojs6
-require("videojs-contrib-hls/dist/videojs-contrib-hls.js");
 export default {
   components: {
     Tab,
@@ -93,9 +89,61 @@ export default {
     };
   },
   mounted: function() {
-    this.getVideoList(1);
-    this.getVideoList(2);
-    this.getVideoList(3);
+    // this.getVideoList(1);
+    // this.getVideoList(2);
+    // this.getVideoList(3);
+    (function() {
+      function getParams(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+          return decodeURIComponent(r[2]);
+        }
+        return null;
+      }
+
+      var rtmp = getParams("rtmp"),
+        flv = getParams("flv"),
+        m3u8 = getParams("m3u8"),
+        mp4 = getParams("mp4"),
+        live = getParams("live") == "true" ? true : false,
+        coverpic = getParams("coverpic"),
+        width = getParams("width"),
+        height = getParams("height"),
+        autoplay = getParams("autoplay") == "true" ? true : false;
+      /**
+       * 视频类型播放优先级
+       * mobile ：m3u8>mp4
+       * PC ：RTMP>flv>m3u8>mp4
+       */
+
+      /**
+       * 属性说明：
+       *
+       * coverpic  {Object|String} src:图片地址，style：default 居中1:1显示 stretch 拉伸铺满，图片可能会变形 cover 等比横向铺满，图片某些部分可能无法显示在区域内
+       *  封面在 ios10 暂时无法生效。
+       */
+      var options = {
+        rtmp: rtmp,
+        flv: flv,
+        m3u8: m3u8,
+        mp4:
+          mp4 ||
+          "//1256993030.vod2.myqcloud.com/d520582dvodtransgzp1256993030/7732bd367447398157015849771/v.f30.mp4",
+        coverpic: coverpic || {
+          style: "cover",
+          src:
+            "//vodplayerinfo-10005041.file.myqcloud.com/3035579109/vod_paster_pause/paster_pause1469013308.jpg"
+        },
+        autoplay: autoplay ? true : false,
+        live: live,
+        width: width || "480",
+        height: height || "320"
+      };
+
+      var player = new TcPlayer("video-container", options);
+      window.qcplayer = player;
+    })();
   },
   methods: {
     back() {
@@ -292,7 +340,7 @@ export default {
   text-align: center;
 }
 .video_list span {
-  font-size: .28rem;
+  font-size: 0.28rem;
   color: #333;
 }
 </style>

@@ -8,7 +8,7 @@
     </mt-header>
     <div class="con-wrapper">
       <div class="vote_img">
-        <img src="../../assets/img/6.jpg" />
+        <img :src="banner" />
       </div>
       <p class="play_game" @click="playGameFun">参与投票活动</p>
       <div class="vote_num">
@@ -44,6 +44,16 @@
         <button @click="closeDialog">确定</button>
       </div>
     </x-dialog>
+    <x-dialog v-model="voteTimes" class="de_dialog lang_dialog" hide-on-blur>
+      <div class="dialog">
+        <span class="iconfont icon-tabguanbi" @click="closeVoteTimesFun"></span>
+        <h4>提示</h4>
+        <div class="dialog_cont" style="height: 2rem;">
+          <p>您今日投票次数已达上限, 继续投票需进行投票充值</p>
+        </div>
+        <button @click="closeDialog">确定</button>
+      </div>
+    </x-dialog>
   </div>
 </template>
 
@@ -58,11 +68,13 @@ export default {
   },
   data() {
     return {
+      banner: "",
       ranking: [], //排名
       sort: [], //当前排名
       number: [], //我的票数
       url: "", //链接
       voteRule: false, // 投票规则弹窗
+      voteTimes: false, // 投票次数上限
       voteRuleCont: "", //规则
       playGame: "",
     };
@@ -104,6 +116,7 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             //成功回调
+            that.banner = res.data.data.banner;
             that.ranking = res.data.data.ranking;
             that.sort = res.data.data.sort;
             that.number = res.data.data.number;
@@ -145,6 +158,9 @@ export default {
             //成功回调
             Toast(res.data.msg);
             that.getRanding();
+          } else if (res.data.code == -1) {
+            //成功回调
+            that.voteTimes = true;
           } else {
             //失败
             Toast(res.data.msg);
@@ -185,6 +201,9 @@ export default {
     },
     closeDialog() {
       this.voteRule = false;
+    },
+    closeVoteTimesFun() {
+      this.voteTimes = false;
     }
   }
 };
@@ -213,10 +232,12 @@ export default {
 
 .vote_img {
   width: 100%;
+  height: 4.4rem;
 }
 
 .vote_img img {
   width: 100%;
+  height: 100%;
 }
 .play_game {
   display: block;
@@ -295,7 +316,6 @@ export default {
 .dialog {
   width: 90%;
   margin: 0 auto;
-  height: 6rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -312,8 +332,9 @@ export default {
   margin-bottom: 0.4rem;
 }
 .dialog .dialog_cont {
-  overflow-x: hide;
+  overflow-x: hidden;
   overflow-y: scroll;
+  height: 4rem;
   font-size: 0.28rem !important;
   text-indent: 0.56rem !important;
   text-align: justify;
