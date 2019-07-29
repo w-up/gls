@@ -286,6 +286,7 @@ export default {
 
 .yipin_se {
   display: flex;
+  display: -webkit-flex;
   width: 100%;
   margin: 0 auto;
   padding: 0.2rem 0.2rem 0;

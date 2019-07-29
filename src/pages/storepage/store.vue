@@ -323,10 +323,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 /* 轮播图 */
 .mint-swipe {
@@ -400,20 +400,29 @@ export default {
 
 .scroll_div {
   width: 100%;
-  padding: 0 0.2rem;
+  font-size: 0;
 }
 .content-con {
   display: flex;
+  display: -webkit-flex;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 .content_list {
+  display: inline-block;
   margin-top: 0.2rem;
   width: 3.45rem;
   font-size: 0;
   border: 1px solid #eee;
   border-radius: 0.1rem;
   overflow: hidden;
+}
+.content_list:nth-child(2n+1) {
+  margin-right: 0.2rem;
 }
 .content_list img {
   width: 100%;

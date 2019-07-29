@@ -3,7 +3,6 @@
     <!-- 头部 -->
     <mt-header fixed title="创客商城"></mt-header>
     <!-- 轮播 -->
-
     <div class="con-wrapper">
       <div class="swipe">
         <mt-swipe :auto="4000">
@@ -91,8 +90,6 @@
 					 <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
 					  <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
 					</van-pull-refresh>
-					</div>
-					
         </div>
       </div>
       <div id="no-data" v-if="shopList.length == 0">
@@ -137,7 +134,7 @@ export default {
 		that.getIndustryData();
   },
   methods: {
-		// //选择相应的tab，初始化数据 //选中全部
+		//选择相应的tab，初始化数据 //选中全部
 		getShopListNav() {
 		  let that = this;
 		 // console.log(i)
@@ -149,7 +146,7 @@ export default {
 		  that.shopList = [];		 
 		 	that.getShopList(0)		
 		},	
-		// //选择相应的tab，初始化数据 //选中行业
+		//选择相应的tab，初始化数据 //选中行业
 		getIndustryNav(name,id) {
 		  let that = this;
 		  that.industry_id = id;
@@ -385,7 +382,6 @@ export default {
 
 .content {
   width: 100%;
-  padding: 0.2rem;
 }
 .content .nav {
   width: 100%;
@@ -408,17 +404,25 @@ export default {
 }
 .content-con {
   display: flex;
-  width: 100%;
+  display: -webkit-flex;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 .content_list {
+  display: inline-block;
   margin-top: 0.2rem;
   width: 3.45rem;
   line-height: 0;
   border: 1px solid #eee;
   border-radius: 0.1rem;
   overflow: hidden;
+}
+.content_list:nth-child(2n+1) {
+  margin-right: 0.2rem;
 }
 .content_list img {
   width: 100%;

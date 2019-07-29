@@ -18,15 +18,15 @@
           </div>
           <div class="table_list" @click="gotoCount">
             <img src="../../assets/img/one.png" />
-            <span>领养田园</span>
+            <span>合作田园</span>
           </div>
           <div class="table_list" @click="gotoFrouit">
             <img src="../../assets/img/orch_garden.png" />
-            <span>领养果园</span>
+            <span>合作果园</span>
           </div>
           <div class="table_list" @click="gotoRan">
             <img src="../../assets/img/pasture.png" />
-            <span>领养牧场</span>
+            <span>合作牧场</span>
           </div>
           <div class="table_list" @click="gotoSuperM">
             <img src="../../assets/img/super.png" />

@@ -134,9 +134,8 @@ export default {
     };
   },
   mounted() {
-    let that = this;
-    that.getBanner();
-    that.getShopList();
+    this.getBanner();
+    this.getShopList();
   },
   methods: {
     //下拉刷新
@@ -347,36 +346,48 @@ export default {
 
 .scroll_div {
   width: 100%;
-  padding: 0 0.2rem 0.2rem;
 }
 .content-con {
   display: flex;
+  display: -webkit-flex;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 .content_list {
+  display: inline-block;
   margin-top: 0.2rem;
   width: 3.45rem;
-  font-size: 0;
+  line-height: 0;
   border: 1px solid #eee;
   border-radius: 0.1rem;
   overflow: hidden;
+}
+.content_list:nth-child(2n+1) {
+  margin-right: 0.2rem;
 }
 .content_list img {
   width: 100%;
   height: 3rem;
 }
 .content_list .con-title {
-  padding: 0 0.22rem;
+  padding: 0 0.2rem;
   display: flex;
+  display: -webkit-flex;
   align-items: center;
+  -webkit-align-items: center;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
 }
 .content_list .con-title3 {
-  padding: 0 0.22rem;
+  padding: 0 0.2rem;
 }
 .content_list .con-title3 span {
   font-size: 0.24rem;
+  line-height: .24rem;
   color: #666;
 }
 .content_list .con-title h3 {
