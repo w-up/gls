@@ -402,6 +402,9 @@ export default {
 .content .nav ul li a {
   color: #999;
 }
+.scroll_div {
+  width: 100%;
+}
 .content-con {
   display: flex;
   display: -webkit-flex;

@@ -172,17 +172,6 @@ export default {
   }
 } */
 
-body {
-  background: #fff;
-}
-input,
-textarea,
-select,
-button,
-a:focus {
-  outline: none;
-  font-size: 0.26rem;
-}
 #app,
 .main {
   width: 100%;
@@ -190,53 +179,5 @@ a:focus {
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
-}
-a {
-  text-decoration: none;
-}
-ul {
-  list-style: none;
-}
-.mint-tabbar > .mint-tab-item.is-selected {
-  color: #ef6213;
-}
-
-.mint-toast {
-  position: fixed;
-  max-width: 80%;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  text-align: center;
-  z-index: 6000;
-  -webkit-transition: opacity 0.3s linear;
-  transition: opacity 0.3s linear;
-}
-
-.slide-right-enter-active,
-.slide-right-leave-active,
-.slide-left-enter-active,
-.slide-left-leave-active {
-  will-change: transform;
-  transition: all 500ms;
-  position: absolute;
-}
-.slide-right-enter {
-  opacity: 0;
-  transform: translate3d(-100%, 0, 0);
-}
-.slide-right-leave-active {
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
-}
-.slide-left-enter {
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
-}
-.slide-left-leave-active {
-  opacity: 0;
-  transform: translate3d(-100%, 0, 0);
 }
 </style>

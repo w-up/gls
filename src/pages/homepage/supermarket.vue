@@ -55,8 +55,6 @@
 					<load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
 					  <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
 					</van-pull-refresh>
-					
-					</div>
         </div>
       </div>
       <div id="no-data" v-if="shopList.length == 0">

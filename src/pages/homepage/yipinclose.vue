@@ -130,7 +130,13 @@ export default {
     },
     //弹出确认弹窗
     showDialog() {
-      this.lang_dlg = true;
+      console.log(this.address);
+      console.log(this.address_id);
+      if (this.address_id == undefined) {
+        Toast("请选择收货地址");
+      } else {
+        this.lang_dlg = true;
+      }
     },
     //关闭确认弹窗
     closeDialog: function() {
@@ -170,6 +176,10 @@ export default {
             } else {
               //失败
               Toast(res.data.msg);
+              // Toast({
+              //   message: res.data.msg,
+              //   duration: 50000
+              // });
             }
           })
           .catch(function(error) {

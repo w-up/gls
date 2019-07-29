@@ -14,12 +14,16 @@
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 <!-- 腾讯视频播放器 -->
-<!-- <script src="http://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-module-2.3.1.js"></script> -->
+<script src="http://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-module-2.3.1.js"></script>
 <style type="text/css">
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
   }
@@ -29,6 +33,23 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+  }
+
+  input,
+  textarea,
+  select,
+  button,
+  a:focus {
+    outline: none;
+    font-size: 0.26rem;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
   }
 
   /* 去掉默认样式 */
@@ -75,6 +96,39 @@
   .mint-header-title {
     font-size: .32rem;
     line-height: .8rem;
+  }
+
+  .mint-tabbar>.mint-tab-item.is-selected {
+    color: #ef6213;
+  }
+
+  .slide-right-enter-active,
+  .slide-right-leave-active,
+  .slide-left-enter-active,
+  .slide-left-leave-active {
+    will-change: transform;
+    transition: all 500ms;
+    position: absolute;
+  }
+
+  .slide-right-enter {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  .slide-right-leave-active {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  .slide-left-enter {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  .slide-left-leave-active {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
   }
 
   .vux-tab-wrap {
@@ -212,59 +266,19 @@
     font-size: 0.24rem;
   }
 
-  /* 加减框 */
-  .weui-cell {
-    padding: 0;
-  }
-
-  .weui-cell:before {
-    content: " ";
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    height: 1px;
-    border: 0;
-    color: #D9D9D9;
-    -webkit-transform-origin: 0 0;
-    transform-origin: 0 0;
-    -webkit-transform: scaleY(0.5);
-    transform: scaleY(0.5);
-    left: 15px;
-  }
-
-  .vux-number-round .vux-number-selector-sub,
-  .vux-number-round .vux-number-selector-plus {
-    padding: 0px;
-    border: 1px solid #3cc51f;
+  /* toast轻提示 */
+  .mint-toast {
+    position: fixed;
+    max-width: 80%;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     text-align: center;
-  }
-
-  .vux-number-selector {
-    width: 0.4rem !important;
-    height: 0.4rem !important;
-    line-height: 0.4rem !important;
-    border-radius: 50% !important;
-  }
-
-  .vux-number-selector svg {
-    padding-bottom: 1px !important;
-    margin-left: -1px !important;
-  }
-
-  .vux-number-input {
-    float: left;
-    width: 1rem !important;
-    height: 0.4rem;
-    font-size: 0.32rem;
-    color: #666;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: 1px solid #ececec;
-    padding: 0.06rem 0;
-    text-align: center;
-    border-radius: 1px;
+    z-index: 6000;
+    -webkit-transition: opacity 0.3s linear;
+    transition: opacity 0.3s linear;
   }
 
   /* 视频 */
@@ -280,6 +294,7 @@
     width: 1.5em;
     border-radius: 50%;
   }
+
 </style>
 
 </html>

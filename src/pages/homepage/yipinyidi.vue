@@ -351,7 +351,7 @@ export default {
 .yipin_con {
   margin-left: 0.2rem;
   height: 2rem;
-  width: 100%;
+  width: 4.9rem;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;

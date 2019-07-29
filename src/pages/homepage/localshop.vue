@@ -303,7 +303,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped="scoped">
 #localshop {
   width: 100%;
   height: 100%;

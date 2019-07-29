@@ -314,6 +314,7 @@ export default {
 .user_wrap {
   position: absolute;
   top: 0.8rem;
+  left: 0;
   z-index: 10;
   width: 100%;
   max-height: 4rem;
