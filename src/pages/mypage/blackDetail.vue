@@ -131,17 +131,17 @@ export default {
     onError() {
       // 移动端走的失败
       // alert(navigator.userAgent);
-      if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        if (/ baiduboxapp/i.test(navigator.userAgent)) {
-          window.location.replace(
-            "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
-          );
-        } else {
-          window.location.replace("weixin://");
-        }
-      } else {
-        window.location.replace("weixin://");
-      }
+      // if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+      //   if (/ baiduboxapp/i.test(navigator.userAgent)) {
+      //     window.location.replace(
+      //       "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
+      //     );
+      //   } else {
+      //     window.location.replace("weixin://");
+      //   }
+      // } else {
+      //   window.location.replace("weixin://");
+      // }
       Toast({
         message: "链接复制成功，请粘贴到微信分享",
         position: "center",
@@ -152,18 +152,18 @@ export default {
     onCopy() {
       // web走的成功
       // 邀请
-      let that = this;
-      if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        if (/ baiduboxapp/i.test(navigator.userAgent)) {
-          window.location.replace(
-            "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
-          );
-        } else {
-          window.location.replace("weixin://");
-        }
-      } else {
-        window.location.replace("weixin://");
-      }
+      // let that = this;
+      // if (!/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+      //   if (/ baiduboxapp/i.test(navigator.userAgent)) {
+      //     window.location.replace(
+      //       "bdbox://utils?action=sendIntent&minver=7.4&params=%7B%22intent%22%3A%22weixin://%23wechat_redirect%23Intent%3Bend%22%7D"
+      //     );
+      //   } else {
+      //     window.location.replace("weixin://");
+      //   }
+      // } else {
+      //   window.location.replace("weixin://");
+      // }
       Toast({
         message: "链接复制成功，请粘贴到微信分享",
         position: "center",

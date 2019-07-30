@@ -11,9 +11,9 @@
         <tab-item @on-item-click="setvideoIndex(1)">果园</tab-item>
         <tab-item @on-item-click="setvideoIndex(2)">牧场</tab-item>
       </tab>
+      <div id="id_test_video" style="width:100%; height:auto;"></div>
       <div v-show="videoIndex==0" class="tab-swiper vux-center">
         <div class="video">
-          <div id="id_test_video" style="width:100%; height:auto;"></div>
           <!-- <div class="video_list" v-for="(item, index) in listOptions1" :key="index">
             
             <span>{{item.videoTitle}}</span>
@@ -41,7 +41,6 @@
 </template>
 
 <script>
-require("../../assets/js/TcPlayer");
 import { Indicator, Toast } from "mint-ui";
 import { Tab, TabItem } from "vux";
 export default {
@@ -55,6 +54,7 @@ export default {
     return {
       videoIndex: 0,
       // type: 1,
+      player: "",
       videoList: "",
       listOptions1: [],
       listOptions2: [],
@@ -89,61 +89,28 @@ export default {
     };
   },
   mounted: function() {
+    let that = this;
     // this.getVideoList(1);
     // this.getVideoList(2);
     // this.getVideoList(3);
-    (function() {
-      function getParams(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) {
-          return decodeURIComponent(r[2]);
-        }
-        return null;
-      }
-
-      var rtmp = getParams("rtmp"),
-        flv = getParams("flv"),
-        m3u8 = getParams("m3u8"),
-        mp4 = getParams("mp4"),
-        live = getParams("live") == "true" ? true : false,
-        coverpic = getParams("coverpic"),
-        width = getParams("width"),
-        height = getParams("height"),
-        autoplay = getParams("autoplay") == "true" ? true : false;
-      /**
-       * 视频类型播放优先级
-       * mobile ：m3u8>mp4
-       * PC ：RTMP>flv>m3u8>mp4
-       */
-
-      /**
-       * 属性说明：
-       *
-       * coverpic  {Object|String} src:图片地址，style：default 居中1:1显示 stretch 拉伸铺满，图片可能会变形 cover 等比横向铺满，图片某些部分可能无法显示在区域内
-       *  封面在 ios10 暂时无法生效。
-       */
-      var options = {
-        rtmp: rtmp,
-        flv: flv,
-        m3u8: m3u8,
-        mp4:
-          mp4 ||
-          "//1256993030.vod2.myqcloud.com/d520582dvodtransgzp1256993030/7732bd367447398157015849771/v.f30.mp4",
-        coverpic: coverpic || {
-          style: "cover",
-          src:
-            "//vodplayerinfo-10005041.file.myqcloud.com/3035579109/vod_paster_pause/paster_pause1469013308.jpg"
-        },
-        autoplay: autoplay ? true : false,
-        live: live,
-        width: width || "480",
-        height: height || "320"
-      };
-
-      var player = new TcPlayer("video-container", options);
-      window.qcplayer = player;
-    })();
+    this.$nextTick(() => {
+      // var player = new TcPlayer("id_test_video", {
+      //   m3u8: "http://2157.liveplay.myqcloud.com/2157_358535a.m3u8", //请替换成实际可用的播放地址
+      //   autoplay: true, //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+      //   poster: "http://www.test.com/myimage.jpg",
+      //   width: "480", //视频的显示宽度，请尽量使用视频分辨率宽度
+      //   height: "320" //视频的显示高度，请尽量使用视频分辨率高度
+      // });
+      var player = new TcPlayer("id_test_video", {
+        m3u8: "http://200002949.vod.myqcloud.com/200002949_b6ffc.f240.m3u8", //请替换成实际可用的播放地址
+        m3u8_hd:
+          "http://200002949.vod.myqcloud.com/200002949_b6ffc.f230.av.m3u8",
+        m3u8_sd:
+          "http://200002949.vod.myqcloud.com/200002949_b6ffc.f220.av.m3u8",
+        autoplay: true, //iOS下safari浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+        coverpic: "http://www.test.com/myimage.jpg"
+      });
+    });
   },
   methods: {
     back() {

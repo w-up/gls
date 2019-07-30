@@ -90,10 +90,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
@@ -102,16 +102,13 @@ export default {
 }
 
 .news {
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 0.3rem;
+  width: 100%;
+  padding: 0.2rem;
+  text-align: justify;
 }
 .news h4 {
   font-size: 0.28rem;
   padding: 0.2rem 0;
   text-align: center;
-}
-.news p {
-  text-indent: 0.6rem;
 }
 </style>

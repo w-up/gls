@@ -24,9 +24,11 @@
                 <span>{{adoptitem.title}}</span>
                 <span>{{adoptitem.number}}</span>
               </div>
-              <h5>基地地址：{{adoptitem.address}}</h5>
-              <div class="card_time">
+              <div class="card-address">
+                <h5>基地地址：{{adoptitem.address}}</h5>
                 <span>领养时间：{{adoptitem.time}}</span>
+              </div>
+              <div class="card_time">
               </div>
             </div>
           </div>
@@ -213,17 +215,17 @@ export default {
 
 .card {
   width: 100%;
-  height: 1.8rem;
+  height: 2.5rem;
   padding: 0.2rem;
   border-radius: 0.1rem;
   color: #fff;
   margin-bottom: 0.2rem;
-  display: flex;
+  /* display: flex;
   display: -webkit-flex;
   -webkit-flex-direction: column;
   flex-direction: column;
   -webkit-justify-content: space-between;
-  justify-content: space-between;
+  justify-content: space-between; */
   position: relative;
 }
 .card_1 {
@@ -277,10 +279,18 @@ export default {
 .card .card-tit span:nth-child(2) {
   margin-left: 1rem;
 }
-
-.card h5 {
+.card-address {
+  margin-top: 0.5rem;
+}
+.card-address h5 {
   font-weight: normal;
   font-size: 0.24rem;
+  line-height: 0.28rem;
+}
+.card-address span {
+  font-weight: normal;
+  font-size: 0.24rem;
+  line-height: 0.28rem;
 }
 
 .card .card_time {
