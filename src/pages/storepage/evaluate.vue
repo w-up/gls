@@ -153,39 +153,44 @@ export default {
     //提交评价
     submintEval() {
       let that = this;
-      Indicator.open({
-        text: "提交中..."
-      });
-      that
-        .$http({
-          url: "goods_order/evaluateGoodsActive",
-          method: "post",
-          data: {
-            token: localStorage.getItem("token"),
-            id: that.id,
-            score: that.score,
-            text: that.text,
-            img: that.srcs.toString()
-          }
-        })
-        .then(function(res) {
-          if (res.data.code == 0) {
-            //成功回调
-            Toast("发布成功");
-          } else {
-            //失败
-            Toast(res.data.msg);
-          }
-          Indicator.close();
-        })
-        .catch(function(error) {
-          Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
+      if (that.score == 0) {
+        Toast("请选择星级评价");
+      } else {
+        Indicator.open({
+          text: "提交中..."
         });
+        that
+          .$http({
+            url: "goods_order/evaluateGoodsActive",
+            method: "post",
+            data: {
+              token: localStorage.getItem("token"),
+              id: that.id,
+              score: that.score,
+              text: that.text,
+              img: that.srcs.toString()
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 0) {
+              //成功回调
+              Toast("发布成功");
+              that.$router.go(-1);
+            } else {
+              //失败
+              Toast(res.data.msg);
+            }
+            Indicator.close();
+          })
+          .catch(function(error) {
+            Indicator.close();
+            Toast({
+              message: "网络连接失败",
+              position: "bottom",
+              duration: 5000
+            });
+          });
+      }
     }
   }
 };
@@ -201,32 +206,30 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 90px);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
-}
-
-.mint-header {
-  background: #ef6213;
+  top: 0.8rem;
 }
 
 .evaluate_con {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0.2rem;
 }
 
 .commodity {
-  margin-top: 0.4rem;
-  height: 2rem;
   width: 100%;
   display: flex;
+  display: -webkit-flex;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
   align-items: center;
+  -webkit-align-items: center;
+  font-size: 0;
 }
 
 .commodity .com_img {
-  width: 26%;
+  width: 30%;
 }
 
 .commodity img {
@@ -234,29 +237,30 @@ export default {
 }
 
 .eval_info {
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
   /* height: 4.6rem; */
   border: 1px solid #e8e8e8;
-}
-
-.upload_img {
-  display: flex;
-  flex-direction: column;
-  margin-left: 0.1rem;
-}
-
-.upload_img span {
-  padding: 0.2rem 0;
-  font-size: 0.24rem;
-  color: #666;
 }
 
 .eval_info textarea {
   width: 100%;
   height: 2rem;
   border: none;
-  padding: 0.1rem;
+  resize: none;
+  padding: 0.2rem;
   font-size: 0.24rem;
+}
+
+.upload_img {
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem 0.2rem 0;
+}
+
+.upload_img span {
+  padding: 0.2rem 0;
+  font-size: 0.24rem;
+  color: #666;
 }
 
 .sub_eval {
@@ -268,6 +272,7 @@ export default {
   width: 80%;
   height: 0.8rem;
   border: none;
+  border-radius: 0.1rem;
   background: #ef6213;
   color: #fff;
 }

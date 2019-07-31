@@ -26,7 +26,7 @@
             <img :src="shopList.img" />
             <div class="shopping_info">
               <div class="shop_tit">
-                <span>{{shopList.name}}</span>
+                <span>{{shopList.title}}</span>
               </div>
               <div class="redpack">
                 <h3>{{shopList.price}} 元</h3>
@@ -46,10 +46,10 @@
     <x-dialog v-model="lang_dlg" class="de_dialog lang_dialog" hide-on-blur>
       <div class="dialog">
         <span class="iconfont icon-tabguanbi" @click="closeDialog"></span>
-        <h4>预定确认</h4>
+        <h4>{{is_book==0?'预定确认':"再次预定确认"}}</h4>
         <div class="number">
           <span>产品:</span>
-          <span>{{shopList.name}}</span>
+          <span>{{shopList.title}}</span>
         </div>
         <div class="number">
           <span>单价:</span>
@@ -88,6 +88,7 @@ export default {
       id: this.$route.query.id,
       address: [],
       address_id: "", //地址id
+      is_book: 0, //是否是再次预定
       totalNumber: "", //数量
       price: "", //价格
       password: ""
@@ -122,6 +123,7 @@ export default {
             //成功回调
             that.address = res.data.data.address;
             that.address_id = res.data.data.address.id;
+            that.is_book = res.data.data.is_book; // 0首次预定1再次预定
           } else {
             //失败
             Toast(res.data.msg);
@@ -130,8 +132,6 @@ export default {
     },
     //弹出确认弹窗
     showDialog() {
-      console.log(this.address);
-      console.log(this.address_id);
       if (this.address_id == undefined) {
         Toast("请选择收货地址");
       } else {

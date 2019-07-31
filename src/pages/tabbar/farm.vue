@@ -403,7 +403,7 @@ export default {
       if (id !== undefined) {
         // Toast("这块土地已经种植了");
       } else if (land_id == undefined) {
-        Toast("请购买土地");
+        Toast("请开垦土地");
       } else {
         that
           .$http({

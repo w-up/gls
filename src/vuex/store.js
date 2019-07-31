@@ -3,16 +3,13 @@ import Vuex from 'vuex'; //引用vuex
 Vue.use(Vuex); //使用vuex
 
 const state = { //
-  farm: { // 农场
-    
-  },
   areaType: 1, // 默认黄土地
   seedId: '', // 种子id
+  ypydId: 1, // 一品一地地区id
 }
 
 // getters 可以认为是 store 的计算属性
-const getters = {
-};
+const getters = {};
 
 //声明一个常量mutations，将所有的mutation放入其中
 const mutations = {
@@ -21,6 +18,9 @@ const mutations = {
   },
   seedIdFun(state, index) { // 种子id
     state.seedId = index;
+  },
+  ypydIdFun(state, index) { // 一品一地地址id
+    state.ypydId = index;
   }
 }
 

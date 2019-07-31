@@ -39,57 +39,49 @@
             </li>
           </ul>
         </div>
-				 <!-- 内容 -->
-				<div class="scroll_div">
-				<van-pull-refresh
-				    v-model="isLoading"
-				    pulling-text="下拉刷新"
-				    loosing-text="释放更新"
-				    loading-text="正在加载..."
-				    @refresh="onRefresh"
-				  >
-				  <div
-				      class="div"
-				      v-infinite-scroll="loadMore"
-				      infinite-scroll-disabled="loading"
-				      infinite-scroll-distance="10"
-				      infinite-scroll-immediate-check="false"
-				    > 
-        <div class="content-con">
-          <div
-            class="content_list"
-            @click="gotoStore(item)"
-            v-for="(item,index) in shopList"
-            :key="index"
+        <!-- 内容 -->
+        <div class="scroll_div">
+          <van-pull-refresh
+            v-model="isLoading"
+            pulling-text="下拉刷新"
+            loosing-text="释放更新"
+            loading-text="正在加载..."
+            @refresh="onRefresh"
           >
-            <img :src="item.img" />
-            <div class="con-title">
-              <h3>{{item.name}}</h3>
-           <!--   蓝钻 -->
-              <span v-if="item.level < 4 && item.level > 0" class="blue-zuan"></span>
-              <span v-if="item.level == 2 || item.level == 3" class="blue-zuan"></span>
-              <span v-if="item.level ==3" class="blue-zuan"></span>
-              <!-- 黄钻 -->
-              <span v-if="item.level < 7 && item.level >= 4" class="yellow-zuan"></span>
-              <span v-if="item.level < 7 && item.level > 4" class="yellow-zuan"></span>
-              <span v-if="item.level == 6" class="yellow-zuan"></span>
-             <!-- 蓝冠-->
-              <span v-if="item.level < 10 && item.level >= 7" class="blue-guan"></span>
-              <span v-if="item.level < 10 && item.level > 7" class="blue-guan"></span>
-              <span v-if="item.level == 9" class="blue-guan"></span>
-              <!-- 皇冠 -->
-              <span v-if="item.level < 13 && item.level >= 10" class="yellow-guan"></span>
-              <span v-if="item.level < 13 && item.level > 10" class="yellow-guan"></span>
-              <span v-if="item.level == 12" class="yellow-guan"></span>
-              <!-- 金冠 -->
-              <span v-if="item.level == 13" class="gold-guan"></span>
-            </div>
-          </div>
-					</div>
-					</div>
-					 <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
-					  <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
-					</van-pull-refresh>
+            <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+              <div class="content-con">
+                <div
+                  class="content_list"
+                  @click="gotoStore(item)"
+                  v-for="(item,index) in shopList"
+                  :key="index"
+                >
+                  <img :src="item.img" />
+                  <div class="con-title">
+                    <h3>{{item.name}}</h3>
+                    <!-- 蓝钻 -->
+                    <span v-if="item.level < 4 && item.level > 0" class="blue-zuan"></span>
+                    <span v-if="item.level == 2 || item.level == 3" class="blue-zuan"></span>
+                    <span v-if="item.level ==3" class="blue-zuan"></span>
+                    <!-- 黄钻 -->
+                    <span v-if="item.level < 7 && item.level >= 4" class="yellow-zuan"></span>
+                    <span v-if="item.level < 7 && item.level > 4" class="yellow-zuan"></span>
+                    <span v-if="item.level == 6" class="yellow-zuan"></span>
+                    <!-- 蓝冠-->
+                    <span v-if="item.level < 10 && item.level >= 7" class="blue-guan"></span>
+                    <span v-if="item.level < 10 && item.level > 7" class="blue-guan"></span>
+                    <span v-if="item.level == 9" class="blue-guan"></span>
+                    <!-- 皇冠 -->
+                    <span v-if="item.level < 13 && item.level >= 10" class="yellow-guan"></span>
+                    <span v-if="item.level < 13 && item.level > 10" class="yellow-guan"></span>
+                    <span v-if="item.level == 12" class="yellow-guan"></span>
+                    <!-- 金冠 -->
+                    <span v-if="item.level == 13" class="gold-guan"></span>
+                  </div>
+                </div>
+              </div>
+            </van-list>
+          </van-pull-refresh>
         </div>
       </div>
       <div id="no-data" v-if="shopList.length == 0">
@@ -100,95 +92,112 @@
 </template>
 
 <script>
-import { Swipe, Toast,SwipeItem, Indicator } from "mint-ui";
+import { Swipe, Toast, SwipeItem, Indicator } from "mint-ui";
 import { LoadMore } from "vux";
 export default {
   components: {
     "mt-swipe": Swipe,
     "mt-swipe-item": SwipeItem,
-		LoadMore,
-		Toast
+    LoadMore,
+    Toast
   },
   data() {
     return {
-			pageindex: 1,
-			pageIndustry:1,
+      pageindex: 1,
+      pageIndustry: 1,
       banner: [], //轮播图
       shopKey: [], //店铺筛选条件（关键字）
       shopList: [], //店铺列表
+      shopListTotal: "", // 店铺总数量
       percentage: "", // 店铺列表动态宽
       industry_id: "", //行业ID
       name: "", //搜索名称
-			load: true, //加载图标显示
-			none: false, //加载图标隐藏
-			lif: true, //正在加载中 显示
-			nif: false, //没有更多数据了 隐藏
-			loading: false, //下拉刷新
-			isLoading: false //上拉加载更多
+      isLoading: false, //下拉刷新
+      loading: false, // 加载更多
+      finished: false // 全部加载
     };
   },
   mounted() {
     let that = this;
     that.getShopData();
-		that.getShopList();
-		that.getIndustryData();
+    that.getIndustryData();
   },
   methods: {
-		//选择相应的tab，初始化数据 //选中全部
-		getShopListNav() {
-		  let that = this;
-		 // console.log(i)
-		  that.industry_id = "";
-		  that.name = "";
-		  that.loading = false;
-		  that.nif = false;
-		  that.pageindex = 1;
-		  that.shopList = [];		 
-		 	that.getShopList(0)		
-		},	
-		//选择相应的tab，初始化数据 //选中行业
-		getIndustryNav(name,id) {
-		  let that = this;
-		  that.industry_id = id;
-			that.name = name;
-		  that.loading = false;
-		  that.nif = false;
-		  that.pageIndustry= 1;
-		  that.shopList = [];
-		 	 that.getIndustryData()
-		},
-		 //下拉刷新
-		onRefresh() {
-		  let that = this;
-		  that.isLoading = true;
-		  that.loading = false;
-		  that.nif = false;		
-		  that.shopList = [];
-			if(that.industry_id == ''){	
-				 that.pageindex = 1;
-					that.getShopList(1)
-			}else {	
-				that.pageIndustry = 1;
-				 that.getIndustryData(1)	
-			}
-		 
-		
-		},
-		//上拉加载更多
-		loadMore() {
-		  let that = this;
-		  that.lif = true;			
-			console.log(that.industry_id)
-		 if(that.industry_id == ''){
-			  that.pageindex++; 
-		 		that.getShopList(0)
-				console.log(12)
-		 }else {
-			 that.pageIndustry ++;
-		 	  that.getIndustryData(0)	
-			 console.log(13)
-		 }
-		},
+    //选择相应的tab，初始化数据 //选中全部
+    getShopListNav() {
+      let that = this;
+      // console.log(i)
+      that.industry_id = "";
+      that.name = "";
+      that.loading = false;
+      that.nif = false;
+      that.pageindex = 1;
+      that.shopList = [];
+      that.getShopList(0);
+    },
+    //选择相应的tab，初始化数据 //选中行业
+    getIndustryNav(name, id) {
+      let that = this;
+      that.industry_id = id;
+      that.name = name;
+      that.loading = false;
+      that.nif = false;
+      that.pageIndustry = 1;
+      that.shopList = [];
+      that.getIndustryData();
+    },
+    //下拉刷新
+    onRefresh() {
+      let that = this;
+      that.isLoading = true;
+      that.loading = false;
+      that.finished = false;
+      that.shopList = [];
+      if (that.industry_id == "") {
+        that.pageindex = 1;
+        that.getShopList(1);
+      } else {
+        that.pageIndustry = 1;
+        that.getIndustryData(1);
+      }
+    },
+    onLoad() {
+      let that = this;
+      that.$nextTick(() => {
+        that
+          .$http({
+            url: "Ckshop/shopList",
+            method: "post",
+            data: {
+              p: that.pageindex + 1
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 0) {
+              if (res.data.data.list != "") {
+                that.shopList = that.shopList.concat(res.data.data.list);
+                that.shopListTotal = res.data.data.count;
+                that.loading = false;
+                that.pageindex++;
+              }
+              if (that.shopList.length >= that.shopListTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
+            } else {
+              Toast(res.data.msg);
+            }
+          })
+          .catch(function(error) {
+            Indicator.close();
+            Toast({
+              message: "网络连接失败",
+              position: "bottom",
+              duration: 5000
+            });
+          });
+      });
+    },
     // 获取创客商城首页信息
     getShopData() {
       let that = this;
@@ -203,7 +212,7 @@ export default {
           url: "Ckshop/index",
           method: "post",
           data: {
-            token: localStorage.getItem("token"),					
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -214,12 +223,12 @@ export default {
             // that.shopList = res.data.data.shop.list;
             that.industry_id = "";
             that.name = "";
-            // if (that.shopKey.length >= 4) {
-            //   that.percentage = 20 * (that.shopKey.length + 1);
-            // } else {
-            //   that.percentage = 100;
-            // }
-						Indicator.close();
+            if (that.shopKey.length >= 4) {
+              that.percentage = 20 * (that.shopKey.length + 1);
+            } else {
+              that.percentage = 100;
+            }
+            Indicator.close();
           } else {
             //失败
             Toast(res.data.msg);
@@ -234,66 +243,9 @@ export default {
           });
         });
     },
-		//获取全部行业
-		getShopList(i) {
-		  let that = this;
-			if (i) {
-			  that.lif = true;
-			}
-		  Indicator.open({
-		    // text: "加载中...",
-		    //文字
-		    spinnerType: "fading-circle"
-		    //样式
-		  });
-		  that
-		    .$http({
-		      url: "Ckshop/shopList",
-		      method: "post",
-		      data: {
-						p:that.pageindex
-		      }
-		    })
-		    .then(function(res) {
-					 that.lif = false;
-					that.isLoading = false;
-		      if (res.data.code == 0) {
-						if (res.data.data.list != "") {
-						  that.shopList = that.shopList.concat(res.data.data.list);
-							
-						} else {
-						  that.nif = true;
-						  that.loading = true;
-						}
-						
-						 if (that.shopKey.length >= 4) {
-						  that.percentage = 20 * (that.shopKey.length + 1);
-						} else {
-						  that.percentage = 100;
-						}
-						// console
-						console.log(that.shopList)
-		        // that.shopList = res.data.data.list;
-		      } else {
-		        Toast(res.data.msg);
-		      }
-		      Indicator.close();
-		    })
-		    .catch(function(error) {
-		      Indicator.close();
-		      Toast({
-		        message: "网络连接失败",
-		        position: "bottom",
-		        duration: 5000
-		      });
-		    });
-		},
-    // 选择行业
-    getIndustryData(i) {
+    getShopList(i) {
+      // 获取商家列表
       let that = this;
-			if (i) {
-			  that.lif = true;
-			}
       Indicator.open({
         // text: "加载中...",
         //文字
@@ -305,25 +257,64 @@ export default {
           url: "Ckshop/shopList",
           method: "post",
           data: {
-						// token: localStorage.getItem("token"),
-            name: that.name,
-            industry_id: that.industry_id,
-						p:that.pageIndustry
+            p: that.pageindex
           }
         })
         .then(function(res) {
-					//  that.pageindex = 1;
-					 that.lif = false;
-					that.isLoading = false;
+          if (res.data.code == 0) {
+            if (res.data.data.list != "") {
+              that.shopList = res.data.data.list;
+              that.shopListTotal = res.data.data.count;
+            }
+            that.isLoading = false;
+          } else {
+            Toast(res.data.msg);
+          }
+          Indicator.close();
+        })
+        .catch(function(error) {
+          Indicator.close();
+          Toast({
+            message: "网络连接失败",
+            position: "bottom",
+            duration: 5000
+          });
+        });
+    },
+    // 选择行业
+    getIndustryData(i) {
+      let that = this;
+      Indicator.open({
+        // text: "加载中...",
+        //文字
+        spinnerType: "fading-circle"
+        //样式
+      });
+      that
+        .$http({
+          url: "Ckshop/shopList",
+          method: "post",
+          data: {
+            // token: localStorage.getItem("token"),
+            name: that.name,
+            industry_id: that.industry_id,
+            p: that.pageIndustry
+          }
+        })
+        .then(function(res) {
+          //  that.pageindex = 1;
+          that.lif = false;
+          that.isLoading = false;
           if (res.data.code == 0) {
             // that.industry_id = id;
             that.name = "";
-						if (res.data.data.list != "") {
-						  that.shopList = that.shopList.concat(res.data.data.list);
-						} else {
-						  that.nif = true;
-						  that.loading = true;
-						}
+            if (res.data.data.list != "") {
+              that.shopList = res.data.data.list;
+              // that.shopList.concat()
+            } else {
+              that.nif = true;
+              that.loading = true;
+            }
           } else {
             Toast(res.data.msg);
           }
@@ -424,7 +415,7 @@ export default {
   border-radius: 0.1rem;
   overflow: hidden;
 }
-.content_list:nth-child(2n+1) {
+.content_list:nth-child(2n + 1) {
   margin-right: 0.2rem;
 }
 .content_list img {

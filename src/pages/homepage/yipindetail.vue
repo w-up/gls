@@ -31,7 +31,7 @@ export default {
     return {
       id: this.$route.query.id, // 土地id
       detail: "", // 土地详情
-      number: 1, // 数量
+      number: this.$route.query.number, // 数量
       price: this.$route.query.price // 价格
     };
   },
@@ -81,7 +81,7 @@ export default {
         goods_id: this.id, //商品id
         img: sessionStorage.getItem("shopImg"), //商品图片
         number: this.number, //数量
-        name: sessionStorage.getItem("shopName"), //名字
+        title: sessionStorage.getItem("shopName"), //名字
         price: this.price // 价格
       };
       sessionStorage.setItem("orderList", JSON.stringify(arr));

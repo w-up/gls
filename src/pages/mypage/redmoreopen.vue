@@ -37,10 +37,7 @@
               :disabled="item.status == 1"
               @click="playGameFun(item.id)"
             >{{item.is_join == 1?'已经参与':'点击参与'}}</button>
-            <button
-              v-show="item.status == 1"
-              class="already_btn"
-            >活动结束</button>
+            <button v-show="item.status == 1" class="already_btn">活动结束</button>
           </div>
         </div>
       </div>
@@ -373,21 +370,20 @@ export default {
 .dialog .dialog_cont {
   overflow-x: hide;
   overflow-y: scroll;
-  font-size: 0.28rem !important;
-  text-indent: 0.56rem !important;
+  font-size: 0.28rem;
+  text-indent: 0.56rem;
   text-align: justify;
   line-height: 1.4;
   color: #333;
 }
 .dialog button {
   width: 50%;
-  height: 0.6rem;
+  height: 1rem;
   background: #ef6213;
   color: #fff;
   margin-top: 0.2rem;
   border: none;
   font-size: 0.24rem;
-  line-height: 0.6rem;
   border-radius: 0.1rem;
 }
 </style>

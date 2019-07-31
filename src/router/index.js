@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '../store/index'
 import Login from '@/pages/login' //登录页
 import Fogetpass from '@/pages/fogetpass' //忘记密码
 import Register from '@/pages/register' //注册

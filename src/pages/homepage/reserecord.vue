@@ -168,7 +168,9 @@
 		},
 		methods: {
 			back() {
-				this.$router.go(-1); //返回上一层
+				this.$router.push({
+					path: "/yipinyidi"
+				});
 			},
 			//选中相应的nav 初始化数据
 			setresereIndex(i) {

@@ -48,17 +48,19 @@
                 <div class="yipin_list" v-for="(subitem,index) in subscribe" :key="index">
                   <div
                     class="yipin_img"
-                    @click="goDetailFun(subitem.id, subitem.spend, subitem.img, subitem.title)"
+                    @click="goDetailFun(subitem.id, subitem.spend, subitem.img, subitem.title, subitem.number)"
                   >
                     <img :src="subitem.img" />
                   </div>
                   <div class="yipin_con">
-                    <h4 class="yipin_title">{{subitem.title}}</h4>
-                    <div class="spend">
-                      <span>单价:</span>
-                      <span>{{subitem.spend}} 元</span>
+                    <div @click="goDetailFun(subitem.id, subitem.spend, subitem.img, subitem.title, subitem.number)">
+                      <h4 class="yipin_title">{{subitem.title}}</h4>
+                      <div class="spend">
+                        <span>单价:</span>
+                        <span>{{subitem.spend}} 元</span>
+                      </div>
+                      <h5 class="yipin_time">出售时间：{{subitem.sell_time}}</h5>
                     </div>
-                    <h5 class="yipin_time">出售时间：{{subitem.sell_time}}</h5>
                     <div class="yipin_btm">
                       <van-stepper
                         v-model="subitem.number"
@@ -71,7 +73,7 @@
                         :class="subitem.is_active == 0?'yi_btn_active':''"
                         :disabled="subitem.is_active == 0"
                         type="primary"
-                        @click="reserve(subitem.id, subitem.spend, subitem.number, subitem.img, subitem.title)"
+                        @click="goDetailFun(subitem.id, subitem.spend, subitem.img, subitem.title, subitem.number)"
                       >预定</button>
                     </div>
                   </div>
@@ -100,7 +102,7 @@ export default {
       pageindex: 1,
       name: "", //搜索名称
       subscribe: [], //一品一地数据,
-      area_id: 1, //默认地址id
+      area_id: this.$store.state.ypydId, //默认地址id
       areaList: [], //地址列表
       load: true, //加载图标显示
       none: false, //加载图标隐藏
@@ -118,8 +120,8 @@ export default {
   methods: {
     back() {
       this.$router.push({
-				path: "/tabs/index",
-			});
+        path: "/tabs/index"
+      });
     },
     gotoRecord() {
       this.$router.push({
@@ -147,6 +149,7 @@ export default {
     selectChange(i) {
       let that = this;
       that.area_id = Number(i.target.value);
+      that.$store.commit("ypydIdFun", that.area_id);
       that.loading = false;
       that.nif = false;
       that.pageindex = 1;
@@ -238,7 +241,7 @@ export default {
         goods_id: id, //商品id
         img: img, //商品图片
         number: number, //数量
-        name: title, //名字
+        title: title, //名字
         price: price // 价格
       };
       sessionStorage.setItem("orderList", JSON.stringify(arr));
@@ -249,14 +252,15 @@ export default {
         }
       });
     },
-    goDetailFun(id, price, img, title) {
+    goDetailFun(id, price, img, title, number) {
       sessionStorage.setItem("shopImg", img);
       sessionStorage.setItem("shopName", title);
       this.$router.push({
         path: "/yipindetail",
         query: {
           id: id,
-          price: price
+          price: price,
+          number: number
         }
       });
     }
