@@ -23,20 +23,20 @@
       </tab>
       <div class="scroll_div">
         <van-pull-refresh
-          v-model="isLoading"
+          v-model="updateLoading"
           pulling-text="下拉刷新"
           loosing-text="释放更新"
           loading-text="正在加载..."
           @refresh="onRefresh"
         >
-          <div
-            class="div"
-            v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10"
-            infinite-scroll-immediate-check="false"
+          <van-list
+            v-model="moreloading"
+            :finished="finished"
+            :immediate-check="false"
+            finished-text="--------- 已经没有更多了 ---------"
+            @load="onLoad"
           >
-            <div v-if="orderIndex==0" class="fruit">
+            <div v-show="orderIndex==0" class="fruit">
               <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
                 <div class="fruit_tit">
                   <span>订单号：{{orderitem.order}}</span>
@@ -49,25 +49,38 @@
                   <div class="fruit_con">
                     <div class="fruit_title">
                       <h4>{{orderitem.name}}</h4>
-                      <span v-if="orderitem.status==1" @click="cancelOrder(orderitem.id)">取消订单</span>
-                      <span v-if="orderitem.status==3" @click="gotoAfter(orderitem.id)">申请售后</span>
-                      <span v-if="orderitem.evaluate_status ==0" @click="gotoEval(orderitem.id)">去评价</span>
-                      <span v-if="orderitem.evaluate_status ==1">已评价</span>
-                      <span v-if="orderitem.status== 0">已取消</span>
+                      <span v-show="orderitem.status==1" @click="cancelOrder(orderitem.id)">取消订单</span>
+                      <span v-show="orderitem.status==3" @click="gotoAfter(orderitem.id)">申请售后</span>
+                      <span v-show="orderitem.evaluate_status ==0" @click="gotoEval(orderitem.id)">去评价</span>
+                      <span v-show="orderitem.evaluate_status ==1">已评价</span>
+                      <span v-show="orderitem.status== 0">已取消</span>
                     </div>
                     <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
-                      <span class="btn" v-if="orderitem.status== 1" @click="showDialog(orderitem.id)">立即付款</span>
-                      <span class="btn" v-if="orderitem.status== 2" @click="RemindDelivery(orderitem.id)">提醒发货</span>
-                      <span class="btn" v-if="orderitem.status== 3" @click="Receipt(orderitem.id)">确认收货</span>
-                      <span class="btn" v-if="orderitem.status== 4">已完成</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span
+                        class="btn"
+                        v-show="orderitem.status== 1"
+                        @click="showDialog(orderitem.id)"
+                      >立即付款</span>
+                      <span
+                        class="btn"
+                        v-show="orderitem.status== 2"
+                        @click="RemindDelivery(orderitem.id)"
+                      >提醒发货</span>
+                      <span
+                        class="btn"
+                        v-show="orderitem.status== 3"
+                        @click="Receipt(orderitem.id)"
+                      >确认收货</span>
+                      <span class="btn" v-show="orderitem.status== 4">已完成</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-if="orderIndex==1" class="fruit">
+            <div v-show="orderIndex==1" class="fruit">
               <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
                 <div class="fruit_tit">
                   <span>订单号：{{orderitem.order}}</span>
@@ -84,14 +97,15 @@
                     </div>
                     <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                       <span class="btn" @click="showDialog(orderitem.id)">立即付款</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-if="orderIndex==2" class="fruit">
+            <div v-show="orderIndex==2" class="fruit">
               <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
                 <div class="fruit_tit">
                   <span>订单号：{{orderitem.order}}</span>
@@ -107,14 +121,15 @@
                     </div>
                     <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                       <span class="btn" @click="RemindDelivery(orderitem.id)">提醒发货</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-if="orderIndex==3" class="fruit">
+            <div v-show="orderIndex==3" class="fruit">
               <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
                 <div class="fruit_tit">
                   <span>订单号：{{orderitem.order}}</span>
@@ -127,18 +142,19 @@
                   <div class="fruit_con">
                     <div class="fruit_title">
                       <h4>{{orderitem.name}}</h4>
-                      <span v-if="orderitem.refund_status== 0" @click="gotoAfter(orderitem.id)">申请售后</span>
+                      <span v-show="orderitem.refund_status== 0" @click="gotoAfter(orderitem.id)">申请售后</span>
                     </div>
                     <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                       <span class="btn" @click="Receipt(orderitem.id)">确认收货</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-if="orderIndex==4" class="fruit">
+            <div v-show="orderIndex==4" class="fruit">
               <div class="fruit_list" v-for="(orderitem ,index) in orderList" :key="index">
                 <div class="fruit_tit">
                   <span>订单号：{{orderitem.order}}</span>
@@ -151,18 +167,19 @@
                   <div class="fruit_con">
                     <div class="fruit_title">
                       <h4>{{orderitem.name}}</h4>
-                      <span v-if="orderitem.evaluate_status ==0" @click="gotoEval(orderitem.id)">去评价</span>
-                      <span v-if="orderitem.evaluate_status ==1">已评价</span>
+                      <span v-show="orderitem.evaluate_status ==0" @click="gotoEval(orderitem.id)">去评价</span>
+                      <span v-show="orderitem.evaluate_status ==1">已评价</span>
                     </div>
                     <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-if="orderIndex==5" class="fruit">
+            <div v-show="orderIndex==5" class="fruit">
               <div
                 class="fruit_list"
                 v-show="orderitem.status==0"
@@ -180,19 +197,18 @@
                   <div class="fruit_con">
                     <div class="fruit_title">
                       <h4>{{orderitem.name}}</h4>
-                      <span v-if="orderitem.status==0">已取消</span>
+                      <span v-show="orderitem.status==0">已取消</span>
                     </div>
                     <h5>{{orderitem.price}}元红包+{{orderitem.integral}}谷分</h5>
                     <div class="qixian">
-                      <span>数量: {{orderitem.number}}</span> <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
+                      <span>数量: {{orderitem.number}}</span>
+                      <span v-show="orderitem.specs != ''">规格: {{orderitem.specs}}</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
-          <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
+          </van-list>
         </van-pull-refresh>
       </div>
     </div>
@@ -214,15 +230,14 @@
 
 <script>
 import { Indicator, Toast } from "mint-ui";
-import { Tab, TabItem, XDialog, LoadMore } from "vux";
+import { Tab, TabItem, XDialog } from "vux";
 export default {
   components: {
     Tab,
     TabItem,
     Indicator,
     Toast,
-    XDialog,
-    LoadMore
+    XDialog
   },
   data() {
     return {
@@ -230,22 +245,15 @@ export default {
       pageindex: 1, // 第一页
       orderIndex: 0,
       orderList: [], //我的订单列表
+      orderListTotal: 0, // 订单总数量
       lang_dlg: false, //弹窗隐藏
       payment_password: "", //支付密码
       current_id: "", //当前订单id
-      status: 0, //订单状态
-      load: true, //加载图标显示
-      none: false, //加载图标隐藏
-      lif: true, //正在加载中 显示
-      nif: false, //没有更多数据了 隐藏
-      loading: false, //下拉刷新
-      isLoading: false //上拉加载更多
+      status: "", //订单状态
+      updateLoading: false, //下拉刷新
+      moreloading: false, // 加载更多
+      finished: false // 全部加载
     };
-  },
-  mounted() {
-    let that = this;
-    sessionStorage.setItem("goBackMine", this.isMine);
-    that.getMyorder();
   },
   activated() {
     this.$nextTick(() => {
@@ -256,6 +264,11 @@ export default {
       this.loading = false;
       this.getMyorder(1);
     });
+  },
+  mounted() {
+    let that = this;
+    sessionStorage.setItem("goBackMine", this.isMine);
+    that.getMyorder();
   },
   methods: {
     back() {
@@ -296,44 +309,38 @@ export default {
     navTap(i) {
       let that = this;
       that.orderIndex = i;
-      that.loading = false;
-      that.nif = false;
-      that.pageindex = 1;
-      that.orderList = [];
-      that.getMyorder(1);
-    },
-    // 下拉刷新
-    onRefresh() {
-      let that = this;
-      that.isLoading = true;
-      that.loading = false;
-      that.nif = false;
+      that.name = name;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
       that.orderList = [];
       that.getMyorder(0);
     },
-    //上拉加载更多
-    loadMore() {
+    // 下拉刷新
+    onRefresh() {
       let that = this;
-      that.lif = true;
-      that.pageindex++;
-      that.getMyorder();
+      that.updateLoading = true;
+      that.moreloading = false;
+      that.finished = false;
+      that.pageindex = 1;
+      that.orderList = [];
+      that.orderListTotal = 0;
+      that.getMyorder(0);
+    },
+    //上拉加载更多
+    onLoad() {
+      let that = this;
+      that.pageindex += 1;
+      that.moreloading = true;
+      that.getMyorder(1);
     },
 
     //获取我的订单
-    getMyorder(i) {
+    getMyorder(type) {
       let that = this;
-      if (i) {
-        that.lif = true;
-      }
       let orderIndex = that.orderIndex;
       that.status =
-        orderIndex == 0
-          ? ""
-          : orderIndex == 1
-          ? 1
-          : orderIndex == 2
-          ? 2
+        orderIndex == 0 ? "" : orderIndex == 1 ? 1 : orderIndex == 2 ? 2
           : orderIndex == 3
           ? 3
           : orderIndex == 4
@@ -352,22 +359,38 @@ export default {
             p: that.pageindex
           }
         })
-        .then(function(res) {
-          that.lif = false;
-          that.isLoading = false;
+        .then((res)=> {
+          Indicator.close();
           if (res.data.code == 0) {
-            //成功回调
-            if (res.data.data.list != "") {
-              that.orderList = res.data.data.list;
+            if (type == 0) {
+              if (res.data.data.list.length > 0) {
+                that.orderList = res.data.data.list;
+                that.orderListTotal = res.data.data.count;
+                if (that.orderList.length >= that.orderListTotal) {
+                  //全部数据已加载
+                  that.finished = true;
+                }
+              } else {
+                that.finished = true;
+              }
+              that.updateLoading = false;
             } else {
-              that.nif = true;
-              that.loading = true;
+              that.moreloading = false;
+              if (res.data.data.list != "") {
+                that.orderList = that.orderList.concat(res.data.data.list);
+                that.orderListTotal = res.data.data.count;
+              } else {
+                that.finished = true;
+              }
+              if (that.orderList.length >= that.orderListTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
             }
           } else {
             //失败
             Toast(res.data.msg);
           }
-          Indicator.close();
         })
         .catch(function(error) {
           Indicator.close();
@@ -398,6 +421,7 @@ export default {
             }
           })
           .then(function(res) {
+            Indicator.close();
             if (res.data.code == 0) {
               Toast(res.data.msg);
               that.payment_password = "";
@@ -406,7 +430,6 @@ export default {
             } else {
               Toast(res.data.msg);
             }
-            Indicator.close();
           })
           .catch(function(error) {
             Indicator.close();
@@ -526,14 +549,13 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - .8rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
 }
 .scroll_div {
   width: 100%;
-  height: 100%;
 }
 .mint-header {
   background: #ef6213;

@@ -8,12 +8,16 @@ import './vuex/font'
 import store from './vuex/store';
 import axios from 'axios'
 import Qs from 'qs'
+
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+Vue.use(MintUI)
+
 import Vant from 'vant';
 import 'vant/lib/index.css';
-import { NumberKeyboard ,Rate,Switch} from 'vant';
-Vue.use(Vant,Rate,Switch);
+// import { NumberKeyboard ,Rate,Switch} from 'vant';
+// Vue.use(Vant,Rate,Switch);
+Vue.use(Vant);
 
 // 复制粘贴
 import VueClipboard from 'vue-clipboard2' 
@@ -32,7 +36,6 @@ axios.defaults.withCredentials = true //
 //指定baseurl
 const BASE_URL = 'http://glsapi.jinjifuweng.com//api/';
 axios.defaults.baseURL=BASE_URL;
-Vue.use(MintUI)
 
 Vue.prototype.$http = axios
 Vue.config.productionTip = false

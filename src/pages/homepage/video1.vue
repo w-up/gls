@@ -11,12 +11,13 @@
         <tab-item @on-item-click="setvideoIndex(1)">果园</tab-item>
         <tab-item @on-item-click="setvideoIndex(2)">牧场</tab-item>
       </tab>
+      <div id="id_test_video" style="width:100%; height:auto;"></div>
       <div v-show="videoIndex==0" class="tab-swiper vux-center">
         <div class="video">
-          <div class="video_list" v-for="(item, index) in listOptions1" :key="index">
-            <video-player class="vjs-custom-skin" :options="item" @ready="playerReadied"></video-player>
+          <!-- <div class="video_list" v-for="(item, index) in listOptions1" :key="index">
+            
             <span>{{item.videoTitle}}</span>
-          </div>
+          </div>-->
         </div>
       </div>
       <div v-show="videoIndex==1" class="tab-swiper vux-center">
@@ -42,12 +43,6 @@
 <script>
 import { Indicator, Toast } from "mint-ui";
 import { Tab, TabItem } from "vux";
-import "videojs-flash";
-// videojs
-import videojs from "video.js";
-window.videojs = videojs;
-// hls plugin for videojs6
-require("videojs-contrib-hls/dist/videojs-contrib-hls.js");
 export default {
   components: {
     Tab,
@@ -59,6 +54,7 @@ export default {
     return {
       videoIndex: 0,
       // type: 1,
+      player: "",
       videoList: "",
       listOptions1: [],
       listOptions2: [],
@@ -93,9 +89,28 @@ export default {
     };
   },
   mounted: function() {
-    this.getVideoList(1);
-    this.getVideoList(2);
-    this.getVideoList(3);
+    let that = this;
+    // this.getVideoList(1);
+    // this.getVideoList(2);
+    // this.getVideoList(3);
+    this.$nextTick(() => {
+      // var player = new TcPlayer("id_test_video", {
+      //   m3u8: "http://2157.liveplay.myqcloud.com/2157_358535a.m3u8", //请替换成实际可用的播放地址
+      //   autoplay: true, //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+      //   poster: "http://www.test.com/myimage.jpg",
+      //   width: "480", //视频的显示宽度，请尽量使用视频分辨率宽度
+      //   height: "320" //视频的显示高度，请尽量使用视频分辨率高度
+      // });
+      var player = new TcPlayer("id_test_video", {
+        m3u8: "http://200002949.vod.myqcloud.com/200002949_b6ffc.f240.m3u8", //请替换成实际可用的播放地址
+        m3u8_hd:
+          "http://200002949.vod.myqcloud.com/200002949_b6ffc.f230.av.m3u8",
+        m3u8_sd:
+          "http://200002949.vod.myqcloud.com/200002949_b6ffc.f220.av.m3u8",
+        autoplay: true, //iOS下safari浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+        coverpic: "http://www.test.com/myimage.jpg"
+      });
+    });
   },
   methods: {
     back() {
@@ -292,7 +307,7 @@ export default {
   text-align: center;
 }
 .video_list span {
-  font-size: .28rem;
+  font-size: 0.28rem;
   color: #333;
 }
 </style>

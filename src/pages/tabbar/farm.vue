@@ -112,11 +112,10 @@
 </template>
 <script>
 import { XDialog } from "vux";
-import { Toast } from "mint-ui";
+// import { Toast } from "mint-ui";
 export default {
   components: {
     XDialog,
-    Toast
   },
   data() {
     return {
@@ -175,6 +174,7 @@ export default {
     },
     //交易
     gotoDeal() {
+      // this.$toast("请下载或登录App进行交易");
       this.$router.push({
         path: "/deal",
         query: {

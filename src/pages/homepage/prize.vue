@@ -146,16 +146,10 @@ export default {
       if (this.prizeIndex > 7) {
         this.prizeIndex = 7;
       }
-      // console.log("恭喜" + this.prizeIndex);
-      // console.log(this.hasPrize);
-      return this.hasPrize
-        ? "恭喜您，获得" + " " + this.prize_list[this.prizeIndex].name
-        : "未中奖";
+      return this.hasPrize? "恭喜您，获得" + " " + this.prize_list[this.prizeIndex].name : "未中奖";
     },
     toast_pictrue() {
-      return this.hasPrize
-        ? require("../../assets/img/congratulation.png")
-        : require("../../assets/img/sorry.png");
+      return this.hasPrize ? require("../../assets/img/congratulation.png") : require("../../assets/img/sorry.png");
     }
   },
   methods: {
@@ -188,12 +182,11 @@ export default {
       }
       this.confirmGame = false;
       this.speed = 200;
-      this.click = false;
-      this.startRoll();
       this.getPrizeIndex();
     },
     // 开始转动
     startRoll() {
+      this.click = false;
       this.times += 1; // 转动次数
       this.oneRoll(); // 转动过程调用的每一次转动方法，这里是第一次调用初始化
       // 如果当前转动次数达到要求 && 目前转到的位置是中奖位置
@@ -202,6 +195,7 @@ export default {
         this.game_over();
         this.prize = -1;
         this.times = 0;
+        this.click = true;
         // console.log("你已经中奖了");
       } else {
         if (this.times < this.cycle) {
@@ -274,18 +268,19 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             that.prizeIndex = res.data.data.id - 1;
-            console.log("中奖id" + that.prizeIndex);
+            that.startRoll();
+          }else{
+            Toast(res.data.msg);
           }
         });
     },
     againGameFun() {
       this.toast_control = false;
-      this.startLottery();
+      this.getPrizeIndex();
     },
     game_over() {
       setTimeout(() => {
         this.toast_control = true;
-        console.log(this.prizeIndex);
         this.hasPrize = this.prize_list[this.prizeIndex].isPrize;
         this.click = true; // 游戏结束可以再次抽奖
         this.getPrizeInfoFun();

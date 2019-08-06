@@ -181,7 +181,9 @@ export default {
             Toast(res.data.msg);
           }
         })
-        .catch(function(error) {});
+        .catch(function(error) {
+          Indicator.close();
+        });
     }
   }
 };

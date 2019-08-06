@@ -135,7 +135,7 @@
 					formData.append('file', file.file);
 					formData.append("token", localStorage.getItem("token"));
 					$.ajax({
-						url: 'http://glsapi.jinjifuweng.com//api/goods_order/upload/',
+						url: 'http://glsapi.jinjifuweng.com/api/goods_order/upload/',
 						type: 'POST',
 						data: formData,
 						dataType: 'JSON',

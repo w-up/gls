@@ -29,17 +29,17 @@
           </div>
         </div>
       </div>
-      <div class="close_ac">
-        <div class="check">
-          <label for="test1">
-            <input type="checkbox" v-model="checkAll" id="test1" />
-            <div class="checkboxdiv"></div>
-          </label>
-          <span>全选</span>
-        </div>
-        <h4>合计：{{allMoney}}元红包+{{allGufen}}谷分</h4>
-        <button @click="pay" :disabled="disabled">结算</button>
+    </div>
+    <div class="close_ac">
+      <div class="check">
+        <label for="test1">
+          <input type="checkbox" v-model="checkAll" id="test1" />
+          <div class="checkboxdiv"></div>
+        </label>
+        <span>全选</span>
       </div>
+      <h4>合计：{{allMoney}}元红包+{{allGufen}}谷分</h4>
+      <button @click="pay" :disabled="disabled">结算</button>
     </div>
     <div id="no-data" v-if="shopList.length == 0">
       <img src="../../assets/img/nodata.png" />
@@ -256,7 +256,7 @@ export default {
   height: calc(100% - 1.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: .8rem;
+  top: 0.8rem;
 }
 
 #test,
@@ -305,7 +305,7 @@ export default {
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
-	-webkit-flex-direction: row;
+  -webkit-flex-direction: row;
   justify-content: space-between;
   -webkit-justify-content: space-between;
   align-items: center;
@@ -328,12 +328,12 @@ export default {
 
 .shopping_info {
   padding-left: 0.1rem;
-  font-size: .28rem;
+  font-size: 0.28rem;
   width: 100%;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-	-webkit-flex-direction: column;
+  -webkit-flex-direction: column;
   justify-content: space-between;
   -webkit-justify-content: space-between;
 }
@@ -369,7 +369,7 @@ export default {
   display: flex;
   display: -webkit-flex;
   flex-direction: row;
-	-webkit-flex-direction: row;
+  -webkit-flex-direction: row;
   justify-content: space-between;
   -webkit-justify-content: space-between;
   align-items: center;

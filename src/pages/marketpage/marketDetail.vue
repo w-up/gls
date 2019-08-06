@@ -51,8 +51,8 @@
           </mt-swipe-item>
         </mt-swipe>
         <div class="search">
-          <input type="search" placeholder="请输入商品名称" v-model="name" />
-          <button :disabled="name == ''" @click="setProductData">
+          <input type="search" placeholder="请输入商品名称" v-model="name" @blur="onRefresh"/>
+          <button :disabled="name == ''" @click="onRefresh">
             <i class="iconfont icon-tabsearch"></i>
           </button>
         </div>
@@ -60,18 +60,18 @@
       <!-- 内容 -->
       <div class="scroll_div">
         <van-pull-refresh
-          v-model="isLoading"
+          v-model="updateLoading"
           pulling-text="下拉刷新"
           loosing-text="释放更新"
           loading-text="正在加载..."
           @refresh="onRefresh"
         >
-          <div
-            class="div"
-            v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10"
-            infinite-scroll-immediate-check="false"
+          <van-list
+            v-model="moreloading"
+            :finished="finished"
+            :immediate-check="false"
+            finished-text="--------- 已经没有更多了 ---------"
+            @load="onLoad"
           >
             <div class="content">
               <div class="content-con">
@@ -97,9 +97,7 @@
                 </div>
               </div>
             </div>
-          </div>
-          <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
-          <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
+          </van-list>
         </van-pull-refresh>
       </div>
     </div>
@@ -108,12 +106,10 @@
 
 <script>
 import { Swipe, SwipeItem, Indicator, Toast } from "mint-ui";
-import { LoadMore } from "vux";
 export default {
   components: {
     "mt-swipe": Swipe,
     "mt-swipe-item": SwipeItem,
-    LoadMore,
     Indicator,
     Toast
   },
@@ -123,44 +119,40 @@ export default {
       name: "", //店铺名称
       banner: [], //轮播图
       shopList: [], //商品列表
+      shopListTotal: 0, // 商品总数量
       industry_id: "",
-      title: sessionStorage.getItem("title") || "商品列表", //店铺名称
-      load: true, //加载图标显示
-      none: false, //加载图标隐藏
-      lif: true, //正在加载中 显示
-      nif: false, //没有更多数据了 隐藏
-      loading: false, //下拉刷新
-      isLoading: false //上拉加载更多
+      title: this.$route.query.name, //店铺名称
+      updateLoading: false, //下拉刷新
+      moreloading: false, // 加载更多
+      finished: false // 全部加载
     };
   },
   mounted() {
     this.getBanner();
-    this.getShopList();
+    this.getShopList(0);
   },
   methods: {
     //下拉刷新
     onRefresh() {
       let that = this;
-      that.isLoading = true;
-      that.loading = false;
-      that.nif = false;
+      that.updateLoading = true;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
       that.shopList = [];
-      that.getShopList(1);
-    },
-    //上拉加载更多
-    loadMore() {
-      let that = this;
-      that.lif = true;
-      that.pageindex++;
+      that.shopListTotal = 0;
       that.getShopList(0);
     },
-    // 获取 商品列表
-    getShopList(i) {
+    //上拉加载更多
+    onLoad() {
       let that = this;
-      if (i) {
-        that.lif = true;
-      }
+      that.pageindex += 1;
+      that.moreloading = true;
+      that.getShopList(1);
+    },
+    // 获取 商品列表
+    getShopList(type) {
+      let that = this;
       Indicator.open({
         // text: "加载中...",
         //文字
@@ -177,16 +169,32 @@ export default {
             p: that.pageindex
           }
         })
-        .then(function(res) {
-          that.lif = false;
-          that.isLoading = false;
+        .then((res)=> {
           if (res.data.code == 0) {
-            //成功回调
-            if (res.data.data.list != "") {
-              that.shopList = that.shopList.concat(res.data.data.list);
+            if (type == 0) {
+              if (res.data.data.list.length > 0) {
+                that.shopList = res.data.data.list;
+                that.shopListTotal = res.data.data.count;
+                if (that.shopList.length >= that.shopListTotal) {
+                  //全部数据已加载
+                  that.finished = true;
+                }
+              } else {
+                that.finished = true;
+              }
+              that.updateLoading = false;
             } else {
-              that.nif = true;
-              that.loading = true;
+              that.moreloading = false;
+              if (res.data.data.list != "") {
+                that.shopList = that.shopList.concat(res.data.data.list);
+                that.shopListTotal = res.data.data.count;
+              } else {
+                that.finished = true;
+              }
+              if (that.shopList.length >= that.shopListTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
             }
           } else {
             Toast(res.data.msg);
@@ -201,15 +209,6 @@ export default {
             duration: 5000
           });
         });
-    },
-    //搜索商品
-    setProductData() {
-      let that = this;
-      that.loading = false;
-      that.nif = false;
-      that.pageindex = 1;
-      that.shopList = [];
-      that.getShopList();
     },
     // 获取banner 图
     getBanner() {
@@ -286,6 +285,7 @@ export default {
       this.$router.push({
         path: "/proDetail",
         query: {
+          name: item.name,
           storeId: item.id
         }
       });
@@ -366,7 +366,7 @@ export default {
   border-radius: 0.1rem;
   overflow: hidden;
 }
-.content_list:nth-child(2n+1) {
+.content_list:nth-child(2n + 1) {
   margin-right: 0.2rem;
 }
 .content_list img {
@@ -387,7 +387,7 @@ export default {
 }
 .content_list .con-title3 span {
   font-size: 0.24rem;
-  line-height: .24rem;
+  line-height: 0.24rem;
   color: #666;
 }
 .content_list .con-title h3 {

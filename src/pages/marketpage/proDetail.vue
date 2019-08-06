@@ -54,10 +54,17 @@
           <div class="comd_info_title">
             <span>
               售价:{{shopinfo.price}}元
-              <br /><span>会员价:{{shopinfo.integral}}元</span>
+              <br />
+              <span>会员价:{{shopinfo.integral}}元</span>
             </span>
             <p>库存: {{shopinfo.surplus}}</p>
-            <van-stepper v-model="num" :min="1" :max="shopinfo.surplus" input-width="1rem" button-size="0.5rem" />
+            <van-stepper
+              v-model="num"
+              :min="1"
+              :max="shopinfo.surplus"
+              input-width="1rem"
+              button-size="0.5rem"
+            />
           </div>
           <h5>{{shopinfo.name}}</h5>
           <div class="specific" v-show="shopTypeList.length != 0">
@@ -79,52 +86,42 @@
           <van-tab :title="'详情'">
             <div v-show="index==0" class="comm_de" v-html="shopinfo.details_img"></div>
           </van-tab>
-          <van-tab :title="'评价('+count+')'">
+          <van-tab :title="'评价('+commnetListTotal+')'">
             <div v-show="index==1" class="comm_de">
               <div class="scroll_div">
                 <van-pull-refresh
-                  v-model="isLoading"
+                  v-model="updateLoading"
                   pulling-text="下拉刷新"
                   loosing-text="释放更新"
                   loading-text="正在加载..."
                   @refresh="onRefresh"
                 >
-                  <div
-                    class="div"
-                    v-infinite-scroll="loadMore"
-                    infinite-scroll-disabled="loading"
-                    infinite-scroll-distance="10"
-                    infinite-scroll-immediate-check="false"
+                  <van-list
+                    v-model="moreloading"
+                    :finished="finished"
+                    :immediate-check="false"
+                    finished-text="--------- 已经没有更多了 ---------"
+                    @load="onLoad"
                   >
-                    <div>
-                      <div class="box2">
-                        <div
-                          class="comment_list"
-                          v-for="(comItem,listId) in commnetList"
-                          :key="listId"
-                        >
-                          <div class="com_title">
-                            <span>{{comItem.name}} {{comItem.phone}}</span>
-                            <span>{{comItem.time}}</span>
-                          </div>
-                          <div class="star">
-                            <van-rate v-model="comItem.score" readonly />
-                          </div>
-                          <p>{{comItem.text}}</p>
-                          <div class="com_img">
-                            <img
-                              v-for="imgItem in comItem.img"
-                              @click="srcShowFun(imgItem.id, listId)"
-                              :src="imgItem.src"
-                              :key="imgItem.id"
-                            />
-                          </div>
-                        </div>
+                    <div class="comment_list" v-for="(comItem,listId) in commnetList" :key="listId">
+                      <div class="com_title">
+                        <span>{{comItem.name}} {{comItem.phone}}</span>
+                        <span>{{comItem.time}}</span>
+                      </div>
+                      <div class="star">
+                        <van-rate v-model="comItem.score" readonly />
+                      </div>
+                      <p>{{comItem.text}}</p>
+                      <div class="com_img">
+                        <img
+                          v-for="imgItem in comItem.img"
+                          @click="srcShowFun(imgItem.id, listId)"
+                          :src="imgItem.src"
+                          :key="imgItem.id"
+                        />
                       </div>
                     </div>
-                  </div>
-                  <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
-                  <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
+                  </van-list>
                 </van-pull-refresh>
               </div>
             </div>
@@ -149,7 +146,7 @@
 </template>
 
 <script>
-import { Tab, LoadMore, TabItem, InlineXNumber } from "vux";
+import { Tab, TabItem, InlineXNumber } from "vux";
 import { Indicator, Toast } from "mint-ui";
 export default {
   components: {
@@ -157,28 +154,22 @@ export default {
     Toast,
     Tab,
     TabItem,
-    LoadMore,
     Indicator
   },
   data() {
     return {
       index: 0,
       pageindex: 1,
-      onFetching: false,
-      bottomCount: 20,
-      name: sessionStorage.getItem("shopName") || "商品详情",
+      name: this.$route.query.name || "商品详情",
       shopId: this.$route.query.storeId, //商品id
       shopinfo: {}, //商品信息
       popupVisible: true,
       num: 1, //购买数量
       commnetList: [], //评价列表
-      count: "", //评价个数
-      load: true, //加载图标显示
-      none: false, //加载图标隐藏
-      lif: true, //正在加载中 显示
-      nif: false, //没有更多数据了 隐藏
-      loading: false, //下拉刷新
-      isLoading: false, //上拉加载更多
+      commnetListTotal: 0, //评价个数
+      updateLoading: false, //下拉刷新
+      moreloading: false, // 加载更多
+      finished: false, // 全部加载
       srcShow: false, //图片预览
       srcIndex: 0, //图片页面索引
       startPosition: 0, //图片预览起始位置索引
@@ -259,26 +250,24 @@ export default {
     //下拉刷新
     onRefresh() {
       let that = this;
-      that.isLoading = true;
-      that.loading = false;
-      that.nif = false;
+      that.updateLoading = true;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
       that.commnetList = [];
-      that.getComment(1);
-    },
-    //上拉加载更多
-    loadMore() {
-      let that = this;
-      that.lif = true;
-      that.pageindex++;
+      that.commnetListTotal = 0;
       that.getComment(0);
     },
-    //获取 评价
-    getComment(i) {
+    //上拉加载更多
+    onLoad() {
       let that = this;
-      if (i) {
-        that.lif = true;
-      }
+      that.pageindex += 1;
+      that.moreloading = true;
+      that.getComment(1);
+    },
+    //获取 评价
+    getComment(type) {
+      let that = this;
       Indicator.open({
         text: "加载中..."
       });
@@ -295,17 +284,38 @@ export default {
           that.lif = false;
           that.isLoading = false;
           if (res.data.code == 0) {
-            //成功回调
-            if (res.data.data.list != "") {
-              that.commnetList = res.data.data.list;
-              for (let i = 0; i < that.commnetList.length; i++) {
-                that.commnetList[i].score = Number(that.commnetList[i].score);
+            if (type == 0) {
+              if (res.data.data.list.length > 0) {
+                that.commnetListTotal = res.data.data.count; //评价数
+                that.commnetList = res.data.data.list;
+                for (let i = 0; i < that.commnetList.length; i++) {
+                  that.commnetList[i].score = Number(that.commnetList[i].score);
+                }
+                if (that.commnetList.length >= that.commnetListTotal) {
+                  //全部数据已加载
+                  that.finished = true;
+                }
+              } else {
+                that.finished = true;
               }
+              that.updateLoading = false;
             } else {
-              that.nif = true;
-              that.loading = true;
+              that.moreloading = false;
+              if (res.data.data.list != "") {
+                that.commnetList = that.commnetList.concat(res.data.data.list);
+                that.commnetListTotal = res.data.data.count; //评价数
+                that.commnetList = res.data.data.list;
+                for (let i = 0; i < that.commnetList.length; i++) {
+                  that.commnetList[i].score = Number(that.commnetList[i].score);
+                }
+              } else {
+                that.finished = true;
+              }
+              if (that.commnetList.length >= that.commnetListTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
             }
-            that.count = res.data.data.count; //评价数
           } else {
             //失败
             Toast(res.data.msg);
@@ -451,7 +461,7 @@ export default {
   -webkit-align-items: center;
   font-size: 0.26rem;
   font-weight: normal;
-  padding-bottom: 0.2rem;
+  padding: 0.2rem 0;
 }
 .comd_info .comd_info_title span {
   color: #666;

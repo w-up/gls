@@ -6,13 +6,17 @@
     <div class="con-wrapper">
       <div class="swipe">
         <mt-swipe :auto="4000">
-          <mt-swipe-item v-for="(item,index) in banner" :key="index">
-            <img :src="item" />
+          <mt-swipe-item
+            v-for="(item,index) in banner"
+            :key="index"
+            @click.native="linkTo(item.url, item.parameter)"
+          >
+            <img :src="item.link" />
           </mt-swipe-item>
         </mt-swipe>
         <div class="search">
-          <input type="search" placeholder="请输入店铺名称" v-model="name" @blur="getIndustryNav(name)" />
-          <button :disabled="name == ''" @click="getIndustryNav(name)">
+          <input type="search" placeholder="请输入店铺名称" v-model="name" @blur="onRefresh" />
+          <button :disabled="name == ''" @click="onRefresh">
             <i class="iconfont icon-tabsearch"></i>
           </button>
         </div>
@@ -22,18 +26,11 @@
         <div class="nav">
           <ul :style="{width: percentage + '%'}">
             <li
-              :class="{'shop-key-active': industry_id == ''}"
-              :style="{width: 100 / (shopKey.length + 1) + '%'}"
-              @click="getShopListNav()"
-            >
-              <a>全部</a>
-            </li>
-            <li
               v-for="(item,index) in shopKey"
               :key="index"
-              :class="{'shop-key-active': industry_id == item.id}"
-              :style="{width: 100 / (shopKey.length + 1) + '%'}"
-              @click="getIndustryNav('',item.id)"
+              :class="{'shop-key-active': shopNavId == item.id}"
+              :style="{width: 100 / shopKey.length + '%'}"
+              @click="shopNavFun('',item.id)"
             >
               <a>{{item.name}}</a>
             </li>
@@ -42,13 +39,19 @@
         <!-- 内容 -->
         <div class="scroll_div">
           <van-pull-refresh
-            v-model="isLoading"
+            v-model="updateLoading"
             pulling-text="下拉刷新"
             loosing-text="释放更新"
             loading-text="正在加载..."
             @refresh="onRefresh"
           >
-            <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+            <van-list
+              v-model="moreloading"
+              :finished="finished"
+              :immediate-check="false"
+              finished-text="--------- 已经没有更多了 ---------"
+              @load="onLoad"
+            >
               <div class="content-con">
                 <div
                   class="content_list"
@@ -84,158 +87,102 @@
           </van-pull-refresh>
         </div>
       </div>
-      <div id="no-data" v-if="shopList.length == 0">
-        <img src="../../assets/img/nodata.png" />
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { Swipe, Toast, SwipeItem, Indicator } from "mint-ui";
-import { LoadMore } from "vux";
 export default {
   components: {
     "mt-swipe": Swipe,
     "mt-swipe-item": SwipeItem,
-    LoadMore,
     Toast
   },
   data() {
     return {
       pageindex: 1,
-      pageIndustry: 1,
       banner: [], //轮播图
       shopKey: [], //店铺筛选条件（关键字）
       shopList: [], //店铺列表
-      shopListTotal: "", // 店铺总数量
+      shopListTotal: 0, // 店铺总数量
       percentage: "", // 店铺列表动态宽
-      industry_id: "", //行业ID
+      shopNavId: "", //行业ID
       name: "", //搜索名称
-      isLoading: false, //下拉刷新
-      loading: false, // 加载更多
+      updateLoading: false, //下拉刷新
+      moreloading: false, // 加载更多
       finished: false // 全部加载
     };
   },
+  watch: {},
   mounted() {
     let that = this;
     that.getShopData();
-    that.getIndustryData();
   },
   methods: {
-    //选择相应的tab，初始化数据 //选中全部
-    getShopListNav() {
+    //选择相应的tab，初始化数据 //选中行业
+    shopNavFun(name, id) {
       let that = this;
-      // console.log(i)
-      that.industry_id = "";
-      that.name = "";
-      that.loading = false;
-      that.nif = false;
+      that.shopNavId = id;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
       that.shopList = [];
       that.getShopList(0);
     },
-    //选择相应的tab，初始化数据 //选中行业
-    getIndustryNav(name, id) {
-      let that = this;
-      that.industry_id = id;
-      that.name = name;
-      that.loading = false;
-      that.nif = false;
-      that.pageIndustry = 1;
-      that.shopList = [];
-      that.getIndustryData();
-    },
     //下拉刷新
     onRefresh() {
       let that = this;
-      that.isLoading = true;
-      that.loading = false;
+      that.updateLoading = true;
+      that.moreloading = false;
       that.finished = false;
+      that.pageindex = 1;
       that.shopList = [];
-      if (that.industry_id == "") {
-        that.pageindex = 1;
-        that.getShopList(1);
-      } else {
-        that.pageIndustry = 1;
-        that.getIndustryData(1);
-      }
+      that.shopListTotal = 0;
+      that.getShopList(0);
     },
     onLoad() {
       let that = this;
-      that.$nextTick(() => {
-        that
-          .$http({
-            url: "Ckshop/shopList",
-            method: "post",
-            data: {
-              p: that.pageindex + 1
-            }
-          })
-          .then(function(res) {
-            if (res.data.code == 0) {
-              if (res.data.data.list != "") {
-                that.shopList = that.shopList.concat(res.data.data.list);
-                that.shopListTotal = res.data.data.count;
-                that.loading = false;
-                that.pageindex++;
-              }
-              if (that.shopList.length >= that.shopListTotal) {
-                //全部数据已加载
-                that.finished = true;
-              }
-            } else {
-              Toast(res.data.msg);
-            }
-          })
-          .catch(function(error) {
-            Indicator.close();
-            Toast({
-              message: "网络连接失败",
-              position: "bottom",
-              duration: 5000
-            });
-          });
-      });
+      that.pageindex += 1;
+      that.moreloading = true;
+      that.getShopList(1);
     },
     // 获取创客商城首页信息
     getShopData() {
       let that = this;
       Indicator.open({
-        // text: "加载中...",
-        //文字
         spinnerType: "fading-circle"
-        //样式
       });
       that
         .$http({
           url: "Ckshop/index",
           method: "post",
           data: {
-            token: localStorage.getItem("token")
+            // token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
+          Indicator.close();
           if (res.data.code == 0) {
-            //成功回调
             that.banner = res.data.data.banner;
             that.shopKey = res.data.data.industry;
-            // that.shopList = res.data.data.shop.list;
-            that.industry_id = "";
-            that.name = "";
+            that.shopKey.unshift({
+              id: 0,
+              name: "全部"
+            });
+            that.shopList = res.data.data.shop.list;
+            that.shopNavId = that.shopKey[0].id; //默认行业id
             if (that.shopKey.length >= 4) {
-              that.percentage = 20 * (that.shopKey.length + 1);
+              that.percentage = 20 * that.shopKey.length;
             } else {
               that.percentage = 100;
             }
-            Indicator.close();
           } else {
             //失败
             Toast(res.data.msg);
           }
         })
         .catch(function(error) {
-          Indicator.close();
           Toast({
             message: "网络连接失败",
             position: "bottom",
@@ -243,52 +190,11 @@ export default {
           });
         });
     },
-    getShopList(i) {
-      // 获取商家列表
+    getShopList(type) {
+      // 获取商家列表 type:0刷新 1加载
       let that = this;
       Indicator.open({
-        // text: "加载中...",
-        //文字
         spinnerType: "fading-circle"
-        //样式
-      });
-      that
-        .$http({
-          url: "Ckshop/shopList",
-          method: "post",
-          data: {
-            p: that.pageindex
-          }
-        })
-        .then(function(res) {
-          if (res.data.code == 0) {
-            if (res.data.data.list != "") {
-              that.shopList = res.data.data.list;
-              that.shopListTotal = res.data.data.count;
-            }
-            that.isLoading = false;
-          } else {
-            Toast(res.data.msg);
-          }
-          Indicator.close();
-        })
-        .catch(function(error) {
-          Indicator.close();
-          Toast({
-            message: "网络连接失败",
-            position: "bottom",
-            duration: 5000
-          });
-        });
-    },
-    // 选择行业
-    getIndustryData(i) {
-      let that = this;
-      Indicator.open({
-        // text: "加载中...",
-        //文字
-        spinnerType: "fading-circle"
-        //样式
       });
       that
         .$http({
@@ -297,28 +203,41 @@ export default {
           data: {
             // token: localStorage.getItem("token"),
             name: that.name,
-            industry_id: that.industry_id,
-            p: that.pageIndustry
+            industry_id: that.shopNavId,
+            p: that.pageindex
           }
         })
-        .then(function(res) {
-          //  that.pageindex = 1;
-          that.lif = false;
-          that.isLoading = false;
+        .then(res => {
+          Indicator.close();
           if (res.data.code == 0) {
-            // that.industry_id = id;
-            that.name = "";
-            if (res.data.data.list != "") {
-              that.shopList = res.data.data.list;
-              // that.shopList.concat()
+            if (type == 0) {
+              if (res.data.data.list.length > 0) {
+                that.shopList = res.data.data.list;
+                that.shopListTotal = res.data.data.count;
+                if (that.shopList.length >= that.shopListTotal) {
+                  //全部数据已加载
+                  that.finished = true;
+                }
+              } else {
+                that.finished = true;
+              }
+              that.updateLoading = false;
             } else {
-              that.nif = true;
-              that.loading = true;
+              that.moreloading = false;
+              if (res.data.data.list != "") {
+                that.shopList = that.shopList.concat(res.data.data.list);
+                that.shopListTotal = res.data.data.count;
+              } else {
+                that.finished = true;
+              }
+              if (that.shopList.length >= that.shopListTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
             }
           } else {
             Toast(res.data.msg);
           }
-          Indicator.close();
         })
         .catch(function(error) {
           Indicator.close();
@@ -337,6 +256,11 @@ export default {
           name: item.name,
           storeId: item.id
         }
+      });
+    },
+    linkTo(url) {
+      this.$router.push({
+        path: url
       });
     }
   }

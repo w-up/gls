@@ -50,12 +50,30 @@ export default {
       invitation: "", //推广有礼
       shareShow: false,
       actions: [{ name: "分享给朋友" }, { name: "分享到朋友圈" }],
-      shareUrl: "",
+      shareUrl: ""
     };
   },
   mounted: function() {
     this.getInvitation();
     this.onShare();
+    var shares = null;
+    // 监听plusready事件
+    console.log("666666");
+    document.addEventListener("plusready",function() {
+        // 扩展API加载完毕，现在可以正常调用扩展API
+        console.log("123456");
+        plus.share.getServices(
+          function(s) {
+            shares = s;
+            console.log(s);
+          },
+          function(e) {
+            alert("获取分享服务列表失败：" + e.message);
+          }
+        );
+      },
+      false
+    );
   },
   methods: {
     back() {
@@ -87,7 +105,7 @@ export default {
               jsApiList: [
                 "checkJsApi",
                 "updateAppMessageShareData",
-                "updateTimelineShareData",
+                "updateTimelineShareData"
               ]
             });
 
@@ -96,7 +114,7 @@ export default {
               jsApiList: [
                 "checkJsApi",
                 "updateAppMessageShareData",
-                "updateTimelineShareData",
+                "updateTimelineShareData"
               ], // 需要检测的JS接口列表
               success: function(res) {
                 console.log(res);
@@ -139,7 +157,7 @@ export default {
     onSelect(item) {
       let that = this;
       // that.shareShow = false;
-      alert(location.href.split('#')[0]);
+      alert(location.href.split("#")[0]);
       console.log(item.name);
       if (item.name == "分享给朋友") {
         wx.updateAppMessageShareData({
@@ -150,7 +168,8 @@ export default {
           // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           link: "http://glsapp.shienkeji.com",
           // 分享图标
-          imgUrl: "http://img3.imgtn.bdimg.com/it/u=400062461,2874561526&fm=26&gp=0.jpg",
+          imgUrl:
+            "http://img3.imgtn.bdimg.com/it/u=400062461,2874561526&fm=26&gp=0.jpg",
           // 用户确认分享后执行的回调函数
           success: function() {
             console.log("分享好友回调函数");
@@ -159,7 +178,7 @@ export default {
           // 用户取消分享后执行的回调函数
           cancel: function() {
             // alert('取消分享回调函数');
-            console.log('分享回好友调函数');
+            console.log("分享回好友调函数");
           }
         });
       } else {
@@ -169,7 +188,8 @@ export default {
           // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           link: that.shareUrl,
           // 分享图标
-          imgUrl: "http://img3.imgtn.bdimg.com/it/u=400062461,2874561526&fm=26&gp=0.jpg",
+          imgUrl:
+            "http://img3.imgtn.bdimg.com/it/u=400062461,2874561526&fm=26&gp=0.jpg",
           // 用户确认分享后执行的回调函数
           success: function() {
             console.log("分享回调函数");

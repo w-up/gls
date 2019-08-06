@@ -32,14 +32,15 @@
           </div>
         </div>
       </div>
-      <div class="close_ac">
-        <div class="check">
+    </div>
+    <div class="close_ac">
+        <!-- <div class="check">
           <label for="test1">
             <input type="checkbox" v-model="checkAll" id="test1" />
             <div class="checkboxdiv"></div>
           </label>
           <span>全选</span>
-        </div>
+        </div> -->
         <div class="total_price">
           <h4>合计：</h4>
           <div>
@@ -47,9 +48,7 @@
             <p>会员价: {{allGufen}} 元</p>
           </div>
         </div>
-
         <button @click="pay" :disabled="disabled">结算</button>
-      </div>
     </div>
     <div id="no-data" v-if="shopList.length == 0">
       <img src="../../assets/img/nodata.png" />
@@ -368,6 +367,7 @@ export default {
   font-size: 0.28rem;
   background: #fff;
   border-top: 1px solid #ddd;
+  z-index: 999;
 }
 .total_price {
   display: flex;
