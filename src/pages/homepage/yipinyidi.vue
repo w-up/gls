@@ -211,10 +211,8 @@ export default {
         })
         .then(function(res) {
           if (res.data.code == 0) {
-            //成功回调
             that.areaList = res.data.data;
           } else {
-            //失败
             Toast(res.data.msg);
           }
         })

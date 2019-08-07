@@ -30,18 +30,18 @@
       </div>
       <div class="scroll_div">
         <van-pull-refresh
-          v-model="isLoading"
+          v-model="updateLoading"
           pulling-text="下拉刷新"
           loosing-text="释放更新"
           loading-text="正在加载..."
           @refresh="onRefresh"
         >
-          <div
-            class="div"
-            v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10"
-            infinite-scroll-immediate-check="false"
+          <van-list
+            v-model="moreloading"
+            :finished="finished"
+            :immediate-check="false"
+            finished-text="--------- 已经没有更多了 ---------"
+            @load="onLoad"
           >
             <div class="local_content">
               <div class="local">
@@ -63,9 +63,7 @@
                 <!-- <div class="more">查看更多>></div> -->
               </div>
             </div>
-          </div>
-          <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
-          <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
+          </van-list>
         </van-pull-refresh>
       </div>
     </div>
@@ -99,13 +97,11 @@
 
 <script>
 import { XDialog, LoadMore } from "vux";
-import { Indicator, Toast } from "mint-ui";
+import { Indicator } from "mint-ui";
 export default {
   components: {
     Indicator,
-    Toast,
-    XDialog,
-    LoadMore
+    XDialog
   },
   data() {
     return {
@@ -114,17 +110,15 @@ export default {
       name: "", //商铺名称
       name1: "", //
       localshop: [], //商铺数据
+      localshopTotal: 0, // 店铺总数量
       areaList: [], //区域列表
       lang_dlg: false, //购买弹窗
       payment_password: "", //支付密码
       money: "", //金额
       code: "", //商户识别码
-      load: true, //加载图标显示
-      none: false, //加载图标隐藏
-      lif: true, //正在加载中 显示
-      nif: false, //没有更多数据了 隐藏
-      loading: false, //下拉刷新
-      isLoading: false //上拉加载更多
+      updateLoading: false, //下拉刷新
+      moreloading: false, // 加载更多
+      finished: false // 全部加载
     };
   },
   mounted: function() {
@@ -145,11 +139,13 @@ export default {
     selectChange(i) {
       let that = this;
       that.area_id = Number(i.target.value);
-      that.loading = false;
-      that.nif = false;
+      that.updateLoading = true;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
       that.localshop = [];
-      that.getLocalShop(1);
+      that.localshopTotal = 0;
+      that.getLocalShop(0);
     },
     //弹出确认弹窗
     showDialog: function(code, name) {
@@ -167,26 +163,24 @@ export default {
     //下拉刷新
     onRefresh() {
       let that = this;
-      that.isLoading = true;
-      that.loading = false;
-      that.nif = false;
+      that.updateLoading = true;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
       that.localshop = [];
-      that.getLocalShop(1);
-    },
-    //上拉加载更多
-    loadMore() {
-      let that = this;
-      that.lif = true;
-      that.pageindex++;
+      that.localshopTotal = 0;
       that.getLocalShop(0);
     },
-    //获取线下商户
-    getLocalShop(i) {
+    //上拉加载更多
+    onLoad() {
       let that = this;
-      if (i) {
-        that.lif = true;
-      }
+      that.pageindex += 1;
+      that.moreloading = true;
+      that.getLocalShop(1);
+    },
+    //获取线下商户
+    getLocalShop(type) {
+      let that = this;
       Indicator.open({
         text: "加载中..."
       });
@@ -200,22 +194,37 @@ export default {
             p: that.pageindex
           }
         })
-        .then(function(res) {
-          that.lif = false;
-          that.isLoading = false;
+        .then(res => {
+          Indicator.close();
           if (res.data.code == 0) {
-            //成功回调
-            if (res.data.data.list != "") {
-              that.localshop = that.localshop.concat(res.data.data.list);
+            if (type == 0) {
+              if (res.data.data.list.length > 0) {
+                that.localshop = res.data.data.list;
+                that.localshopTotal = res.data.data.count;
+                if (that.localshop.length >= that.localshopTotal) {
+                  //全部数据已加载
+                  that.finished = true;
+                }
+              } else {
+                that.finished = true;
+              }
+              that.updateLoading = false;
             } else {
-              that.nif = true;
-              that.loading = true;
+              that.moreloading = false;
+              if (res.data.data.list.length > 0) {
+                that.localshop = that.localshop.concat(res.data.data.list);
+                that.localshopTotal = res.data.data.count;
+              } else {
+                that.finished = true;
+              }
+              if (that.localshop.length >= that.localshopTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
             }
           } else {
-            //失败
             Toast(res.data.msg);
           }
-          Indicator.close();
         })
         .catch(function(error) {
           Indicator.close();
@@ -229,11 +238,13 @@ export default {
     //搜索
     search() {
       let that = this;
-      that.loading = false;
-      that.nif = false;
+      that.updateLoading = true;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
-      that.localshop = [];
-      that.getLocalShop(1);
+      that.shopList = [];
+      that.shopListTotal = 0;
+      that.getLocalShop(0);
     },
     //获取地址列表
     getAreaList() {
