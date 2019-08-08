@@ -49,7 +49,7 @@
               v-model="moreloading"
               :finished="finished"
               :immediate-check="false"
-              finished-text="--------- 已经没有更多了 ---------"
+              finished-text="————— 已经没有更多了 —————"
               @load="onLoad"
             >
               <div class="content-con">
@@ -224,7 +224,7 @@ export default {
               that.updateLoading = false;
             } else {
               that.moreloading = false;
-              if (res.data.data.list != "") {
+              if (res.data.data.list.length > 0) {
                 that.shopList = that.shopList.concat(res.data.data.list);
                 that.shopListTotal = res.data.data.count;
               } else {

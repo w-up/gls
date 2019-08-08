@@ -36,7 +36,7 @@
           loading-text="正在加载..."
           @refresh="onRefresh"
         >
-          <van-list v-model="moreloading" :finished="finished" :immediate-check="false" finished-text="--------- 已经没有更多了 ---------" @load="onLoad">
+          <van-list v-model="moreloading" :finished="finished" :immediate-check="false" finished-text="————— 已经没有更多了 —————" @load="onLoad">
               <div class="yipin">
                 <div class="yipin_list" v-for="(subitem,index) in subscribe" :key="index">
                   <div

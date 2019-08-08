@@ -70,7 +70,7 @@
             v-model="moreloading"
             :finished="finished"
             :immediate-check="false"
-            finished-text="--------- 已经没有更多了 ---------"
+            finished-text="————— 已经没有更多了 —————"
             @load="onLoad"
           >
             <div class="content">
@@ -253,17 +253,12 @@ export default {
           }
         })
         .then(function(res) {
-          if (res.data.code == 0) {
-            //成功回调
-            Toast({
-              message: "购物车添加成功！",
-              position: "bottom",
-              duration: 2000
-            });
-          } else {
-            //失败
-          }
           Indicator.close();
+          if (res.data.code == 0) {
+            Toast("购物车添加成功！");
+          } else {
+            Toast(res.data.msg);
+          }
         })
         .catch(function(error) {
           Indicator.close();

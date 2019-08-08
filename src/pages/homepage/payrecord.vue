@@ -18,14 +18,14 @@
             v-model="moreloading"
             :finished="finished"
             :immediate-check="true"
-            finished-text="--------- 已经没有更多了 ---------"
+            finished-text="————— 已经没有更多了 —————"
             @load="onLoad"
           >
             <div class="pay_con">
               <div class="pay_list" v-for="(item,index) in payList" :key="index">
                 <div class="pay_re">
                   <span>{{item.name}}</span>
-                  <span>识别码:{{item.code}}</span>
+                  <span>识别码: {{item.code}}</span>
                   <span>{{item.money}}</span>
                 </div>
                 <div class="pay_time">
@@ -176,10 +176,12 @@ export default {
   justify-content: space-between;
 }
 .pay_con .pay_re span {
+  display: inline-block;
   color: #333;
+  width: 33.33%;
 }
-.pay_con .pay_re span:nth-child(2) {
-  padding-right: 2rem;
+.pay_con .pay_re span:nth-last-child(1) {
+  text-align: right;
 }
 .pay_con .pay_time {
   display: flex;

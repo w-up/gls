@@ -100,7 +100,7 @@
                     v-model="moreloading"
                     :finished="finished"
                     :immediate-check="false"
-                    finished-text="--------- 已经没有更多了 ---------"
+                    finished-text="————— 已经没有更多了 —————"
                     @load="onLoad"
                   >
                     <div class="comment_list" v-for="(comItem,listId) in commnetList" :key="listId">

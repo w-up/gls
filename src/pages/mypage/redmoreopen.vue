@@ -351,7 +351,7 @@ export default {
 .dialog {
   width: 90%;
   margin: 0 auto;
-  height: 5rem;
+  /* height: 5rem; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -371,19 +371,18 @@ export default {
   overflow-x: hide;
   overflow-y: scroll;
   font-size: 0.28rem;
-  text-indent: 0.56rem;
+  height: 4rem;
   text-align: justify;
   line-height: 1.4;
   color: #333;
 }
 .dialog button {
   width: 50%;
-  height: 1rem;
+  height: 0.6rem;
   background: #ef6213;
   color: #fff;
   margin-top: 0.2rem;
   border: none;
-  font-size: 0.24rem;
   border-radius: 0.1rem;
 }
 </style>

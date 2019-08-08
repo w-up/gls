@@ -96,7 +96,7 @@
                     v-model="moreloading"
                     :finished="finished"
                     :immediate-check="false"
-                    finished-text="--------- 已经没有更多了 ---------"
+                    finished-text="————— 已经没有更多了 —————"
                     @load="onLoad"
                   >
                     <div class="comment_list" v-for="(comItem,listId) in commnetList" :key="listId">
@@ -393,7 +393,7 @@ export default {
         Toast("请选择规格");
       } else {
         that.$router.push({
-          path: "/closeAccommnetListTotal"
+          path: "/closeAccount"
         });
       }
     }

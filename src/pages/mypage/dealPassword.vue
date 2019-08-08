@@ -51,7 +51,7 @@ export default {
           that.payment_password
         )
       ) {
-        Toast("密码输入有误");
+        Toast("密码格式不正确");
       } else if (that.payment_password !== that.repayment_password) {
         Toast("两次密码不一致");
       } else {

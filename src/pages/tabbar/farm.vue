@@ -112,7 +112,7 @@
 </template>
 <script>
 import { XDialog } from "vux";
-// import { Toast } from "mint-ui";
+import { Toast } from "mint-ui";
 export default {
   components: {
     XDialog,

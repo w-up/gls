@@ -29,7 +29,7 @@
             v-model="moreloading"
             :finished="finished"
             :immediate-check="false"
-            finished-text="--------- 已经没有更多了 ---------"
+            finished-text="————— 已经没有更多了 —————"
             @load="onLoad"
           >
             <div v-if="resereIndex==0" class="tab-swiper vux-center">

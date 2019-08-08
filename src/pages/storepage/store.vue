@@ -68,7 +68,7 @@
             v-model="moreloading"
             :finished="finished"
             :immediate-check="false"
-            finished-text="--------- 已经没有更多了 ---------"
+            finished-text="————— 已经没有更多了 —————"
             @load="onLoad"
           >
             <div class="content">
@@ -175,14 +175,20 @@ export default {
           Indicator.close();
           if (res.data.code == 0) {
             if (type == 0) {
-              if (res.data.data.list != "") {
+              if (res.data.data.list.length > 0) {
                 that.shopList = res.data.data.list;
                 that.shopListTotal = res.data.data.count;
+                if (that.shopList.length >= that.shopListTotal) {
+                  //全部数据已加载
+                  that.finished = true;
+                }
+              } else {
+                that.finished = true;
               }
               that.updateLoading = false;
             } else {
               that.moreloading = false;
-              if (res.data.data.list != "") {
+              if (res.data.data.list.length > 0) {
                 that.shopList = that.shopList.concat(res.data.data.list);
                 that.shopListTotal = res.data.data.count;
               } else {
@@ -209,8 +215,6 @@ export default {
     //搜索商品
     setProductData() {
       let that = this;
-      that.loading = false;
-      that.nif = false;
       that.pageindex = 1;
       that.shopList = [];
       that.getShopList(that.storeId, that.name);
@@ -257,18 +261,14 @@ export default {
             number: 1
           }
         })
-        .then(function(res) {
+        .then((res)=> {
+          Indicator.close();
           if (res.data.code == 0) {
             //成功回调
-            Toast({
-              message: "购物车添加成功！",
-              position: "bottom",
-              duration: 2000
-            });
+            Toast("购物车添加成功！");
           } else {
-            //失败
+            Toast(res.data.msg);
           }
-          Indicator.close();
         })
         .catch(function(error) {
           Indicator.close();

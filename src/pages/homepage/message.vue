@@ -16,28 +16,29 @@
         <tab-item selected @on-item-click="setmessageIndex(0)">新闻</tab-item>
         <tab-item @on-item-click="setmessageIndex(1)">报道</tab-item>
         <tab-item @on-item-click="setmessageIndex(2)">公告</tab-item>
+        <tab-item @on-item-click="setmessageIndex(3)">活动专区</tab-item>
       </tab>
       <div class="scroll_div">
         <van-pull-refresh
-          v-model="isLoading"
+          v-model="updateLoading"
           pulling-text="下拉刷新"
           loosing-text="释放更新"
           loading-text="正在加载..."
           @refresh="onRefresh"
         >
-          <div
-            class="div"
-            v-infinite-scroll="loadMore"
-            infinite-scroll-disabled="loading"
-            infinite-scroll-distance="10"
-            infinite-scroll-immediate-check="false"
+          <van-list
+            v-model="moreloading"
+            :finished="finished"
+            :immediate-check="false"
+            finished-text="————— 已经没有更多了 —————"
+            @load="onLoad"
           >
             <div v-if="messageIndex==0" class="tab-swiper vux-center">
               <div class="news">
                 <div
                   class="news_list"
                   @click="gotoNewDetail(messageitem)"
-                  v-for="(messageitem,index) in messageList"
+                  v-for="(messageitem,index) in list"
                   :key="index"
                 >
                   <div class="news_img">
@@ -48,8 +49,43 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div v-if="messageIndex==1" class="tab-swiper vux-center">
+              <div class="news">
+                <div
+                  class="news_list"
+                  @click="gotoNewDetail(messageitem)"
+                  v-for="(messageitem,index) in list"
+                  :key="index"
+                >
+                  <div class="news_img">
+                    <img :src="messageitem.img" />
+                  </div>
+                  <div class="news_info">
+                    <p>{{messageitem.title}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="messageIndex==2" class="tab-swiper vux-center">
+              <div class="news">
+                <div
+                  class="news_list"
+                  @click="gotoNewDetail(messageitem)"
+                  v-for="(messageitem,index) in list"
+                  :key="index"
+                >
+                  <div class="news_img">
+                    <img :src="messageitem.img" />
+                  </div>
+                  <div class="news_info">
+                    <p>{{messageitem.title}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="messageIndex==3" class="tab-swiper vux-center">
               <div class="activity_news">
-                <h5>活动专区</h5>
                 <!-- <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
                 <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>-->
                 <div
@@ -67,91 +103,39 @@
                 </div>
               </div>
             </div>
-            <div v-if="messageIndex==1" class="tab-swiper vux-center">
-              <div class="news">
-                <div
-                  class="news_list"
-                  @click="gotoNewDetail(messageitem)"
-                  v-for="(messageitem,index) in messageList"
-                  :key="index"
-                >
-                  <div class="news_img">
-                    <img :src="messageitem.img" />
-                  </div>
-                  <div class="news_info">
-                    <p>{{messageitem.title}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-if="messageIndex==2" class="tab-swiper vux-center">
-              <div class="news">
-                <div
-                  class="news_list"
-                  @click="gotoNewDetail(messageitem)"
-                  v-for="(messageitem,index) in messageList"
-                  :key="index"
-                >
-                  <div class="news_img">
-                    <img :src="messageitem.img" />
-                  </div>
-                  <div class="news_info">
-                    <p>{{messageitem.title}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <load-more v-if="lif" :show-loading="load" tip="正在加载..."></load-more>
-          <load-more v-if="nif" :show-loading="none" tip="没有更多数据了"></load-more>
+          </van-list>
         </van-pull-refresh>
       </div>
-
-      <!-- 	<load-more tip="加载更多"></load-more> -->
     </div>
   </div>
 </template>
 
 <script>
 import { Indicator, Toast } from "mint-ui";
-import { Tab, TabItem, LoadMore } from "vux";
+import { Tab, TabItem } from "vux";
 export default {
   components: {
     Tab,
     TabItem,
     Indicator,
-    Toast,
-    LoadMore
+    Toast
   },
   data() {
     return {
       messageIndex: 0,
       pageindex: 1, // 第一页
-      messageList: [], //新闻资讯
       activityList: [], //活动
-      load: true, //加载图标显示
-      none: false, //加载图标隐藏
-      lif: true, //正在加载中 显示
-      nif: false, //没有更多数据了 隐藏
-      loading: false, //下拉刷新
-      isLoading: false, //上拉加载更多
-      messageTitle: []
+      list: [], //列表
+      listTotal: 0, // 总数量
+      updateLoading: false, //下拉刷新
+      moreloading: false, // 加载更多
+      finished: false // 全部加载
     };
   },
   mounted: function() {
     let that = this;
-    that.getMessageList();
+    that.getListFun();
     that.getActivityList();
-  },
-  activated() {
-    this.$nextTick(() => {
-      this.messageIndex = 0;
-      this.pageindex = 1;
-      this.lif = true;
-      this.nif = false;
-      this.loading = false;
-      this.getMessageList(1);
-    });
   },
   methods: {
     back() {
@@ -163,44 +147,42 @@ export default {
       window.sessionStorage.setItem("news_id", item.id);
       that.$router.push({
         path: "/newsDetail",
-        query:{
-        	storeId:item.id
+        query: {
+          storeId: item.id
         }
       });
     },
     setmessageIndex(i) {
       let that = this;
       that.messageIndex = i;
-      that.loading = false;
-      that.nif = false;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
-      that.messageList = [];
-      that.getMessageList(1);
+      that.list = [];
+      that.getListFun(1);
     },
     // 下拉刷新
     onRefresh() {
       let that = this;
-      that.isLoading = true;
-      that.loading = false;
-      that.nif = false;
+      that.updateLoading = true;
+      that.moreloading = false;
+      that.finished = false;
       that.pageindex = 1;
-      that.messageList = [];
-      that.getMessageList(0);
+      that.list = [];
+      that.listTotal = 0;
+      that.getListFun(0);
     },
     //上拉加载更多
-    loadMore() {
+    onLoad() {
       let that = this;
-      that.lif = true;
-      that.pageindex++;
-      that.getMessageList();
+      that.pageindex += 1;
+      that.moreloading = true;
+      that.getListFun(1);
       that.getActivityList(); //活动
     },
     //获取新闻资讯
-    getMessageList(i) {
+    getListFun(type) {
       let that = this;
-      if (i) {
-        that.lif = true;
-      }
       let typem = that.messageIndex == 0 ? 1 : that.messageIndex == 1 ? 2 : 3;
       Indicator.open({
         text: "加载中..."
@@ -214,23 +196,37 @@ export default {
             p: that.pageindex
           }
         })
-        .then(function(res) {
-          that.lif = false;
-          that.isLoading = false;
+        .then((res)=> {
+          Indicator.close();
           if (res.data.code == 0) {
-            //成功回调
-            if (res.data.data.list != "") {
-              that.messageList = that.messageList.concat(res.data.data.list);
-              console.log(that.messageList);
+            if (type == 0) {
+              if (res.data.data.list.length > 0) {
+                that.list = res.data.data.list;
+                that.listTotal = res.data.data.count;
+                if (that.list.length >= that.listTotal) {
+                  //全部数据已加载
+                  that.finished = true;
+                }
+              } else {
+                that.finished = true;
+              }
+              that.updateLoading = false;
             } else {
-              that.nif = true;
-              that.loading = true;
+              that.moreloading = false;
+              if (res.data.data.list.length > 0) {
+                that.list = that.list.concat(res.data.data.list);
+                that.listTotal = res.data.data.count;
+              } else {
+                that.finished = true;
+              }
+              if (that.list.length >= that.listTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
             }
           } else {
-            //失败
             Toast(res.data.msg);
           }
-          Indicator.close();
         })
         .catch(function(error) {
           Indicator.close();
@@ -242,11 +238,8 @@ export default {
         });
     },
     //获取活动
-    getActivityList(i) {
+    getActivityList(type) {
       let that = this;
-      if (i) {
-        that.lif = true;
-      }
       Indicator.open({
         text: "加载中..."
       });
@@ -258,20 +251,38 @@ export default {
             type: 4
           }
         })
-        .then(function(res) {
-          that.lif = false;
+        .then((res)=> {
+          Indicator.close();
           if (res.data.code == 0) {
-            //成功回调
-            if (res.data.data.list != "") {
-              that.activityList = that.activityList.concat(res.data.data.list);
+            if (type == 0) {
+              if (res.data.data.list.length > 0) {
+                that.activityList = res.data.data.list;
+                that.activityListTotal = res.data.data.count;
+                if (that.activityList.length >= that.activityListTotal) {
+                  //全部数据已加载
+                  that.finished = true;
+                }
+              } else {
+                that.finished = true;
+              }
+              that.updateLoading = false;
             } else {
-              that.nif = true;
+              that.moreloading = false;
+              if (res.data.data.list.length > 0) {
+                that.activityList = that.activityList.concat(res.data.data.list);
+                that.activityListTotal = res.data.data.count;
+              } else {
+                that.finished = true;
+              }
+              if (that.activityList.length >= that.activityListTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
             }
           } else {
             //失败
             Toast(res.data.msg);
           }
-          Indicator.close();
         })
         .catch(function(error) {
           Indicator.close();
@@ -296,7 +307,7 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - .8rem);
+  height: calc(100% - 0.8rem);
   overflow-x: hidden;
   overflow-y: scroll;
   top: 0.8rem;
@@ -308,7 +319,6 @@ export default {
 
 .scroll_div {
   width: 100%;
-  height: calc(100% - .8rem);
   padding: 0 0.2rem;
 }
 .news {
