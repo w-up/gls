@@ -225,7 +225,10 @@ export default {
       that
         .$http({
           url: "Ckshop/banner",
-          method: "post"
+          method: "post",
+          data: {
+            id: that.storeId
+          }
         })
         .then(function(res) {
           if (res.data.code == 0) {

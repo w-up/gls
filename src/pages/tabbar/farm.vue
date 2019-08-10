@@ -451,7 +451,7 @@ export default {
   beforeDestroy() {
     //在开始销毁实例时调用。此时实例仍然有功能。
     //清除定时器
-    // clearInterval(this.timer);
+    clearInterval(this.timer);
   }
 };
 </script>

@@ -34,10 +34,13 @@
     <div class="toast" v-show="toast_control">
       <div class="toast-container">
         <img :src="toast_pictrue" class="toast-picture" />
-        <div class="close" @click="close_toast()"></div>
-        <div class="toast-title">{{toast_title}}</div>
+        <div class="close" @click="close_toast"></div>
+        <div class="toast-title">
+          <span v-show="prizeLinkType != 12"><span v-show="hasPrize">恭喜您获得<br /></span>{{toast_title}}</span>
+          <img v-show="prizeLinkType == 12" @click="prizeLinkFun" :src="prizeImg" >
+        </div>
         <div class="toast-btn">
-          <div class="toast-cancel" @click="close_toast" v-show="index != 4">关闭</div>
+          <div class="toast-cancel" @click="prizeLinkFun" v-show="index != 4">{{prizeLinkType==12?"立即前往":"关闭"}}</div>
           <div class="toast-cancel" @click="againGameFun" v-show="index == 4">再来一次</div>
         </div>
       </div>
@@ -133,6 +136,9 @@ export default {
       prize: -1, // 中奖位置
       click: true,
       prizeIndex: "",
+      prizeLink: "", //中奖link
+      prizeLinkType: "", //中奖类型
+      prizeImg: "", //中奖图片
       hasPrize: false, //是否中奖
       gameSpend: "", // 抽奖花费
       gameAgain: "" // 抽中再来一次
@@ -146,7 +152,11 @@ export default {
       if (this.prizeIndex > 7) {
         this.prizeIndex = 7;
       }
-      return this.hasPrize? "恭喜您，获得" + " " + this.prize_list[this.prizeIndex].name : "未中奖";
+      if (this.prizeLinkType == 12) {
+        return this.hasPrize? this.prizeImg : "未中奖";
+      } else {
+        return this.hasPrize? this.prize_list[this.prizeIndex].name : "未中奖";
+      }
     },
     toast_pictrue() {
       return this.hasPrize ? require("../../assets/img/congratulation.png") : require("../../assets/img/sorry.png");
@@ -183,6 +193,10 @@ export default {
       this.confirmGame = false;
       this.speed = 200;
       this.getPrizeIndex();
+      // this.prizeIndex = 4;
+      // this.startRoll();
+      // this.prizeLink = "/marketDetail?name=哈蜜&storeId=7";
+      // this.prizeLinkType = 11;
     },
     // 开始转动
     startRoll() {
@@ -242,8 +256,9 @@ export default {
         })
         .then(function(res) {
           if (res.data.code == 0) {
-            for (let i = 0; i < that.prize_list.length; i++) {
+            for (let i = 0; i < res.data.data.prize.length; i++) {
               that.prize_list[i].name = res.data.data.prize[i].name;
+              that.prize_list[i].url = res.data.data.prize[i].url;
               if (
                 res.data.data.prize[i].type == 10 ||
                 res.data.data.prize[i].type == 11
@@ -268,6 +283,9 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             that.prizeIndex = res.data.data.id - 1;
+            that.prizeLinkType = res.data.data.type;
+            that.prizeImg = res.data.data.msg;
+            that.prizeLink = that.prize_list[that.prizeIndex].url;
             that.startRoll();
           }else{
             Toast(res.data.msg);
@@ -285,6 +303,16 @@ export default {
         this.click = true; // 游戏结束可以再次抽奖
         this.getPrizeInfoFun();
       }, 300);
+    },
+    //跳转
+    prizeLinkFun() {
+      if (this.prizeLinkType != 12) {
+        this.toast_control = false;
+      } else {
+        this.$router.push({
+          path: this.prizeLink
+        });
+      }
     },
     //关闭弹窗
     close_toast() {
@@ -496,10 +524,23 @@ export default {
   height: 3.125rem;
 }
 .toast-title {
-  padding: 1.0125rem 0;
-  font-size: 18px;
-  color: #fc7939;
+  margin: 0.4rem 0 0.2rem;
   text-align: center;
+  width: 100%;
+  min-height: 2rem;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+}
+.toast-title span {
+  font-size: .36rem;
+  color: #fc7939;
+}
+.toast-title img {
+  width: 100%;
 }
 .toast-btn {
   display: flex;
@@ -573,6 +614,7 @@ export default {
 
 .dialog .haufei a {
   color: #ef6213;
+  font-size: 0.28rem;
 }
 .dialog button {
   background-image: -moz-linear-gradient(

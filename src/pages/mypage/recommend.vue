@@ -23,18 +23,24 @@
           <p>我的推广链接</p>
           <div>
             <p>{{invitation.url}}</p>
-            <span @click="shareFun">分享</span>
+            <!-- <span @click="shareFun">分享</span> -->
+            <button
+              type="button"
+              v-clipboard:copy="invitation.url"
+              v-clipboard:success="onCopy"
+              v-clipboard:error="onError"
+            >分享</button>
           </div>
         </div>
       </div>
     </div>
-    <van-action-sheet
+    <!-- <van-action-sheet
       v-model="shareShow"
       :actions="actions"
       cancel-text="取消"
       @select="onSelect"
       @cancel="onCancel"
-    />
+    />-->
   </div>
 </template>
 
@@ -49,31 +55,32 @@ export default {
     return {
       invitation: "", //推广有礼
       shareShow: false,
-      actions: [{ name: "分享给朋友" }, { name: "分享到朋友圈" }],
+      // actions: [{ name: "分享给朋友" }, { name: "分享到朋友圈" }],
       shareUrl: ""
     };
   },
   mounted: function() {
     this.getInvitation();
-    this.onShare();
-    var shares = null;
-    // 监听plusready事件
-    console.log("666666");
-    document.addEventListener("plusready",function() {
-        // 扩展API加载完毕，现在可以正常调用扩展API
-        console.log("123456");
-        plus.share.getServices(
-          function(s) {
-            shares = s;
-            console.log(s);
-          },
-          function(e) {
-            alert("获取分享服务列表失败：" + e.message);
-          }
-        );
-      },
-      false
-    );
+    // this.onShare();
+    // var shares = null;
+    // // 监听plusready事件
+    // document.addEventListener(
+    //   "plusready",
+    //   function() {
+    //     // 扩展API加载完毕，现在可以正常调用扩展API
+    //     console.log("123456");
+    //     plus.share.getServices(
+    //       function(s) {
+    //         shares = s;
+    //         console.log(s);
+    //       },
+    //       function(e) {
+    //         alert("获取分享服务列表失败：" + e.message);
+    //       }
+    //     );
+    //   },
+    //   false
+    // );
   },
   methods: {
     back() {
@@ -92,7 +99,7 @@ export default {
             // 配置config
             wx.config({
               // 开启调试模式时,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-              debug: true,
+              debug: false,
               // 后台返回之前获取的appId
               appId: res.data.data.appId,
               // 必填，生成签名的时间戳
@@ -326,8 +333,11 @@ export default {
   word-wrap: break-word;
   font-size: 0.28rem;
 }
-.link > div > span {
+.link > div > button {
   color: #ffbe00;
   font-size: 0.28rem;
+  outline: 0 none;
+  border: 0 none;
+  background: white;
 }
 </style>

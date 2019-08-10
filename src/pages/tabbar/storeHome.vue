@@ -158,7 +158,7 @@ export default {
           url: "Ckshop/index",
           method: "post",
           data: {
-            // token: localStorage.getItem("token")
+            token: localStorage.getItem("token")
           }
         })
         .then(function(res) {
@@ -170,13 +170,23 @@ export default {
               id: 0,
               name: "全部"
             });
-            that.shopList = res.data.data.shop.list;
             that.shopNavId = that.shopKey[0].id; //默认行业id
             if (that.shopKey.length >= 4) {
               that.percentage = 20 * that.shopKey.length;
             } else {
               that.percentage = 100;
             }
+            if (res.data.data.shop.list.length > 0) {
+              that.shopList = res.data.data.shop.list;
+              that.shopListTotal = res.data.data.shop.count;
+              if (that.shopList.length >= that.shopListTotal) {
+                //全部数据已加载
+                that.finished = true;
+              }
+            } else {
+              that.finished = true;
+            }
+            that.updateLoading = false;
           } else {
             //失败
             Toast(res.data.msg);
@@ -201,7 +211,7 @@ export default {
           url: "Ckshop/shopList",
           method: "post",
           data: {
-            // token: localStorage.getItem("token"),
+            token: localStorage.getItem("token"),
             name: that.name,
             industry_id: that.shopNavId,
             p: that.pageindex

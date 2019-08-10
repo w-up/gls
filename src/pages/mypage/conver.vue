@@ -163,7 +163,7 @@ export default {
         // },
         {
           id: 5,
-          name: "米宝对红包"
+          name: "米宝兑红包"
         },
         {
           id: 6,

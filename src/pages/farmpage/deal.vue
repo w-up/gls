@@ -29,7 +29,7 @@
           >
             <tab-item @on-item-click="setDealIndex(0)" :selected="dealindex==0">受让米粒</tab-item>
             <tab-item @on-item-click="setDealIndex(1)" id="tabtow" :selected="dealindex==1">出让米粒</tab-item>
-            <tab-item @on-item-click="setDealIndex(2)" :selected="dealindex==2">出让谷粒</tab-item>
+            <tab-item @on-item-click="setDealIndex(2)" :selected="dealindex==2">加工谷粒</tab-item>
           </tab>
           <div v-if="dealindex==0" class="tab-swiper vux-center">
             <div class="mili_con">
@@ -112,12 +112,12 @@
             <div class="mili_con">
               <div class="mili_left">
                 <div class="mili_input">
-                  <span>出让单价：</span>
-                  <input type="text" v-model="price" placeholder="请输入出让单价" />
+                  <span>加工单价：</span>
+                  <input type="text" readonly v-model="guli_price" placeholder="请输入出让单价" />
                 </div>
                 <div class="mili_input">
-                  <span>出让数量：</span>
-                  <input type="text" v-model="number" placeholder="请输入出让数量" />
+                  <span>加工数量：</span>
+                  <input type="text" v-model="number" placeholder="请输入加工数量" />
                   <!-- <span>最多可出让{{max}}</span> -->
                 </div>
                 <div class="mili_input">
@@ -125,9 +125,9 @@
                   <input type="password" v-model="payment_password" placeholder="请输入交易密码" />
                 </div>
                 <div class="mili_input">
-                  <!-- <span>交易费：{{rate}}</span> -->
+                  <!-- <span>加工费：{{rate}}</span> -->
                 </div>
-                <button @click="purchase" class="churang">出让</button>
+                <button @click="purchase" class="churang">加工</button>
               </div>
               <div class="mili_right">
                 <ul class="maichu">
@@ -244,6 +244,7 @@ export default {
       sell_guli_rate: "", //出让谷粒加工费
       sell_mili_max: "", //出让米粒最大交易数量
       sell_mili_rate: "", //出让米粒加工费
+      guli_price: "", // 谷粒加工价格
       number: "", //出让/受让(米粒/谷粒)数量
       price: "", //出让/受让(米粒/谷粒)价格
       payment_password: "", //支付密码
@@ -324,6 +325,7 @@ export default {
             // console.log(that.area_id);
             that.buy_list = res.data.data.buy_list; //右侧买单列表
             that.max = res.data.data.max; //最大交易数量
+            that.guli_price = res.data.data.guli_price; //手续费
             that.rate = res.data.data.rate; //手续费
             that.sell_list = res.data.data.sell_list; //右侧卖单列表
             that.trade_list = res.data.data.trade_list; //下部我的成交
@@ -476,12 +478,17 @@ export default {
       var type = that.dealindex == 0 ? 2 : 1;
       //typea(2) => 米粒  typea(1) => 谷粒
       var typea = that.dealindex == 2 ? 1 : 2;
-      if (!that.price || that.price == null) {
-        // Toast('请输入交易单价');
-      } else if (!that.number || that.number == null) {
-        // Toast('请输入交易数量');
+      // if (that.dealindex != 2) {
+        
+      // }
+      if (that.dealindex != 2 && !that.price) {
+        Toast('请输入交易单价');
+        return;
+      }
+      if (!that.number || that.number == null) {
+        Toast('请输入交易数量');
       } else if (!that.payment_password || that.payment_password == null) {
-        // Toast('请输入交易密码');
+        Toast('请输入交易密码');
       } else {
         that
           .$http({
@@ -492,7 +499,7 @@ export default {
               type: type,
               area_id: that.area_id,
               number: that.number,
-              price: that.price,
+              price: that.dealindex == 2 ? that.guli_price : that.price,
               payment_password: that.payment_password,
               assets_type: typea
             }

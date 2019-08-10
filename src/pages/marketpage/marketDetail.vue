@@ -122,6 +122,7 @@ export default {
       shopListTotal: 0, // 商品总数量
       industry_id: "",
       title: this.$route.query.name, //店铺名称
+      shopId: this.$route.query.storeId, //店铺id
       updateLoading: false, //下拉刷新
       moreloading: false, // 加载更多
       finished: false // 全部加载
@@ -164,7 +165,7 @@ export default {
           url: "Pjshop/goodList",
           method: "post",
           data: {
-            id: sessionStorage.getItem("storeId"),
+            id: that.shopId,
             name: that.name,
             p: that.pageindex
           }
@@ -216,7 +217,10 @@ export default {
       that
         .$http({
           url: "Pjshop/banner",
-          method: "post"
+          method: "post",
+          data: {
+            id: that.shopId
+          }
         })
         .then(function(res) {
           if (res.data.code == 0) {
