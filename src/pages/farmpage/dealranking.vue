@@ -23,13 +23,15 @@
           <table style="border-collapse:collapse;">
             <tr class="trtitle">
               <th>用户</th>
-              <th>账号</th>
               <th>交易额</th>
+              <th>排名</th>
+              <th>奖金</th>
             </tr>
             <tr v-for="item in data" :key="item.id">
               <td>{{item.name}}</td>
-              <td>{{item.phone}}</td>
               <td>{{item.total}}</td>
+              <td>{{item.ranking}}</td>
+              <td>{{item.reward}}</td>
             </tr>
           </table>
         </div>
@@ -49,12 +51,15 @@ export default {
     return {
       area_id: this.$route.query.areaid, //区域id
       area: this.$route.query.area, //区域
-      data: []
+      data: [],
+      timer: "", //计时器
     };
   },
   created: function() {
     this.getDealranking(); //获取交易排名
-    console.log(this.area);
+    this.timer = setInterval(() => {
+      this.getDealranking();
+    }, 30000);
   },
   methods: {
     back() {
@@ -95,6 +100,16 @@ export default {
           });
         });
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    //切换路由 离开页面清除计时器
+    clearInterval(this.timer);
+    next();
+  },
+  beforeDestroy() {
+    //在开始销毁实例时调用。此时实例仍然有功能。
+    //清除定时器
+    clearInterval(this.timer);
   }
 };
 </script>
