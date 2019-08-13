@@ -75,15 +75,15 @@
       <div class="dialog">
         <span class="iconfont icon-tabguanbi" @click="closeDialogkai"></span>
         <h4>开垦土地</h4>
-        <span>确定要开垦土地吗？</span>
-        <div class="number">
+        <p>确定要开垦土地吗？</p>
+        <!-- <div class="number">
           <input id="checked" @click="check" type="checkbox" value="tudi" />
           <span>
             我同意
             <a @click="showDialogxie">《土地开垦协议》</a>
           </span>
-        </div>
-        <button id="accept" class="myf_btn" disabled="disabled" @click="reclamation">确定</button>
+        </div> -->
+        <button id="accept" @click="reclamation">确定</button>
       </div>
     </x-dialog>
     <x-dialog v-model="lang_dlggu" class="de_dialog lang_dialog" hide-on-blur>
@@ -125,7 +125,7 @@ export default {
   },
   data() {
     return {
-      disabled: true, //开垦土地没有勾选同意协议禁止点击
+      // disabled: true, //开垦土地没有勾选同意协议禁止点击
       selected: this.$route.query.numType || 0, //tab默认选中
       tabindex: this.$route.query.numType || 0, //tab下内容默认
       lang_dlg: false, //开垦弹窗
@@ -535,6 +535,10 @@ export default {
 }
 .dialog span {
   font-size: 0.3rem;
+}
+.dialog p {
+  font-size: 0.3rem;
+  padding: 0.6rem 0;
 }
 .dialog .number {
   margin-top: 0.2rem;

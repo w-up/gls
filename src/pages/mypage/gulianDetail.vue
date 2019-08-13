@@ -37,7 +37,10 @@
                 <span>{{item.title}}</span>
                 <span>{{item.money}}</span>
               </div>
-              <div class="detail_time">{{item.time}}</div>
+              <div class="detail_re">
+                <span>{{item.trade_user}}</span>
+                <span class="detail_time">{{item.time}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -62,11 +65,10 @@
 </template>
 
 <script>
-import { XInput, XDialog } from "vux";
+import { XDialog } from "vux";
 import { Indicator, Toast } from "mint-ui";
 export default {
   components: {
-    XInput,
     XDialog,
     Indicator,
     Toast
@@ -168,11 +170,12 @@ export default {
           })
           .then(function(res) {
             if (res.data.code == 0) {
-              //成功回调
               Toast(res.data.msg);
               that.lang_dlg = false;
+              that.phone = "";
+              that.money = "";
+              that.getGulianDetails();
             } else {
-              //失败
               Toast(res.data.msg);
             }
             Indicator.close();
@@ -219,7 +222,7 @@ export default {
 .card {
   position: relative;
   width: 100%;
-  height: 1.8rem;
+  height: 2.5rem;
   padding: 0.2rem;
   border-radius: 0.1rem;
   color: #fff;
@@ -294,7 +297,7 @@ export default {
 }
 
 .detail_con .detail_re {
-  padding-bottom: 0.1rem;
+  padding: 0.05rem;
   display: flex;
   justify-content: space-between;
 }
@@ -304,7 +307,6 @@ export default {
 }
 
 .detail_con .detail_time {
-  text-align: right;
   color: #777777;
 }
 

@@ -9,7 +9,6 @@
       <div class="card_con">
         <div class="huiyuan_card">
           <div class="card">
-            
             <div class="card_num">
               <span>{{memberDetails.card_number}}</span>
             </div>
@@ -147,7 +146,7 @@ export default {
 .card {
   position: relative;
   width: 100%;
-  height: 1.8rem;
+  height: 2.5rem;
   padding: 0.2rem;
   border-radius: 0.1rem;
   color: #fff;
