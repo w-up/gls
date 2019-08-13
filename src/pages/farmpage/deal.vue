@@ -18,7 +18,7 @@
               >{{areaitem.name}}</option>
             </select>
           </div>
-          <p @click="gotoRanking">交易排名</p>
+          <p @click="gotoRanking">本期排名<br /><span v-show="ranking_time != ''">第{{ranking_time}}期</span></p>
         </div>
         <div class="mili">
           <tab
@@ -231,7 +231,7 @@ export default {
       mineindex: 0,
       area: [], //首页区域列表
       area_id: "", //首页当前区域id
-      // selectIndex: 1, //选中区域id
+      ranking_time: "", //当前第几期
       buy_list: [], //首页右侧买单列表
       max: "", //首页最大交易数量
       rate: "", //首页手续费
@@ -322,13 +322,13 @@ export default {
           if (res.data.code == 0) {
             that.area = res.data.data.area; //区域列表
             that.area_id = res.data.data.area_id; //当前区域id
-            // console.log(that.area_id);
             that.buy_list = res.data.data.buy_list; //右侧买单列表
             that.max = res.data.data.max; //最大交易数量
             that.guli_price = res.data.data.guli_price; //手续费
             that.rate = res.data.data.rate; //手续费
             that.sell_list = res.data.data.sell_list; //右侧卖单列表
             that.trade_list = res.data.data.trade_list; //下部我的成交
+            that.getDealNum();
           } else {
             Toast("获取信息失败");
           }
@@ -394,6 +394,7 @@ export default {
             that.sell_mili_rate = res.data.data.sell_mili_rate; //出让米粒加工费
             that.max = that.sell_guli_max; //首页中默认数据等于选中区域数据
             that.rate = that.sell_guli_rate; //首页中默认数据等于选中区域数据
+            that.ranking_time = res.data.data.ranking_time; // 第几期
           } else {
             Toast("获取信息失败");
           }
@@ -540,10 +541,10 @@ export default {
 .con-wrapper {
   position: fixed;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - .8rem);
   overflow-x: hidden;
   overflow-y: scroll;
-  top: 40px;
+  top: .8rem;
 }
 
 .mint-header {
@@ -551,8 +552,8 @@ export default {
 }
 
 .deal_content {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  padding: 0 0.2rem;
 }
 
 .deal_title {
@@ -576,7 +577,13 @@ export default {
 }
 
 .deal_title p {
-  color: #e8494e;
+  color: #ef6213;
+  text-align: center;
+  font-size: .24rem;
+}
+.deal_title p span {
+  color: #ef6213;
+  font-size: .24rem;
 }
 
 .mili_con {
