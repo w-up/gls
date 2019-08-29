@@ -14,7 +14,8 @@
       <div v-show="videoIndex==0" class="tab-swiper vux-center">
         <div class="video">
           <div class="video_list" v-for="(item, index) in listOptions1" :key="index">
-            <video-player class="vjs-custom-skin" :options="item" @ready="playerReadied"></video-player>
+            <video-player ref="videoPlayer" class="vjs-custom-skin" :options="item"  @ready="playerReadied"></video-player>
+               <a class="play_video" ref="playVideo" @click="onPlay(index)"></a>
             <span>{{item.videoTitle}}</span>
           </div>
         </div>
@@ -22,7 +23,8 @@
       <div v-show="videoIndex==1" class="tab-swiper vux-center">
         <div class="video">
           <div class="video_list" v-for="(item, index) in listOptions2" :key="index">
-            <video-player class="vjs-custom-skin" :options="item" @ready="playerReadied"></video-player>
+            <video-player class="vjs-custom-skin" :options="item"  @ready="playerReadied"></video-player>
+             <a class="play_video" ref="playVideo" @click="onPlay(index)"></a>
             <span>{{item.videoTitle}}</span>
           </div>
         </div>
@@ -31,6 +33,7 @@
         <div class="video">
           <div class="video_list" v-for="(item, index) in listOptions3" :key="index">
             <video-player class="vjs-custom-skin" :options="item" @ready="playerReadied"></video-player>
+             <a class="play_video" ref="playVideo" @click="onPlay(index)"></a>
             <span>{{item.videoTitle}}</span>
           </div>
         </div>
@@ -45,6 +48,7 @@ import { Tab, TabItem } from "vux";
 import "videojs-flash";
 // videojs
 import videojs from "video.js";
+import FastClick from 'fastclick'
 window.videojs = videojs;
 // hls plugin for videojs6
 require("videojs-contrib-hls/dist/videojs-contrib-hls.js");
@@ -70,6 +74,7 @@ export default {
         muted: false, // 默认情况下将会消除任何音频。
         preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
         language: "zh-CN",
+        width: document.documentElement.clientWidth,
         aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
@@ -92,10 +97,16 @@ export default {
       }
     };
   },
+   computed: {
+      player() {
+        return this.$refs.videoPlayer.player
+      },
+      },
   mounted: function() {
     this.getVideoList(1);
     this.getVideoList(2);
     this.getVideoList(3);
+    FastClick.attach(document.body)
   },
   methods: {
     back() {
@@ -110,18 +121,28 @@ export default {
         // that.getVideoList();
       }
     },
-    playerReadied(player) {
-      var hls = player.tech({ IWillNotUseThisInPlugins: true }).hls;
-      player.tech_.hls.xhr.beforeRequest = function(options) {
-        // console.log(options)
-        return options;
-      };
+    onPlay(index) {
+     return this.$refs.videoPlayer[index].player.play();
     },
+    // onPlayerPause(player){
+    //   alert("pause");
+    // },
+    playerReadied(player) {
+      // var hls = player.tech({ IWillNotUseThisInPlugins: true }).hls;
+      // player.tech_.hls.xhr.beforeRequest = function(options) {
+      //   // console.log(options)
+      //   return options;
+      // };
+    },
+    fullScreen() {
+        const player = this.$refs.videoPlayer.player
+        player.requestFullscreen()//调用全屏api方法
+        player.isFullscreen(true)
+        player.play()
+      },
     //获取视频列表
     getVideoList(index) {
       let that = this;
-      // typev = 1 =>田园,typev = 2 =>果园,typev = 3 =>牧场
-      // let typev = that.videoIndex == 0 ? 1 : that.videoIndex == 1 ? 2 : 3;
       Indicator.open({
         text: "加载中..."
       });
@@ -134,14 +155,15 @@ export default {
           }
         })
         .then(function(res) {
+
           if (res.data.code == 0) {
             //成功回调
             that.videoList = res.data.data;
+            // console.log(that.videoList)
             if (index == 1) {
               for (let i = 0; i < res.data.data.length; i++) {
                 that.listOptions1.push({
-                  // videojs and plugin options
-                  // height: "360",
+
                   videoTitle: res.data.data[i].title, // 视频名字
                   autoplay: false, //如果true,浏览器准备好时开始回放。
                   muted: false, // 默认情况下将会消除任何音频。
@@ -250,7 +272,6 @@ export default {
   height: 100%;
   overflow: hidden;
 }
-
 .con-wrapper {
   position: fixed;
   width: 100%;
@@ -259,7 +280,6 @@ export default {
   overflow-y: scroll;
   top: 0.8rem;
 }
-
 .mint-header {
   background: #ef6213;
 }
@@ -284,12 +304,30 @@ export default {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
+/* /deep/.video-js.vjs-fullscreen{
+  position: absolute !important;
+  left: 0;
+  top: 0;
 
+} */
 .video .video_list {
   width: 3.45rem;
   /* height: 2.346rem; */
   margin-bottom: 0.2rem;
   text-align: center;
+  position: relative;
+}
+.video .video_list a.play_video{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3.45rem;
+  height: 1.26rem;
+  /* background: #0086B3; */
+  opacity: 0;
+  display: block;
+  cursor:pointer
+
 }
 .video_list span {
   font-size: .28rem;

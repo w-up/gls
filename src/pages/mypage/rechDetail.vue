@@ -28,7 +28,8 @@
                   <span>{{item.money}}</span>
                 </div>
                 <div class="detail_time">
-                  <span>成功</span>
+                  <span v-if="item.status == '待付款'" @click="recharge(item.id,item.money)">{{item.status}}</span>
+                  <span v-if="item.status !== '待付款'">{{item.status}}</span>
                   <span>{{item.time}}</span>
                 </div>
               </div>
@@ -131,7 +132,66 @@ export default {
             duration: 5000
           });
         });
-    }
+    },
+        //余额充值
+    recharge(id,money) {
+      let that = this;
+        Indicator.open({
+          text: "提交中..."
+        });
+        that
+          .$http({
+            url: "Personal/rechargeActive",
+            method: "post",
+            data: {
+              token: localStorage.getItem("token"),
+              type: 1,
+              id: id,
+              money: money
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 0) {
+              //成功回调
+              var payData = res.data.data;
+                var u = navigator.userAgent;
+                var isiOS = u.indexOf("iPhone") > -1 || u.indexOf("iOS") > -1;
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+                if (isiOS) {
+                 wxPay(payData, payCallBack);
+                } else if (isAndroid) {
+                  payData = JSON.stringify(payData);
+                 window.android.wxPay(payData,"payCallBack");
+                 }
+                // wxPay(payData, payCallBack);
+                // window.android.wxPay(payData, payCallBack);
+                function payCallBack(num) {
+                  Toast("支付");
+                  return num;
+                }
+                if(num.code == 0){
+                  Toast("支付成功");
+                }else{
+                  Toast("支付失败");
+                }
+              this.$router.push({
+               path: "/my"
+             });
+            } else {
+              //失败
+              Toast(res.data.msg);
+            }
+            Indicator.close();
+          })
+          .catch(function(error) {
+            Indicator.close();
+            // Toast({
+            //   message: "网络连接",
+            //   position: "bottom",
+            //   duration: 5000
+            // });
+          });
+    },
   }
 };
 </script>

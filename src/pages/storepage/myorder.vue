@@ -423,10 +423,10 @@ export default {
           .then(function(res) {
             Indicator.close();
             if (res.data.code == 0) {
+              that.onRefresh()
               Toast(res.data.msg);
               that.payment_password = "";
               that.closeDialog();
-              that.getMyorder();
             } else {
               Toast(res.data.msg);
             }
@@ -486,7 +486,7 @@ export default {
             Toast("已确认收货");
           } else {
             Toast(res.data.msg);
-            that.getMyorder();
+            that.onRefresh();
           }
         })
         .catch(function(error) {
@@ -512,7 +512,7 @@ export default {
         .then(function(res) {
           if (res.data.code == 0) {
             Toast("已取消订单");
-            that.getMyorder();
+            that.onRefresh();
           } else {
             Toast(res.data.msg);
           }

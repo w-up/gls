@@ -49,9 +49,10 @@
         <span class="iconfont icon-tabguanbi" @click="closeVoteTimesFun"></span>
         <h4>提示</h4>
         <div class="dialog_cont" style="height: 2rem;">
-          <p>您今日投票次数已达上限, 继续投票需进行投票充值</p>
+          <p>您今日投票次数已达上限, 继续投票需进行投票充值,（每次投票需要{{randing_recharge_price}}元）</p>
+          <div class="num_time"><span>投票次数：</span><van-stepper v-model="number_time" integer /></div>
         </div>
-        <button @click="closeDialog">确定</button>
+        <button @click="rechargeVote">确定</button>
       </div>
     </x-dialog>
   </div>
@@ -77,6 +78,8 @@ export default {
       voteTimes: false, // 投票次数上限
       voteRuleCont: "", //规则
       playGame: "",
+      randing_recharge_price:"",//每次投票需要多少钱
+      number_time:"",//投票次数
     };
   },
   mounted: function() {
@@ -99,6 +102,7 @@ export default {
     playGameFun() {
       this.playGame = 1;
     },
+
     //获取我的投票
     getRanding() {
       let that = this;
@@ -114,6 +118,7 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res)
           if (res.data.code == 0) {
             //成功回调
             that.banner = res.data.data.banner;
@@ -123,6 +128,7 @@ export default {
             that.url = res.data.data.url;
             that.voteRuleCont = res.data.data.guize;
             that.playGame = res.data.data.is_join;
+            that.randing_recharge_price = res.data.data.randing_recharge_price;
           } else {
             //失败
             Toast(res.data.msg);
@@ -175,6 +181,66 @@ export default {
             duration: 5000
           });
         });
+    },
+     //投票充值
+    rechargeVote() {
+      let that = this;
+      if (!that.number_time || that.number_time == null) {
+        Toast("请输入投票次数");
+      } else {
+        Indicator.open({
+          text: "提交中..."
+        });
+        that
+          .$http({
+            url: "adopt_randing/rechargeRandingTimes",
+            method: "post",
+            data: {
+              token: localStorage.getItem("token"),
+              number: that.number_time,
+            }
+          })
+          .then(function(res) {
+            if (res.data.code == 0) {
+              //成功回调
+             var payData = res.data.data;
+             var u = navigator.userAgent;
+             var isiOS = u.indexOf("iPhone") > -1 || u.indexOf("iOS") > -1;
+             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+             if (isiOS) {
+               wxPay(payData, payCallBack);
+             } else if (isAndroid) {
+               payData = JSON.stringify(payData);
+               window.android.wxPay(payData, "payCallBack");
+             }
+             // wxPay(payData, payCallBack);
+             // window.android.wxPay(payData, payCallBack);
+             function payCallBack(num) {
+               Toast("支付");
+               return num;
+             }
+             if (num.code == 0) {
+               Toast("支付成功");
+             } else {
+               Toast("支付失败");
+             }
+             that.getRanding()
+              // that.$router.go(-1);
+            } else {
+              //失败
+              Toast(res.data.msg);
+            }
+            Indicator.close();
+          })
+          .catch(function(error) {
+            Indicator.close();
+            // Toast({
+            //   message: "网络连接",
+            //   position: "bottom",
+            //   duration: 5000
+            // });
+          });
+      }
     },
     //复制失败
     onError() {
@@ -340,6 +406,11 @@ export default {
   text-align: justify;
   line-height: 1.4;
   color: #333;
+}
+.dialog .dialog_cont .num_time{
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
 }
 .dialog button {
   width: 50%;

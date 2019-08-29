@@ -9,7 +9,7 @@
       <div class="news">
         <div class="news_text">
           <h4 v-html="title"></h4>
-          <p v-html="news"></p>
+          <div class="con_info" v-html="news"></div>
         </div>
         <!-- <div class="news_img">
 				  <img :src="" />
@@ -60,6 +60,7 @@ export default {
           if (res.data.code == 0) {
             //成功回调
             that.news = res.data.data.content;
+            console.log(res.data.data)
             that.title = res.data.data.title;
           } else {
             //失败
@@ -110,5 +111,14 @@ export default {
   font-size: 0.28rem;
   padding: 0.2rem 0;
   text-align: center;
+}
+/* .con_info {
+  width: 100%;
+}
+ .con_info p {
+	width: 100%;
+} */
+ .con_info p img{
+   width: 100% !important;
 }
 </style>

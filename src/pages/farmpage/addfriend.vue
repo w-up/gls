@@ -53,7 +53,6 @@ export default {
     },
     //查询好友
     searchFriend() {
-      console.log(123);
       let that = this;
       let phone = that.phone;
       if (!phone || phone == null) {
@@ -94,7 +93,6 @@ export default {
     },
     //添加好友
     addFriend(id) {
-      console.log(123);
       let that = this;
       let friend_info = $(".friend_info");
       that
@@ -107,7 +105,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           var msg = res.data.msg;
           if (res.data.code == 0) {
             Toast(msg);

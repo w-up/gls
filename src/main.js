@@ -20,7 +20,7 @@ import 'vant/lib/index.css';
 Vue.use(Vant);
 
 // 复制粘贴
-import VueClipboard from 'vue-clipboard2' 
+import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 // 视频
 import VueVideoPlayer from 'vue-video-player'
@@ -34,7 +34,7 @@ axios.defaults.transformRequest = [obj => Qs.stringify(obj)]
 //解决验证码比对不正确
 axios.defaults.withCredentials = true //
 //指定baseurl
-const BASE_URL = 'http://glsapi.jinjifuweng.com//api/';
+const BASE_URL = 'http://glsapi.hnman.cn/api/';
 axios.defaults.baseURL=BASE_URL;
 
 Vue.prototype.$http = axios
@@ -42,7 +42,7 @@ Vue.config.productionTip = false
 // 响应拦截器
 axios.interceptors.response.use(
 response => {
-  // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据     
+  // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
   if (response.status === 200) {
     if (response.data.code == 1) { // 登录过期去登录页
       // Toast({
@@ -53,7 +53,7 @@ response => {
         path: '/login',
       });
     } else {
-      
+
     }
     return Promise.resolve(response);
   } else {

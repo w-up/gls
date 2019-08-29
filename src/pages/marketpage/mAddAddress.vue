@@ -143,9 +143,7 @@ export default {
           })
           .then(function(res) {
             Indicator.close();
-            console.log(res);
             let code = res.data.code;
-            console.log(code);
             if (code == 0) {
               Toast("添加成功");
               that.$router.go(-1);
@@ -154,11 +152,11 @@ export default {
             }
           })
           .catch(function(err) {
-            Toast({
-              message: "网络连接失败",
-              position: "bottom",
-              duration: 5000
-            });
+            // Toast({
+            //   message: "网络连接失败",
+            //   position: "bottom",
+            //   duration: 5000
+            // });
           });
       }
     }

@@ -201,8 +201,9 @@ export default {
           }
         })
         .then(function(res) {
+
           if (res.data.code == 0) {
-            that.data = res.data.data.land;
+            that.data = res.data.data.land.land;
             that.guli = res.data.data.guli;
             that.area = res.data.data.area;
           } else {
@@ -261,7 +262,7 @@ export default {
           if (res.data.code == 0) {
             that.type = type;
             that.$store.commit("areaTypeFun", type);
-            that.data = res.data.data;
+            that.data = res.data.data.land;
           } else {
             Toast(res.data.msg);
           }

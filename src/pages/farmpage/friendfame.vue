@@ -134,7 +134,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.code == 0) {
-            that.data = res.data.data;
+            that.data = res.data.data.land;
             that.guli = res.data.data.guli;
           } else {
             Toast(res.data.msg);
@@ -167,7 +167,7 @@ export default {
           var msg = res.data.msg;
           if (res.data.code == 0) {
             that.type = type;
-            that.data = res.data.data;
+            that.data = res.data.data.land;
           } else {
             Toast(msg);
           }
